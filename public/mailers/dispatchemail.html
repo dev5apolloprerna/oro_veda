@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Order Courier Notification</title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            background-color: #ffffff;
+            margin: auto;
+            border: 2px solid #e91e63;
+            /* Border added */
+            border-radius: 12px;
+            /* Rounded edges */
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
+        }
+
+        .header {
+            background: linear-gradient(90deg, #e91e63, #9c27b0);
+            color: #fff;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .header img {
+            height: 50px;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            margin: 10px 0 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .content {
+            padding: 30px;
+            color: #444;
+        }
+
+        .content p {
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .strong {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #e91e63;
+            color: #fff !important;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .footer {
+            background-color: #fafafa;
+            padding: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://www.sparshcosmo-group.com/assets/front/img/logo.png" alt="Sparsh Cosmo Group">
+            <h1>Order Dispatched!</h1>
+        </div>
+        <div class="content">
+            <p>Dear Customer,</p>
+
+            <p>
+                Your order <span class="strong">#orderNo</span> has been shipped successfully.
+            </p>
+
+            <p>
+                Courier Partner: <span class="strong">#courierName</span><br>
+                Docket No: <span class="strong">#docketNo</span>
+            </p>
+
+            <p>
+                You can track your order by clicking the button below:
+            </p>
+
+            <p>
+                <a href="#link" class="button" target="_blank">Track Your Order</a>
+            </p>
+        </div>
+        <div class="footer">
+            Regards,<br>
+            <span class="strong">Team Sparsh - Cosmo Group</span>
+        </div>
+    </div>
+</body>
+
+</html>
