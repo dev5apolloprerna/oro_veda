@@ -1,6 +1,7 @@
 @php
     $session = Session::get('customerid');
 @endphp
+
 <!-- Footer Start -->
 <section class="footer  mt-5">
     <div class="container-fluid pt-5">

@@ -38,6 +38,8 @@ class FrontController extends Controller
 {
     public function index(Request $request)
     {
+            $currency = session('currency', 'USD');
+
         try {
             $Banner = Banner::orderBy('banner.bannerId', 'desc')
                 ->where(['banner.iStatus' => 1, 'banner.isDelete' => 0])
@@ -75,6 +77,9 @@ class FrontController extends Controller
                 'products.productname',
                 'products.rate',
                 'products.cut_price',
+                            'products.usd_rate',
+            'products.usd_cut_price',
+
                 'products.weight',
                 'products.description',
                 'products.isStock',

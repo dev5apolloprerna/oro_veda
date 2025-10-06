@@ -126,6 +126,30 @@
                                                     @enderror
                                                 </div>
                                             </div>
+                                             <div class="col-lg-4 col-md-6">
+                                                <div>
+                                                    <span style="color:red;">*</span>USD Rate (MRP)
+                                                    <input type="text" class="form-control" name="usd_rate" id="strPhoto"
+                                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                                        maxlength="5" placeholder="Enter USD Rate" required autocomplete="off">
+                                                    @error('usd_rate')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4 col-md-6">
+                                                <div>
+                                                    <span style="color:red;">*</span>USD Cut Price (MRP)
+                                                    <input type="text" class="form-control" placeholder="Enter Cut Price"
+                                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                                        maxlength="5" name="usd_cut_price" autocomplete="off"
+                                                        value="{{ old('usd_cut_price') }}" required autocomplete="off">
+                                                    @error('usd_cut_price')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
 
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="mt-4">

@@ -18,3 +18,56 @@ function FolderPath($folderName)
         return $_SERVER['DOCUMENT_ROOT'] . '/' . $folderName;
     }
 }
+
+if (! function_exists('current_currency')) {
+    function current_currency(): string {
+        return session('currency', 'USD');
+    }
+}
+
+if (! function_exists('money')) {
+    function money(null|float|int|string $amount): string {
+        if ($amount === null || $amount === '') return '-';
+        $cur = current_currency();
+        $symbol = $cur === 'INR' ? '₹' : '$';
+        return $symbol . number_format((float)$amount, 2);
+    }
+}
+
+/** Price (rate or usd_rate) */
+if (! function_exists('product_price')) {
+    function product_price($product): ?float {
+        $cur = current_currency();
+
+        $get = function ($obj, string $key) {
+            return is_array($obj) ? ($obj[$key] ?? null) : ($obj->{$key} ?? null);
+        };
+
+        $v = $cur === 'INR'
+            ? ($get($product, 'rate'))
+            : ($get($product, 'usd_rate'));
+
+        return ($v === null || $v === '') ? null : (float)$v;
+    }
+}
+
+/** Cut/compare-at price (supports cut_rate/cut_price and usd_cut_rate/usd_cut_price) */
+if (! function_exists('product_cut_price')) {
+    function product_cut_price($product): ?float {
+        $cur = current_currency();
+
+        $get = function ($obj, string $key) {
+            return is_array($obj) ? ($obj[$key] ?? null) : ($obj->{$key} ?? null);
+        };
+
+        if ($cur === 'INR') {
+            $v = $get($product, 'cut_rate');
+            if ($v === null || $v === '') $v = $get($product, 'cut_price');
+        } else {
+            $v = $get($product, 'usd_cut_rate');
+            if ($v === null || $v === '') $v = $get($product, 'usd_cut_price');
+        }
+
+        return ($v === null || $v === '') ? null : (float)$v;
+    }
+}

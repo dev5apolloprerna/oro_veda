@@ -52,6 +52,20 @@ Route::middleware('guest:admin')->group(function () {
 });
 
 
+Route::get('/switch-currency/{code}', function ($code) {
+    $code = strtoupper($code);
+    if (!in_array($code, ['INR','USD'])) {
+        abort(404);
+    }
+    // keep country roughly in sync for your logic
+    $countryMap = ['INR' => 'IN', 'USD' => 'US'];
+    session([
+        'currency' => $code,
+        'country_code' => $countryMap[$code] ?? session('country_code', 'US'),
+    ]);
+    return back(); // go back to the same page
+})->name(name: 'switch.currency');
+
 // Route::get('/login', function () {
 //     return redirect()->route('login');
 // });

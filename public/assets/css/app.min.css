@@ -74,7 +74,7 @@
     --vz-twocolumn-menu-item-active-color-dark: #fff;
     --vz-twocolumn-menu-item-active-bg-dark: rgba(255, 255, 255, 0.15);
     --vz-boxed-body-bg: #e5e5f2;
-    --vz-heading-color: #ed2690;
+    --vz-heading-color: #2b5922;
     --vz-link-color: #3d78e3;
     --vz-link-hover-color: #3d78e3;
     --vz-border-color: #e9ebec;
@@ -101,7 +101,7 @@
 :root .ql-toolbar,
 :root .select2-container {
     --vz-choices-bg: #fff;
-    --vz-choices-link-color: #ed2690;
+    --vz-choices-link-color: #2b5922;
     --vz-choices-link-hover-bg: #f3f6f9;
     --vz-choices-link-active-color: #1e2125
 }
@@ -118,7 +118,7 @@
     --vz-gray-900: #f3f6f9;
     --vz-body-bg: #1a1d21;
     --vz-body-bg-rgb: 26, 29, 33;
-    --vz-body-color: #ed2690!important;
+    --vz-body-color: #2b5922!important;
     /*--vz-body-color-rgb: 206, 212, 218;*/
     --vz-vertical-menu-bg: #fff;
     --vz-vertical-menu-item-color: #5f6270;
@@ -835,8 +835,8 @@
 .navbar-menu {
     width: 250px;
     z-index: 1002;
-     background: #ed2690 !important; 
-    /*background: -webkit-gradient(linear, left top, right top, from(#ed2690), to(#ed2690)) !important;*/
+     background: #2b5922 !important; 
+    /*background: -webkit-gradient(linear, left top, right top, from(#2b5922), to(#2b5922)) !important;*/
     border-right: none !important;
     bottom: 0;
     margin-top: 100px!important;
@@ -864,8 +864,8 @@
 
 .btn-success {
     --vz-btn-color: #fff;
-    --vz-btn-bg: #ed2690;
-    --vz-btn-border-color: #ed2690;
+    --vz-btn-bg: #2b5922;
+    --vz-btn-border-color: #2b5922;
     --vz-btn-hover-color: #fff;
     --vz-btn-hover-bg: #589662;
     --vz-btn-hover-border-color: #528e5c;
@@ -883,21 +883,21 @@
 .btn-primary {
 
     --vz-btn-color: #fff;
-     --vz-btn-bg: #ed2690; 
+     --vz-btn-bg: #2b5922; 
    
-     --vz-btn-border-color: #ed2690; 
-        /*background: -webkit-gradient(linear, left top, right top, from(#ed2690), to(#ed2690)) !important;*/
+     --vz-btn-border-color: #2b5922; 
+        /*background: -webkit-gradient(linear, left top, right top, from(#2b5922), to(#2b5922)) !important;*/
     --vz-btn-hover-color: #fff;
-    --vz-btn-hover-bg: #ed2690;
-    --vz-btn-hover-border-color: #ed2690;
+    --vz-btn-hover-bg: #2b5922;
+    --vz-btn-hover-border-color: #2b5922;
     --vz-btn-focus-shadow-rgb: 90, 140, 231;
     --vz-btn-active-color: #fff;
-    --vz-btn-active-bg: #ed2690;
-    --vz-btn-active-border-color: #ed2690;
+    --vz-btn-active-bg: #2b5922;
+    --vz-btn-active-border-color: #2b5922;
     --vz-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
     --vz-btn-disabled-color: #fff;
-    --vz-btn-disabled-bg: #ed2690;
-    --vz-btn-disabled-border-color: #ed2690;
+    --vz-btn-disabled-bg: #2b5922;
+    --vz-btn-disabled-border-color: #2b5922;
 
     transition: all 0.4s;
     transition-timing-function: cubic-bezier(0.5, 3, 0, 1);
@@ -977,7 +977,7 @@ hamburger-icon span {
 }
 
 a {
-    color: #ed2690;
+    color: #2b5922;
     text-decoration: underline;
 }
 
@@ -2380,8 +2380,8 @@ a {
     animation-fill-mode: both;
     margin: 0;
     z-index: 1000;
-    /* background-color: #ed2690; */
-      background: -webkit-gradient(linear, left top, right top, from(#ed2690), to(#ed2690)) !important;
+    /* background-color: #2b5922; */
+      background: -webkit-gradient(linear, left top, right top, from(#2b5922), to(#2b5922)) !important;
     background-clip: padding-box;
     border: 0 solid var(--vz-border-color);
     border-radius: .3rem;
@@ -5532,9 +5532,9 @@ strong {
 }
 
 .alert-solid.alert-primary {
-    /* background-color: #ed2690; */
+    /* background-color: #2b5922; */
     background: -webkit-gradient(linear, left top, right top, from(#733f8f), to(#ff2b2b)) !important;
-    /* border-color: #ed2690; */
+    /* border-color: #2b5922; */
     border-color: -webkit-gradient(linear, left top, right top, from(#733f8f), to(#ff2b2b)) !important;
     color: #fff
 }
@@ -7543,8 +7543,8 @@ button {
     right: 0;
     height: 100%;
    
-     background-color: #ed2690; 
-    /*background: -webkit-gradient(linear, left top, right top, from(#ed2690), to(#ed2690)) !important;*/
+     background-color: #2b5922; 
+    /*background: -webkit-gradient(linear, left top, right top, from(#2b5922), to(#2b5922)) !important;*/
     z-index: -1
 }
 
@@ -18584,8 +18584,8 @@ input::placeholder {
 
 
 thead tr {
-     background-color: #ed2690 !important; 
-       /*background: -webkit-gradient(linear, left top, right top, from(#ed2690), to(#ed2690)) !important;*/
+     background-color: #2b5922 !important; 
+       /*background: -webkit-gradient(linear, left top, right top, from(#2b5922), to(#2b5922)) !important;*/
     color: white;
     text-align: center;
 }
