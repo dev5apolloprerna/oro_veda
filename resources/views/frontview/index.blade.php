@@ -133,7 +133,7 @@
                                     {{ date('d-m-Y', strtotime($offer->enddate)) }}</p>
                                 {{--  <h6 class="text-white text-uppercase">Save {{ $offer->percentage }}%</h6>  --}}
                                 {{--  <h3 class="text-white mb-3">{{ $offer->text }}</h3>  --}}
-                                <a href="{{ route('product_list', $category->slugname) }}" class="btn btn-primary">Shop Now</a>
+                                <a href="{{ route('product_list', $offer->slugname) }}" class="btn btn-primary">Shop Now</a>
                             </div>
                         </div>
                     </div>
@@ -175,89 +175,64 @@
     </section>
     <!-- Offer End -->
 
-    @if ($recentproducts->count())
-        <!-- Products Start -->
-        <section class="recent-products">
-            <div class="container-fluid pt-5 pb-3">
-                <h5 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
-                    <span class="bg-primary px-3 text-white">
-                        Recent Products
-                    </span>
-                </h5>
-                <div class="row px-xl-5">
+   @if ($recentproducts->count())
+    <!-- Products Start -->
+    <section class="recent-products">
+        <div class="container-fluid pt-5 pb-3">
+            <h5 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+                <span class="bg-primary px-3 text-white">Recent Products</span>
+            </h5>
 
-                    @foreach ($recentproducts as $product)
-                        <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                            <div class="product-item bg-light mb-4">
-                                <div class="product-img position-relative overflow-hidden">
+            <div class="row px-xl-5">
+                @foreach ($recentproducts as $product)
+                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                        <div class="product-item bg-light mb-4">
+                            <div class="product-img position-relative overflow-hidden">
 
-                                    @if ($product->photo)
-                                        <a class=""
-                                            href="{{ route('product_detail', [$product->category_slug, $product->slugname]) }}">
-                                            <img class="img-fluid w-100"
-                                                src="{{ asset('/uploads/product/thumbnail/') . '/' . $product->photo }}"
-                                                alt=""></a>
-                                    @else
-                                        <a class=""
-                                            href="{{ route('product_detail', [$product->category_slug, $product->slugname]) }}">
-                                            <img class="img-fluid w-100" src="{{ asset('assets/images/noimage.png') }}"
-                                                alt=""></a>
+                                @php
+                                    $img = $product->photo
+                                        ? asset('/uploads/product/thumbnail/' . $product->photo)
+                                        : asset('assets/images/noimage.png');
+                                @endphp
+
+                                <a href="{{ route('product_detail', [$product->category_slug, $product->slugname]) }}">
+                                    <img class="img-fluid w-100" src="{{ $img }}" alt="{{ $product->productname }}">
+                                </a>
+                            </div>
+
+                            <div class="text-center py-4">
+                                <a class="h6 text-decoration-none text-truncate"
+                                   href="{{ route('product_detail', [$product->category_slug, $product->slugname]) }}">
+                                    {{ $product->productname }}
+                                </a>
+
+                                @php
+                                    // Resolve prices via helpers (auto-picks INR/USD)
+                                    $price = product_price($product);        // uses rate / usd_rate
+                                    $cut   = product_cut_price($product);    // uses cut_rate / usd_cut_rate
+                                @endphp
+
+                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                    @if(!is_null($price))
+                                        <h5 class="mb-0">{{ money($price) }}</h5>
                                     @endif
-                                    <!--<div class="product-action">-->
-                                    <!--    <form action="{{ route('cart.store') }}" method="POST"-->
-                                    <!--        enctype="multipart/form-data">-->
-                                    <!--        @csrf-->
-                                    <!--        <input type="hidden" value="{{ $product->id ?? 0 }}" name="productid">-->
-                                    <!--        <input type="hidden" value="{{ $product->categoryId }}" name="categoryId">-->
-                                    <!--        <input type="hidden" value="{{ $product->productname }}"-->
-                                    <!--            name="productname">-->
-                                    <!--        <input type="hidden" value="{{ $product->photo }}" name="image">-->
-                                    <!--        <input type="hidden" name="price" value="{{ $product->rate }}">-->
-                                    <!--        <input type="hidden" name="quantity" value="1">-->
-                                    <!--        <button type="submit" class="btn btn-outline-dark btn-square">-->
-                                    <!--            <i class="fa fa-shopping-cart"></i>-->
-                                    <!--        </button>-->
-                                    <!--    </form>-->
 
-
-                                    <!--    <form action="{{ route('wishlist.store') }}" method="POST">-->
-                                    <!--        @csrf-->
-                                    <!--        <input type="hidden" value="{{ $product->id ?? 0 }}" name="productid">-->
-                                    <!--        <input type="hidden" name="price" value="{{ $product->rate }}">-->
-                                    <!--        <button type="submit" class="btn btn-outline-dark btn-square">-->
-                                    <!--            <i class="far fa-heart"></i>-->
-                                    <!--        </button>-->
-                                    <!--    </form>-->
-
-                                    <!--</div>-->
-                                </div>
-                                <div class="text-center py-4">
-                                    <a class="h6 text-decoration-none text-truncate"
-                                        href="{{ route('product_detail', [$product->category_slug, $product->slugname]) }}">
-                                        {{ $product->productname }}
-                                    </a>
-                                    <div class="d-flex align-items-center justify-content-center mt-2">
-                                        <h6 class="text-muted ml-2 px-1">
-                                            @if($product->product_attribute_price)
-                                                <h5>₹{{ $product->product_attribute_price }}</h5>
-                                            @else    
-                                                <h5>₹{{ $product->min_attr_price }}</h5>
-                                            @endif    
-                                        </h6> &nbsp;
-                                            <del>₹{{ $product->cut_price }}</del> 
-
-                                    </div>
-
+                                    @if(!is_null($cut) && (float)$cut > (float)$price)
+                                        <small class="text-muted ms-2">
+                                            <del>{{ money($cut) }}</del>
+                                        </small>
+                                    @endif
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-
-                </div>
+                    </div>
+                @endforeach
             </div>
-        </section>
-        <!-- Products End -->
-    @endif
+
+        </div>
+    </section>
+    <!-- Products End -->
+@endif
 
 
     <!-- Featured Start -->

@@ -22,10 +22,14 @@
                         <!--<p>30% OFF ON ALL PRODUCTS ENTER CODE: beshop2020</p>-->
                     </div>
                 </div>
+                
                 <div class="col-lg-6 right">
                     <!-- My Account Dropdown -->
                     <div class="d-inline-flex align-items-center">
                         <div class="btn-group">
+                            <a class="text-white me-2" href="{{ route('switch.currency','USD') }}">Show USD</a> | 
+                            <a class="text-white  me-2" href="{{ route('switch.currency','INR') }}"> Show INR</a>
+
 
                             <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">
                                 <i class="ti-user mr-1"></i> My Account

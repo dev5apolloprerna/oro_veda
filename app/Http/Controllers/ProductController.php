@@ -29,6 +29,7 @@ class ProductController extends Controller
             'products.subcategoryid',
             'products.productname',
             'products.rate',
+            'products.usd_rate',
             'products.isFeatures',
             'products.iStatus',
             DB::raw('(SELECT categoryname FROM categories WHERE categories.id = products.subcategoryid) AS subcategoryname'),
@@ -72,6 +73,8 @@ class ProductController extends Controller
                 'slugname' => Str::slug($request->productname),
                 'rate' => $request->rate,
                 'cut_price' => $request->cut_price,
+                'usd_rate' => $request->usd_rate,
+                'usd_cut_price' => $request->usd_cut_price,
                 'description' => $request->description,
                 'isFeatures' => $isFeatures ?? 0,
                 'meta_title' => $request->meta_title,
@@ -93,9 +96,9 @@ class ProductController extends Controller
 
                 // Resize & Save Thumbnail
                 if ($_SERVER['SERVER_NAME'] == "127.0.0.1") {
-                    $thumbnailPath = $root . '/uploads/product/thumbnail/';
+                    $thumbnailPath = $root . '/oro_veda/uploads/product/thumbnail/';
                 } else {
-                    $thumbnailPath = $root . '/uploads/product/thumbnail/';
+                    $thumbnailPath = $root . '/oro_veda/uploads/product/thumbnail/';
                 }
                 if (!file_exists($thumbnailPath)) {
                     mkdir($thumbnailPath, 0755, true);
@@ -103,7 +106,7 @@ class ProductController extends Controller
 
                 $img = Image::make($file->getRealPath());
                 
-                // 👇 Resize to fixed 4:3 ratio (800x600)
+                // ðŸ‘‡ Resize to fixed 4:3 ratio (800x600)
                 $img->resize(800, 600)->save($thumbnailPath . '/' . $imgName);
                 
                 // $img->resize(540, 720, function ($constraint) {
@@ -165,6 +168,8 @@ class ProductController extends Controller
                 'slugname' => Str::slug($request->productname),
                 'rate' => $request->rate,
                 'cut_price' => $request->cut_price,
+                'usd_rate' => $request->usd_rate,
+                'usd_cut_price' => $request->usd_cut_price,
                 'description' => $request->description,
                 'isFeatures' => $isFeatures ?? 0,
                 'meta_title' => $request->meta_title,
@@ -185,9 +190,9 @@ class ProductController extends Controller
 
                 // Resize & Save Thumbnail
                 if ($_SERVER['SERVER_NAME'] == "127.0.0.1") {
-                    $thumbnailPath = $root . '/uploads/product/thumbnail/';
+                    $thumbnailPath = $root . '/oro_veda/uploads/product/thumbnail/';
                 } else {
-                    $thumbnailPath = $root . '/uploads/product/thumbnail/';
+                    $thumbnailPath = $root . '/oro_veda/uploads/product/thumbnail/';
                 }
                 if (!file_exists($thumbnailPath)) {
                     mkdir($thumbnailPath, 0755, true);
@@ -195,7 +200,7 @@ class ProductController extends Controller
 
                 $img = Image::make($file->getRealPath());
                 
-                // 👇 Resize to fixed 4:3 ratio (800x600)
+                // ðŸ‘‡ Resize to fixed 4:3 ratio (800x600)
                 $img->resize(800, 600)->save($thumbnailPath . '/' . $imgName);
                 
                 // $img->resize(540, 720, function ($constraint) {
@@ -238,11 +243,11 @@ class ProductController extends Controller
 
             $root = $_SERVER['DOCUMENT_ROOT'];
             if ($_SERVER['SERVER_NAME'] == "127.0.0.1") {
-                $thumbnailPath = $root . '/uploads/product/thumbnail/';
-                $originalPath = $root . '/uploads/product/';
+                $thumbnailPath = $root . '/oro_veda/uploads/product/thumbnail/';
+                $originalPath = $root . '/oro_veda/uploads/product/';
             } else {
-                $thumbnailPath = $root . '/uploads/product/thumbnail/';
-                $originalPath = $root . '/uploads/product/';
+                $thumbnailPath = $root . '/oro_veda/uploads/product/thumbnail/';
+                $originalPath = $root . '/oro_veda/uploads/product/';
             }
 
             foreach ($photos as $photo) {
@@ -280,11 +285,11 @@ class ProductController extends Controller
             if ($photo && $photo->strphoto) {
                 $root = $_SERVER['DOCUMENT_ROOT'];
                 if ($_SERVER['SERVER_NAME'] == "127.0.0.1") {
-                    $originalPath = $root . '/uploads/product/' . $photo->strphoto;
-                    $thumbPath = $root . '/uploads/product/thumbnail/' . $photo->strphoto;
+                    $originalPath = $root . '/oro_veda/uploads/product/' . $photo->strphoto;
+                    $thumbPath = $root . '/oro_veda/uploads/product/thumbnail/' . $photo->strphoto;
                 } else {
-                    $originalPath = $root . '/uploads/product/' . $photo->strphoto;
-                    $thumbPath = $root . '/uploads/product/thumbnail/' . $photo->strphoto;
+                    $originalPath = $root . '/oro_veda/uploads/product/' . $photo->strphoto;
+                    $thumbPath = $root . '/oro_veda/uploads/product/thumbnail/' . $photo->strphoto;
                 }
 
                 if (file_exists($thumbPath)) {
