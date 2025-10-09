@@ -70,4 +70,3 @@ if (! function_exists('product_cut_price')) {
 
         return ($v === null || $v === '') ? null : (float)$v;
     }
-}

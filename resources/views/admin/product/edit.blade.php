@@ -139,9 +139,14 @@
 
                                             <div class="col-lg-4 col-md-6">
                                                 <div>
-                                                    <span style="color:red;">*</span> USD Rate (MRP)
+                                                    <span style="color:red;">*</span>USD Rate (MRP)
                                                     <input type="text" class="form-control" placeholder="Enter USD Rate"
-                                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                                        inputmode="decimal"
+                                                          oninput="this.value = this.value
+                                                            .replace(/[^0-9.]/g,'')        // allow digits & dot
+                                                            .replace(/(\..*?)\..*/g,'$1')  // keep only the first dot
+                                                            .replace(/^(\.)/,'0.')         // '.5' -> '0.5'
+                                                          "
                                                         maxlength="5" name="usd_rate" autocomplete="off"
                                                         value="{{ $product->usd_rate }}" required>
                                                     @error('usd_rate')
@@ -152,9 +157,14 @@
 
                                             <div class="col-lg-4 col-md-6">
                                                 <div>
-                                                    <span style="color:red;">*</span>USD Cut Price (MRP)
+                                                    <span style="color:red;">*</span> USD Cut Price (MRP)
                                                     <input type="text" class="form-control" placeholder="Enter USD Cut Price"
-                                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                                        inputmode="decimal"
+                                                              oninput="this.value = this.value
+                                                                .replace(/[^0-9.]/g,'')        // allow digits & dot
+                                                                .replace(/(\..*?)\..*/g,'$1')  // keep only the first dot
+                                                                .replace(/^(\.)/,'0.')         // '.5' -> '0.5'
+                                                              "
                                                         maxlength="5" name="usd_cut_price" autocomplete="off"
                                                         value="{{ $product->usd_cut_price }}" required>
                                                     @error('usd_cut_price')
@@ -162,6 +172,8 @@
                                                     @enderror
                                                 </div>
                                             </div>
+
+
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="mt-4">
                                                     <input type="checkbox" name="isFeatures" id="isFeatures"
