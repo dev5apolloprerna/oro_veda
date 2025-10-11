@@ -4,86 +4,222 @@
 
     @include('common.alert')
 
-    <!-- Breadcrumb Start -->
-    <section class="breadcrumb-section">
-        <div class="container-fluid ">
-            <div class="row py-5">
-
-                <div class="col-5 mx-auto">
-                    <h3 class="slogan">Quality Made Trust Delivered
-                    </h3>
-                    <nav class="breadcrumb  mb-30">
-                        <a class="breadcrumb-item text-dark" href="{{ route('FrontIndex') }}">Home</a>
-                        <span class="breadcrumb-item active">About us</span>
-                    </nav>
+    <!-- ================================
+             BRAND STORY & FOUNDERS' VISION
+        ================================ -->
+    <section class="py-5 bg-light" id="brand-story">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-md-6" data-aos="fade-right">
+                    <img src="{{ asset('assets/front/images/about/founders.jpg') }}" class="img-fluid rounded shadow"
+                        alt="Oroveda Founders">
                 </div>
+                <div class="col-md-6" data-aos="fade-left">
+                    <h2 class="section-title aos-init aos-animate" data-aos="fade-up">Our Brand Story & Founders’ Vision
+                    </h2>
 
+                    <p class="text-muted">
+                        Oroveda was born from a desire to bring back the <strong>ancient Indian wisdom</strong> of
+                        nourishment through pure ingredients.
+                        Our founders, inspired by their ancestral traditions, envisioned a world where <span
+                            class="text-warning fw-semibold">every home could enjoy ghee</span> crafted the way nature
+                        intended —
+                        slow, sacred, and sustainable.
+                    </p>
+                    <p class="text-muted">
+                        What started as a small family venture has grown into a movement celebrating the <em>Gir cow</em> —
+                        an emblem of purity and health.
+                        At Oroveda, we blend time-honored techniques with ethical farming to create ghee that heals the body
+                        and uplifts the spirit.
+                    </p>
+                    <blockquote class="blockquote border-start border-warning ps-3 mt-4">
+                        <p class="mb-0">“We don’t just make ghee — we preserve a legacy.”</p>
+                        <footer class="blockquote-footer mt-2">The Oroveda Founders</footer>
+                    </blockquote>
+                </div>
             </div>
         </div>
     </section>
-    <!-- Breadcrumb End -->
+    <!-- ================================
+                  JOURNEY OF OROVEDA
+        ================================ -->
+    <section id="journey" class="py-5">
+        <div class="container">
 
-    <!-- Contact Start -->
-    <section class="section-padding about">
-        <div class="container-fluid">
-            <h5 class="section-title position-relative text-uppercase mx-xl-5 "><span class="bg-primary pr-3">Welcome to
-                    Sparsh Cosmo Group</span></h5>
-            <div class="row px-xl-5 justify-content-center d-flex">
-                <div class="col-lg-5 mb-5">
-
-                    <img src="{{ asset('assets/front/img/about.jpg') }}" alt="" class="img-fluid">
-
-
-                </div>
-                <div class="col-lg-7 ">
-                    <h2 class="text-pink">About Us</h2>
-                    <p>
-                        <strong>Sparsh Cosmo Group</strong> is a trusted name in natural and cosmetic wellness, dedicated to
-                        bringing you the purity of nature with a modern touch. Founded with a passion for quality and a
-                        commitment
-                        to sustainability, we specialize in the production and distribution of premium <strong>Neem
-                            Oil</strong> and
-                        <strong>Perfume</strong> — each crafted to
-                        nourish,
-                        protect, and enhance your natural beauty.
-                    </p>
-                    <br>
-                    <p>
-                        At Sparsh, which means “touch” in Sanskrit, we believe that every product should not only feel good
-                        on the
-                        skin but also be kind to the environment. Our ingredients are carefully selected for their purity
-                        and
-                        effectiveness, blending traditional wisdom with contemporary science to deliver results you can
-                        trust.
-                    </p>
-                    <br>
-                    <p>
-                        Whether it's the healing power of cold-pressed neem oil, the long-lasting charm of our perfumes, the
-                        gentle
-                        richness of handmade kajal, or the soothing touch of our herbal soaps — Sparsh Cosmo Group ensures
-                        that
-                        every product reflects our promise of quality, authenticity, and care.
-                    </p>
-                    <br>
-                    <p>
-                        Join us in embracing a more natural way to care for yourself — because beauty begins with a pure
-                        touch.
-                    </p>
-                    <br>
-                    <p>
-                        The proprietor is PARAS HANSAJI PRAJAPATI
-                    </p>
-                    <P>
-                        GSTIN : 24AHXPP7329P3Z6
-                    </P>
-                    <P>
-                        They have registered the trademark for the SPARSH brand
-                    </P>
+            <h2 class="section-title aos-init aos-animate" data-aos="fade-up">The Journey of <span
+                    class="text-warning">Oroveda</span> </h2>
+            <div class="timeline">
+                <!-- 2018 -->
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-content">
+                        <h5 class="fw-semibold text-warning">2018 — The Beginning</h5>
+                        <p class="text-muted small mb-0">
+                            Our founders began their journey in rural Gujarat, inspired by their ancestors’ traditional
+                            methods of making ghee using the <em>Bilona process </em>. Oroveda was born out of a passion to
+                            restore purity and authenticity to modern food.
+                        </p>
+                    </div>
                 </div>
 
+                <!-- 2019 -->
+                <div class="timeline-item" data-aos="fade-left">
+                    <div class="timeline-content">
+                        <h5 class="fw-semibold text-warning">2019 — The First Batch</h5>
+                        <p class="text-muted small mb-0">
+                            With just a handful of Gir cows and a small farm, the first jars of Oroveda Ghee were
+                            handcrafted and distributed locally. The overwhelming love from our customers fueled our
+                            mission.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2020 -->
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-content">
+                        <h5 class="fw-semibold text-warning">2020 — Certified Organic</h5>
+                        <p class="text-muted small mb-0">
+                            Oroveda achieved <strong>organic certification</strong> for its ghee production and
+                            farming practices — ensuring chemical-free, cruelty-free, and environment-friendly standards.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2022 -->
+                <div class="timeline-item" data-aos="fade-left">
+                    <div class="timeline-content">
+                        <h5 class="fw-semibold text-warning">2022 — National Expansion</h5>
+                        <p class="text-muted small mb-0">
+                            Oroveda products reached stores and homes across India. The brand gained recognition for
+                            its commitment to <strong>authenticity, wellness, and sustainability</strong>.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2025 -->
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-content">
+                        <h5 class="fw-semibold text-warning">2025 — Global Presence</h5>
+                        <p class="text-muted small mb-0">
+                            Oroveda has expanded to international markets, representing India’s traditional purity on a
+                            global stage. Our mission continues — to deliver ghee that’s pure, ethical, and full of life.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
-    <!-- Contact End -->
+
+    <!-- ================================
+                 OROVEDA PHILOSOPHY
+        ================================ -->
+    <section class="py-5" id="philosophy">
+        <div class="container text-center">
+            <h2 class="fw-bold mb-5" data-aos="fade-up">The Oroveda Philosophy</h2>
+            <div class="row g-4">
+                <!-- Purity -->
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="mb-3"><i class="bi bi-droplet-half text-warning fs-1"></i></div>
+                            <h5 class="fw-semibold mb-2">Purity</h5>
+                            <p class="text-muted small">
+                                We source milk only from <strong>indigenous Gir cows</strong> and follow natural grazing
+                                methods.
+                                No preservatives, no shortcuts — only pure, golden ghee made from love and integrity.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tradition -->
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="mb-3"><i class="bi bi-mortarboard-fill text-warning fs-1"></i></div>
+                            <h5 class="fw-semibold mb-2">Tradition</h5>
+                            <p class="text-muted small">
+                                Our <em>Bilona process</em> is inspired by Ayurveda — churning curd with a wooden hand whisk
+                                to retain nutrients
+                                and energy, exactly as done for centuries in Indian households.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Sustainability -->
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="mb-3"><i class="bi bi-leaf-fill text-warning fs-1"></i></div>
+                            <h5 class="fw-semibold mb-2">Sustainability</h5>
+                            <p class="text-muted small">
+                                From ethical dairy practices to eco-friendly packaging, Oroveda strives to create wellness
+                                for
+                                both people and planet. We ensure <strong>zero waste and mindful sourcing</strong> every
+                                step of the way.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================
+                    PROCESS SNAPSHOTS
+        ================================ -->
+    <section class="py-5 bg-light" id="process-snapshots">
+        <div class="container">
+            <h2 class="fw-bold text-center mb-5" data-aos="fade-up">Our Process: From Farm to Jar</h2>
+            <div class="row g-4 text-center">
+                <!-- Step 1 -->
+                <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="card border-0 h-100">
+                        <img src="{{ asset('assets/front/images/process/milking.jpg') }}"
+                            class="card-img-top rounded shadow-sm" alt="Milking Gir Cows">
+                        <div class="card-body">
+                            <h6 class="fw-semibold text-warning">Step 1</h6>
+                            <p class="small text-muted">Fresh A2 milk is collected from happy, grass-fed Gir cows.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Step 2 -->
+                <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="card border-0 h-100">
+                        <img src="{{ asset('assets/front/images/process/curd.jpg') }}"
+                            class="card-img-top rounded shadow-sm" alt="Curd Formation">
+                        <div class="card-body">
+                            <h6 class="fw-semibold text-warning">Step 2</h6>
+                            <p class="small text-muted">The milk is set into curd overnight to preserve enzymes and
+                                probiotics.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Step 3 -->
+                <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="card border-0 h-100">
+                        <img src="{{ asset('assets/front/images/process/churning.jpg') }}"
+                            class="card-img-top rounded shadow-sm" alt="Bilona Churning">
+                        <div class="card-body">
+                            <h6 class="fw-semibold text-warning">Step 3</h6>
+                            <p class="small text-muted">The curd is hand-churned using the traditional wooden
+                                <em>Bilona</em>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Step 4 -->
+                <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="card border-0 h-100">
+                        <img src="{{ asset('assets/front/images/process/simmering.jpg') }}"
+                            class="card-img-top rounded shadow-sm" alt="Slow Simmering">
+                        <div class="card-body">
+                            <h6 class="fw-semibold text-warning">Step 4</h6>
+                            <p class="small text-muted">Butter is gently simmered to produce golden, aromatic Oroveda Ghee.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 @endsection

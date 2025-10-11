@@ -15,18 +15,20 @@ function FolderPath($folderName)
     if ($_SERVER['SERVER_NAME'] == "127.0.0.1") {
         return $_SERVER['DOCUMENT_ROOT'] . '/' . $folderName;
     } else {
-        return $_SERVER['DOCUMENT_ROOT'] . '/' . $folderName;
+        return $_SERVER['DOCUMENT_ROOT'] . '/oro_veda/' . $folderName;
     }
 }
 
 if (! function_exists('current_currency')) {
-    function current_currency(): string {
+    function current_currency(): string
+    {
         return session('currency', 'USD');
     }
 }
 
 if (! function_exists('money')) {
-    function money(null|float|int|string $amount): string {
+    function money(null|float|int|string $amount): string
+    {
         if ($amount === null || $amount === '') return '-';
         $cur = current_currency();
         $symbol = $cur === 'INR' ? '₹' : '$';
@@ -36,7 +38,8 @@ if (! function_exists('money')) {
 
 /** Price (rate or usd_rate) */
 if (! function_exists('product_price')) {
-    function product_price($product): ?float {
+    function product_price($product): ?float
+    {
         $cur = current_currency();
 
         $get = function ($obj, string $key) {
@@ -53,7 +56,8 @@ if (! function_exists('product_price')) {
 
 /** Cut/compare-at price (supports cut_rate/cut_price and usd_cut_rate/usd_cut_price) */
 if (! function_exists('product_cut_price')) {
-    function product_cut_price($product): ?float {
+    function product_cut_price($product): ?float
+    {
         $cur = current_currency();
 
         $get = function ($obj, string $key) {
@@ -70,3 +74,4 @@ if (! function_exists('product_cut_price')) {
 
         return ($v === null || $v === '') ? null : (float)$v;
     }
+}

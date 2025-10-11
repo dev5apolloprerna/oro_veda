@@ -41,7 +41,7 @@ class OfferController extends Controller
             if ($request->hasFile('photo')) {
                 $image = $request->file('photo');
                 $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->move(FolderPath('/oro_veda/uploads/offer'), $imageName);
+                $image->move(FolderPath('/uploads/offer'), $imageName);
                 $img = $imageName;
             }
 
@@ -100,7 +100,7 @@ class OfferController extends Controller
                 $image = $request->file('photo');
                 $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-                $destinationPath = FolderPath('/oro_veda/uploads/offer');
+                $destinationPath = FolderPath('/uploads/offer');
 
                 // Ensure folder exists
                 if (!file_exists($destinationPath)) {
@@ -141,7 +141,7 @@ class OfferController extends Controller
         try {
             $offer = Offer::where(['iStatus' => 1, 'isDelete' => 0, 'id' => $request->id])->firstOrFail();
 
-            $imagePath = FolderPath('/oro_veda/uploads/offer') . '/' . $offer->photo;
+            $imagePath = FolderPath('/uploads/offer') . '/' . $offer->photo;
 
             if ($offer->photo && file_exists($imagePath)) {
                 unlink($imagePath);

@@ -105,10 +105,10 @@ class ProductController extends Controller
                 }
 
                 $img = Image::make($file->getRealPath());
-                
+
                 // ðŸ‘‡ Resize to fixed 4:3 ratio (800x600)
                 $img->resize(800, 600)->save($thumbnailPath . '/' . $imgName);
-                
+
                 // $img->resize(540, 720, function ($constraint) {
                 //     $constraint->aspectRatio();
                 // })->save($thumbnailPath . '/' . $imgName);
@@ -190,7 +190,7 @@ class ProductController extends Controller
 
                 // Resize & Save Thumbnail
                 if ($_SERVER['SERVER_NAME'] == "127.0.0.1") {
-                    $thumbnailPath = $root . '/oro_veda/uploads/product/thumbnail/';
+                    $thumbnailPath = $root . '/uploads/product/thumbnail/';
                 } else {
                     $thumbnailPath = $root . '/oro_veda/uploads/product/thumbnail/';
                 }
@@ -199,10 +199,10 @@ class ProductController extends Controller
                 }
 
                 $img = Image::make($file->getRealPath());
-                
+
                 // ðŸ‘‡ Resize to fixed 4:3 ratio (800x600)
                 $img->resize(800, 600)->save($thumbnailPath . '/' . $imgName);
-                
+
                 // $img->resize(540, 720, function ($constraint) {
                 //     $constraint->aspectRatio();
                 // })->save($thumbnailPath . '/' . $imgName);

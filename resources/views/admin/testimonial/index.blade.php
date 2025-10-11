@@ -12,38 +12,55 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
-                            <div class="d-flex justify-content-between card-header">
+                            <div class="card-header" style="display: flex;justify-content: space-between;">
                                 <h5 class="card-title mb-0">Testimonial List</h5>
-                                <a data-bs-toggle="modal" data-bs-target="#AddModal" class="btn btn-sm btn-primary">
+                                <a href="{{ route('testimonial.create') }}" class="btn btn-sm btn-primary">
                                     <i data-feather="plus"></i> Add New
                                 </a>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
                             <div class="card-body">
-                                <?php //echo date('ymd');
-                                ?>
                                 <table id="scroll-horizontal" class="table nowrap align-middle" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th width="1%">No</th>
-                                            <th width="2%"> Name</th>
-                                            <th width="5%">Description</th>
-                                            <th width="1%">Action</th>
+                                            <th scope="col">Sr No.</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Designation</th>
+                                            <th scope="col">Photo</th>
+                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $i = 1; ?>
                                         @foreach ($Testimonial as $testimonial)
                                             <tr class="text-center">
-                                                <td>{{ $i + $Testimonial->perPage() * ($Testimonial->currentPage() - 1) }}
-                                                </td>
-                                                <td>{{ $testimonial->name }}</td>
-                                                <td>{{ Str::limit($testimonial->description, 200, '....') }}</td>
-
                                                 <td>
+                                                    {{ $i + $Testimonial->perPage() * ($Testimonial->currentPage() - 1) }}
+                                                </td>
+                                                <td class="text-center">{{ $testimonial->name }}</td>
+                                                <td class="text-center">{{ $testimonial->designation }}</td>
+
+                                                <td class="text-center">
+                                                    @if ($testimonial->photo)
+                                                        <img src="{{ asset('uploads/testimonial') . '/' . $testimonial->photo }}"
+                                                            style="width: 50px;height: 50px;">
+                                                    @else
+                                                        <img src="{{ asset('assets/images/noimage.png') }}"
+                                                            style="width: 50px;height: 50px;">
+                                                    @endif
+                                                </td>
+
+                                                <td class="text-center">
                                                     <div class="gap-2">
-                                                        <a class="mx-1" title="Edit" href="#"
-                                                            onclick="getEditData(<?= $testimonial->id ?>)"
-                                                            data-bs-toggle="modal" data-bs-target="#showModal">
+
+                                                        <a class="mx-1" title="Edit"
+                                                            href="{{ route('testimonial.edit', $testimonial->id) }}">
                                                             <i class="far fa-edit"></i>
                                                         </a>
 
@@ -67,88 +84,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!--Add Modal Start-->
-                <div class="modal fade flip" id="AddModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header bg-light p-3">
-                                <h5 class="modal-title" id="exampleModalLabel">Add Testimonial</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                    id="close-modal"></button>
-                            </div>
-                            <form method="POST" action="{{ route('testimonial.store') }}" autocomplete="off"
-                                enctype="multipart/form-data">
-                                @csrf
-
-                                <div class="modal-body">
-
-                                    <div class="mb-3">
-                                        <span style="color:red;">*</span>Name
-                                        <input type="text" class="form-control" name="name" placeholder="Enter Name"
-                                            maxlength="100" autocomplete="off" required>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <span style="color:red;">*</span>Description
-                                        <textarea class="form-control" name="description" cols="30" rows="10" required></textarea>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <div class="hstack gap-2 justify-content-end">
-                                        <button type="submit" class="btn btn-primary mx-2" id="add-btn">Submit</button>
-                                        <button type="button" class="btn btn-primary mx-2"
-                                            data-bs-dismiss="modal">Cancel</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!--Add Modal End -->
-
-                <!--Edit Modal Start-->
-                <div class="modal fade flip" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header bg-light p-3">
-                                <h5 class="modal-title" id="exampleModalLabel">Edit Testimonial</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                    id="close-modal"></button>
-                            </div>
-                            <form method="POST" action="{{ route('testimonial.update') }}" autocomplete="off"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <input type="hidden" name="id" id="testimonialid" value="">
-
-                                <div class="modal-body">
-
-                                    <div class="mb-3">
-                                        <span style="color:red;">*</span>Name
-                                        <input type="text" class="form-control" name="name" id="Editname"
-                                            placeholder="Enter Name" maxlength="100" autocomplete="off" required>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <span style="color:red;">*</span>Description
-                                        <textarea class="form-control" name="description" id="Editdescription" cols="30" rows="10" required></textarea>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <div class="hstack gap-2 justify-content-end">
-                                        <button type="submit" class="btn btn-primary mx-2"
-                                            id="add-btn">Update</button>
-                                        <button type="button" class="btn btn-primary mx-2"
-                                            data-bs-dismiss="modal">Cancel</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!--Edit Modal End -->
 
                 <!--Delete Modal Start -->
                 <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
@@ -177,8 +112,7 @@
                                     </a>
                                     <button type="button" class="btn w-sm btn-primary mx-2"
                                         data-bs-dismiss="modal">Close</button>
-                                    <form id="user-delete-form" method="POST"
-                                        action="{{ route('testimonial.delete') }}">
+                                    <form id="user-delete-form" method="POST" action="{{ route('testimonial.delete') }}">
                                         @csrf
                                         @method('DELETE')
                                         <input type="hidden" name="id" id="deleteid" value="">
@@ -197,34 +131,9 @@
 @endsection
 
 @section('scripts')
-
-    <script>
-        function getEditData(id) {
-            var url = "{{ route('testimonial.edit', ':id') }}";
-            url = url.replace(":id", id);
-            if (id) {
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    data: {
-                        id,
-                        id
-                    },
-                    success: function(data) {
-                        var obj = JSON.parse(data);
-                        $("#Editname").val(obj.name);
-                        $("#Editdescription").val(obj.description);
-                        $('#testimonialid').val(id);
-                    }
-                });
-            }
-        }
-    </script>
-
     <script>
         function deleteData(id) {
             $("#deleteid").val(id);
         }
     </script>
-
 @endsection

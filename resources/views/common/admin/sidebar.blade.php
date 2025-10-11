@@ -33,13 +33,13 @@
                                     </a>
                                 </li>  --}}
 
-                                    {{--  <li class="nav-item">
-                                    <a class="nav-link menu-link @if (request()->routeIs('attribute.index')) {{ 'active' }} @endif"
-                                        href="{{ route('attribute.index') }}">
-                                        <i class="fa-solid fa-box-open"></i>
-                                        <span data-key="t-dashboards">Attribute</span>
-                                    </a>
-                                </li>  --}}
+                                    <li class="nav-item">
+                                        <a class="nav-link menu-link @if (request()->routeIs('blog.index')) {{ 'active' }} @endif"
+                                            href="{{ route('blog.index') }}">
+                                            <i class="fa-solid fa-box-open"></i>
+                                            <span data-key="t-dashboards">Blog</span>
+                                        </a>
+                                    </li>
 
                                     <li class="nav-item">
                                         <a class="nav-link menu-link @if (request()->routeIs('category.index')) {{ 'active' }} @endif"
@@ -69,12 +69,20 @@
                                             <span data-key="t-dashboards">Courier</span>
                                         </a>
                                     </li>
-                                    
+
                                     <li class="nav-item">
                                         <a class="nav-link menu-link @if (request()->routeIs('video.index')) {{ 'active' }} @endif"
                                             href="{{ route('video.index') }}">
                                             <i class="fa-solid fa-truck-ramp-box"></i>
                                             <span data-key="t-dashboards">Video</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link menu-link @if (request()->routeIs('testimonial.index')) {{ 'active' }} @endif"
+                                            href="{{ route('testimonial.index') }}">
+                                            <i class="fa-solid fa-truck-ramp-box"></i>
+                                            <span data-key="t-dashboards">Testimonial</span>
                                         </a>
                                     </li>
 

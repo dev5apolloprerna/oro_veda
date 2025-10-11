@@ -21,8 +21,10 @@ use App\Models\State;
 use App\Models\Wishlist;
 use App\Models\OtherPages;
 use App\Models\Banner;
+use App\Models\Blog;
 use App\Models\Inquiry;
 use App\Models\Ledger;
+use App\Models\MetaData;
 use App\Models\Payment;
 use App\Models\Video;
 use Carbon\Carbon;
@@ -36,18 +38,18 @@ use Razorpay\Api\Api;
 
 class FrontController extends Controller
 {
-    public function index(Request $request)
+    public function old_index(Request $request)
     {
-            $currency = session('currency', 'USD');
+        $currency = session('currency', 'USD');
 
         try {
             $Banner = Banner::orderBy('banner.bannerId', 'desc')
                 ->where(['banner.iStatus' => 1, 'banner.isDelete' => 0])
                 ->get();
-                
+
             $Video = Video::orderBy('id', 'desc')
                 ->where(['iStatus' => 1, 'isDelete' => 0])
-                ->first();    
+                ->first();
 
             $offers = Offer::orderBy('id', 'desc')
                 ->take(1)
@@ -77,8 +79,8 @@ class FrontController extends Controller
                 'products.productname',
                 'products.rate',
                 'products.cut_price',
-                            'products.usd_rate',
-            'products.usd_cut_price',
+                'products.usd_rate',
+                'products.usd_cut_price',
 
                 'products.weight',
                 'products.description',
@@ -106,6 +108,58 @@ class FrontController extends Controller
         }
     }
 
+    public function index(Request $request)
+    {
+        $currency = session('currency', 'USD');
+
+        try {
+            $Testimonial = Testimonial::orderBy('id', 'desc')
+                ->where(['iStatus' => 1, 'isDelete' => 0])
+                ->get();
+
+            $blogs = Blog::orderBy('blogId', 'desc')
+                ->where(['iStatus' => 1, 'isDelete' => 0])
+                ->take(3)
+                ->get();
+            // dd($Testimonial);
+
+            $Video = Video::orderBy('id', 'desc')
+                ->where(['iStatus' => 1, 'isDelete' => 0])
+                ->first();
+
+            $offers = Offer::orderBy('id', 'desc')
+                ->take(1)
+                ->where(['iStatus' => 1, 'isDelete' => 0])
+                ->get();
+
+            $featuredProduct = Product::select(
+                'products.id',
+                'products.categoryId',
+                'products.productname',
+                'products.rate',
+                'products.cut_price',
+                'products.weight',
+                'products.description',
+                'products.isStock',
+                'products.slugname',
+                DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id ORDER BY products.id  LIMIT 1) as photo'),
+                DB::raw('(SELECT categories.slugname FROM categories WHERE  categories.id=products.categoryId ORDER BY products.id  LIMIT 1) as category_slug')
+            )
+                ->orderBy('id', 'desc')
+                ->take(8)
+                ->where(['products.iStatus' => 1, 'products.isDelete' => 0, 'products.isFeatures' => 1])
+                ->get();
+            // dd($featuredProduct);
+
+            return view('frontview.index', compact('Testimonial', 'blogs', 'featuredProduct', 'offers', 'Video'));
+        } catch (\Throwable $th) {
+            Log::error('Home Page Error: ' . $th->getMessage(), [
+                'exception' => $th
+            ]);
+            return redirect()->back()->withInput()->with('error', 'Failed to load homepage. Please try again.');
+        }
+    }
+
     public function about(Request $request)
     {
         try {
@@ -115,6 +169,81 @@ class FrontController extends Controller
                 'exception' => $th
             ]);
             return redirect()->back()->withInput()->with('error', 'Failed to load about page.');
+        }
+    }
+
+    public function blog(Request $request)
+    {
+        $seo = MetaData::where('id', '=', '2')->first();
+        $blogs = Blog::orderBy('blogId', 'asc')
+            ->where(['iStatus' => 1, 'isDelete' => 0])
+            ->paginate(12);
+
+        return view('frontview.blog', compact('seo', 'blogs'));
+    }
+
+    public function blog_detail(Request $request, $id)
+    {
+        $Blog = Blog::orderBy('blogId', 'asc')
+            ->where(['iStatus' => 1, 'isDelete' => 0, 'strSlug' => $id])
+            ->first();
+
+        $RecentBlog = Blog::orderBy('blogId', 'asc')
+            ->where(['iStatus' => 1, 'isDelete' => 0])
+            ->where('strSlug', '!=', $id)
+            ->take(4)
+            ->get();
+
+        return view('frontview.blog_detail', compact('Blog', 'RecentBlog'));
+    }
+
+    public function all_product_list(Request $request)
+    {
+
+        try {
+
+            $sort = $request->input('sort', 'latest'); // default: latest
+            $limit = $request->input('limit',  16); // default: 16
+
+            $products = Product::select(
+                'products.id',
+                'products.categoryId',
+                'products.subcategoryid',
+                'products.productname',
+                'products.description',
+                'products.slugname',
+                'products.rate',
+                'products.cut_price',
+                DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id ORDER BY products.id LIMIT 1) as photo'),
+                DB::raw('(SELECT MIN(product_attribute_price) FROM product_attributes WHERE  product_attributes.product_id=products.id ORDER BY products.id  LIMIT 1) as product_attribute_price')
+            )
+                ->join('categories', 'products.categoryId', '=', 'categories.id')
+                ->where(['products.iStatus' => 1, 'products.isDelete' => 0]);
+
+            // Apply sorting logic
+            switch ($sort) {
+                case 'popular':
+                    $products->orderBy('products.views', 'desc'); // example column
+                    break;
+                case 'rating':
+                    $products->orderBy('products.rating', 'desc'); // example column
+                    break;
+                case 'latest':
+                default:
+                    $products->orderBy('products.id', 'desc');
+                    break;
+            }
+
+            // Apply pagination with dynamic limit
+            $products = $products->paginate($limit)->appends($request->all());
+
+            return view('frontview.products', compact('products', 'Category', 'categoryid'));
+        } catch (\Throwable $th) {
+            Log::error('Product List Page Error: ' . $th->getMessage(), [
+                'request' => $request->all(),
+                'exception' => $th
+            ]);
+            return redirect()->back()->withInput()->with('error', 'Something went wrong while loading the product list.');
         }
     }
 
@@ -191,14 +320,14 @@ class FrontController extends Controller
                 DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id  LIMIT 1) as photo'),
                 // DB::raw('(SELECT MIN(product_attribute_price) FROM product_attributes WHERE product_attributes.product_id=products.id ORDER BY products.id LIMIT 1) as product_attribute_price')
                 // ⬇ keep your min() but cast to numeric so "100" vs "30" compares correctly
-                    DB::raw('(
+                DB::raw('(
                         SELECT MIN(CAST(product_attribute_price AS DECIMAL(10,2)))
                         FROM product_attributes
                         WHERE product_attributes.product_id = products.id
                     ) AS product_attribute_price'),
-                
-                    // ⬇ id of the cheapest attribute (ties broken by id)
-                    DB::raw('(
+
+                // ⬇ id of the cheapest attribute (ties broken by id)
+                DB::raw('(
                         SELECT pa1.id
                         FROM product_attributes pa1
                         WHERE pa1.product_id = products.id
@@ -469,13 +598,13 @@ class FrontController extends Controller
             return redirect()->back()->with('error', 'Something went wrong while applying the coupon.');
         }
     }
-    
+
     public function removeCoupon(Request $request)
     {
         try {
             Session::forget('discount');
             Session::forget('applied_coupon_code');
-    
+
             return redirect()->back()->with('success', 'Coupon removed successfully!');
         } catch (\Throwable $e) {
             Log::error('Remove Coupon Error', [

@@ -4,119 +4,103 @@
 
     @include('common.contactalert')
 
-    <!-- Breadcrumb Start -->
-    <section class="breadcrumb-section">
-        <div class="container-fluid ">
-            <div class="row py-5">
-                <div class="col-5 mx-auto">
-                    <h3 class="slogan">Quality Made Trust Delivered
-                    </h3>
-                    <nav class="breadcrumb  mb-30">
-                        <a class="breadcrumb-item text-dark" href="{{ route('FrontIndex') }}">Home</a>
+    <section class="page-header" style="background: linear-gradient(135deg, #2a7d3e, #8bc34a)">
+        <div class="header-overlay"></div>
 
-                        <span class="breadcrumb-item active">Contact us</span>
-                    </nav>
-                </div>
-            </div>
+        <div class="header-content">
+            <h1>Contact Us</h1>
+
+            <nav class="bredcrum">
+                <ul>
+                    <li><a href="{{ route('front.index') }}">Home</a></li>
+                    <li>Contact Us</li>
+                </ul>
+            </nav>
         </div>
     </section>
-    <!-- Breadcrumb End -->
 
-    <!-- Contact Start -->
-    <section class="section-padding contact">
-        <div class="container-fluid">
-            <h5 class="section-title position-relative text-uppercase mx-xl-5 "><span class="bg-primary pr-3">
-                    Contact Us</span>
-            </h5>
-            <div class="row px-xl-5">
-                <div class="col-lg-7 ">
-                    <div class="contact-form bg-light p-30">
-                        <div id="success"></div>
 
-                        <form method="POST" action="{{ route('contact_us_store') }}">
-                            @csrf
+    <div class="contact-section mt-5 mb-5 mx-auto">
+        <div class="info-block location-details">
+            <div class="block-heading">
+                <h3><i class="fa-solid fa-location-dot"></i> Office Address</h3>
+            </div>
+            <div class="block-content">
+                <ul class="address-list">
+                    <li>
+                        <i class="fa-solid fa-phone"></i>
+                        <div>
+                            <strong>Phone:</strong>
+                            <p><a href="tel:+91 9876543210">+91 9876543210</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-envelope"></i>
+                        <div>
+                            <strong>E-Mail:</strong>
+                            <p><a href="mailto:info@oroveda.com">info@oroveda.com</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Address:</strong>
+                            <p><a href="#">ahmedabad, Gujarat</a></p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-                            <div class="form-group">
-                                <input type="text" name="name" class="form-control" id="name"
-                                    placeholder="Your Name" required="required" value="{{ old('name') }}"
-                                    data-validation-required-message="Please enter your name" />
-                                <p class="help-block text-danger"></p>
-                            </div>
-
-                            <div class="form-group">
-                                <input type="text" name="mobileNumber" class="form-control" id="mobileNumber"
-                                    placeholder="Your Mobile" required="required" value="{{ old('mobileNumber') }}"
-                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');"
-                                    maxlength="10" minlength="10"
-                                    data-validation-required-message="Please enter your email" />
-                                <p class="help-block text-danger"></p>
-                            </div>
-
-                            <div class="form-group">
-                                <input type="email" name="email" class="form-control" id="email"
-                                    placeholder="Your Email" required="required" value="{{ old('email') }}"
-                                    data-validation-required-message="Please enter your email" />
-                                <p class="help-block text-danger"></p>
-                            </div>
-
-                            <div class="form-group">
-                                <input type="text" name="subject" class="form-control" id="subject"
-                                    placeholder="Subject" required="required" value="{{ old('subject') }}"
-                                    data-validation-required-message="Please enter a subject" />
-                                <p class="help-block text-danger"></p>
-                            </div>
-
-                            <div class="form-group">
-                                <textarea name="message" class="form-control" rows="8" id="message" placeholder="Message" required="required"
-                                    data-validation-required-message="Please enter your message">{{ old('message') }}</textarea>
-                                <p class="help-block text-danger"></p>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('captcha') ? ' has-error' : '' }}">
-
-                                <div class="form-group mt-4 mb-4">
-                                    <div class="captcha">
-                                        <span>{!! captcha_img() !!}</span>
-                                        <button type="button" class="btn btn-danger" class="reload" id="reload">
-                                            &#x21bb;
-                                        </button>
-                                    </div>
+        <div class="info-block message-form">
+            <div class="block-heading">
+                <h3><i class="fa-solid fa-pen-to-square"></i> Get In Touch</h3>
+            </div>
+            <div class="block-content">
+                <form action="#">
+                    <div class="input-grid">
+                        <div class="input-field">
+                            <input type="text" placeholder="First Name" required class="form-input">
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="Last Name" required class="form-input">
+                        </div>
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-field">
+                            <input type="email" placeholder="Email Address" required class="form-input">
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="Subject" required class="form-input">
+                        </div>
+                    </div>
+                    <div class="input-field">
+                        <textarea placeholder="Message..." rows="5" required class="form-input"></textarea>
+                    </div>
+                    <!-- <div class="input-field captcha-wrapper">
+                                <div class="captcha-display">
                                 </div>
-                                <input id="captcha" type="text" class="form-control" placeholder="Enter Captcha"
-                                    name="captcha" required>
-                                @if ($errors->has('captcha'))
-                                    <span class="help-block">
-                                        <strong class="">{{ $errors->first('captcha') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-
-                            <div>
-                                <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">
-                                    Send Message
-                                </button>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-                <div class="col-lg-5 mb-5">
-
-                    <div class="bg-light p-30 ">
-                        <p class="mb-2 p-0 card d-flex"><i class="fa fa-map-marker-alt text-primary mr-3"></i>
-                       <span style="position:absolute; left:80px"> 4TH FLOOR, A - 419 ABHISHEK-2 COMMERCIAL COMPLEX, HARIPURA GAM, ASARWA Ahmedabad 380013</span>
-                        </p>
-                        <p class="mb-2 card"><i class="fa fa-envelope text-primary mr-3"></i>Contact@sparshcosmo-group.com</p>
-                        <p class="mb-2 card"><i class="fa fa-phone-alt text-primary mr-3"></i>81560 88203</p>
-                    </div>
-                    <div class="bg-light p-30 mb-30">
-
-                    </div>
-                </div>
+                                <input type="text" placeholder="Enter Captcha" required class="form-input">
+                            </div> -->
+                    <button type="submit" class="send-button">Submit Message</button>
+                </form>
             </div>
         </div>
-    </section>
-    <!-- Contact End -->
+    </div>
+
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d235014.25776274438!2d72.4149249735986!3d23.02018175513144!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fcedd11614f6516!2sAhmedabad%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1678886450123!5m2!1sen!2sin"
+                    width="100%" height="350px" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </div>
 
 @endsection
 
