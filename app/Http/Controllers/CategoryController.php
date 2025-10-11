@@ -51,7 +51,7 @@ class CategoryController extends Controller
 
                 $image = $request->file('photo');
                 $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->move(FolderPath('/oro_veda/uploads/category'), $imageName);
+                $image->move(FolderPath('/uploads/category'), $imageName);
                 $img = $imageName;
             }
 
@@ -110,7 +110,7 @@ class CategoryController extends Controller
                 $image = $request->file('photo');
                 $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-                $destinationPath = FolderPath('/oro_veda/uploads/category');
+                $destinationPath = FolderPath('/uploads/category');
 
                 // Ensure folder exists
                 if (!file_exists($destinationPath)) {
@@ -153,7 +153,7 @@ class CategoryController extends Controller
         try {
             $category = Category::where('isDelete', 0)->findOrFail($request->categoryId);
 
-            $imagePath = FolderPath('/oro_veda/uploads/category') . '/' . $category->photo;
+            $imagePath = FolderPath('/uploads/category') . '/' . $category->photo;
 
             if ($category->photo && file_exists($imagePath)) {
                 unlink($imagePath);

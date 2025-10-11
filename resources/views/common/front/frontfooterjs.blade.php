@@ -1,11 +1,45 @@
-<!-- Back to Top -->
-<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- AOS JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
+<script src="{{ asset('assets/front/js/scripts.js') }}" type="text/javascript"></script>
 
-<!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-<script src="{{ asset('assets/front/lib/easing/easing.min.js') }}"></script>
-<script src="{{ asset('assets/front/lib/owlcarousel/owl.carousel.min.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-<script src="{{ asset('assets/front/js/main.js') }}"></script>
+<script>
+    // Restart animation when slide changes
+    const carousel = document.querySelector('#heroCarousel');
+    carousel.addEventListener('slide.bs.carousel', (e) => {
+        const animElems = e.relatedTarget.querySelectorAll('.animate__animated');
+        animElems.forEach(el => {
+            el.classList.remove('animate__fadeInDown', 'animate__fadeInUp', 'animate__zoomIn');
+            void el.offsetWidth; // trigger reflow
+            el.classList.add('animate__fadeInDown', 'animate__fadeInUp', 'animate__zoomIn');
+        });
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+<script>
+    const swiper = new Swiper(".testimonial-swiper", {
+        slidesPerView: 1,
+        spaceBetween: 30,
+        loop: true,
+        grabCursor: true,
+        autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        breakpoints: {
+            768: {
+                slidesPerView: 2
+            },
+            1024: {
+                slidesPerView: 3
+            },
+        },
+    });
+</script>

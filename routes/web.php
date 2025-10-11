@@ -19,6 +19,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\MetaDataController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\RazorpayController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\OtherPagesController;
@@ -54,7 +55,7 @@ Route::middleware('guest:admin')->group(function () {
 
 Route::get('/switch-currency/{code}', function ($code) {
     $code = strtoupper($code);
-    if (!in_array($code, ['INR','USD'])) {
+    if (!in_array($code, ['INR', 'USD'])) {
         abort(404);
     }
     // keep country roughly in sync for your logic
@@ -305,20 +306,41 @@ Route::prefix('admin')->name('video.')->middleware('auth')->group(function () {
     Route::post('/video/update', [VideoController::class, 'update'])->name('update');
 });
 
+//Blog Master
+Route::prefix('admin')->name('blog.')->middleware('auth')->group(function () {
+    Route::any('/blog/index', [BlogController::class, 'index'])->name('index');
+    Route::get('/blog/create', [BlogController::class, 'createview'])->name('create');
+    Route::post('/blog/store', [BlogController::class, 'store'])->name('store');
+    Route::get('/blog/edit/{id?}', [BlogController::class, 'editview'])->name('edit');
+    Route::post('/blog/update/{id?}', [BlogController::class, 'update'])->name('update');
+    Route::delete('/blog/delete', [BlogController::class, 'delete'])->name('delete');
+});
+
+//Testimonial Master
+Route::prefix('admin')->name('testimonial.')->middleware('auth')->group(function () {
+    Route::get('/testimonial/index', [TestimonialController::class, 'index'])->name('index');
+    Route::get('/testimonial/create', [TestimonialController::class, 'create'])->name('create');
+    Route::post('/testimonial/store', [TestimonialController::class, 'store'])->name('store');
+    Route::get('/testimonial/edit/{id?}', [TestimonialController::class, 'editview'])->name('edit');
+    Route::post('/testimonial/update', [TestimonialController::class, 'update'])->name('update');
+    Route::delete('/testimonial/delete', [TestimonialController::class, 'delete'])->name('delete');
+});
 
 
 
 
+//=======================================Front Start=============================================
+
+Route::any('/old_index', [FrontController::class, 'old_index'])->name('old_index');
+
+Route::any('/', [FrontController::class, 'index'])->name('front.index');
+Route::any('/about', [FrontController::class, 'about'])->name('front.about');
+
+Route::get('/blog', [FrontController::class, 'blog'])->name('front.blog');
+Route::get('/blog/{slugname?}', [FrontController::class, 'blog_detail'])->name('front.blog_detail');
 
 
-
-//==============================================Front Start====================================================
-
-Route::any('/', [FrontController::class, 'index'])->name('FrontIndex');
-Route::any('/about', [FrontController::class, 'about'])->name('frontabout');
-
-
-Route::get('/contact-us', [FrontController::class, 'contactus'])->name('FrontContactUs');
+Route::get('/contact-us', [FrontController::class, 'contactus'])->name('front.contact_us');
 Route::post('/contact-us', [FrontController::class, 'contact_us_store'])->name('contact_us_store');
 
 Route::get('refresh_captcha', [FrontController::class, 'refreshCaptcha'])->name('refresh_captcha');
@@ -419,9 +441,11 @@ Route::get('thank-you', [RazorpayController::class, 'thank_you'])->name('razorpa
 
 
 //product listing
-Route::get('/{categoryid?}', [FrontController::class, 'product_list'])->name('product_list');
+Route::get('/products', [FrontController::class, 'all_product_list'])->name('front.all_product_list');
+Route::get('/{categoryid?}', [FrontController::class, 'product_list'])->name('front.product_list');
 //product detail
-Route::get('/product/{category_id?}/{product_id?}', [FrontController::class, 'product_detail'])->name('product_detail');
+Route::get('/product/{category_id?}/{product_id?}', [FrontController::class, 'product_detail'])->name('front.product_detail');
+
 //cms pages
 Route::get('/page/{slugname?}', [FrontController::class, 'cms_pages'])->name('cms_pages');
 

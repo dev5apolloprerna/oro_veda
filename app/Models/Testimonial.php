@@ -11,6 +11,13 @@ class Testimonial extends Model
     public $table = 'testimonial';
     protected $fillable = [
         'name',
-        'description'
+        'description',
+        'designation',
+        'photo',
+        'iStatus',
+        'isDelete',
+        'strIP',
+        'created_at',
+        'updated_at'
     ];
 }
