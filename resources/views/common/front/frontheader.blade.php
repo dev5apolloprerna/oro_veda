@@ -81,7 +81,7 @@
                 @endphp
 
                 <li class="nav-item">
-                    <a href="products.html" class="nav-link">
+                    <a href="#" class="nav-link">
                         Products <i class="bi bi-chevron-down"></i>
                     </a>
                     <div class="dropdown-menu-2025">
@@ -101,9 +101,9 @@
                     </div>
                 </li>
                 <li class="nav-item"><a href="{{ route('front.about') }}" class="nav-link">About</a></li>
-                <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+                <li class="nav-item"><a href="{{ route('front.blog') }}" class="nav-link">Blog</a></li>
                 <li class="nav-item"><a href="{{ route('front.contact_us') }}" class="nav-link">Contact</a></li>
-                <li class="nav-item"><a href="products.html" class="nav-cta">Shop Now</a></li>
+                <li class="nav-item"><a href="#" class="nav-cta">Shop Now</a></li>
 
                 <!-- 🛒 Cart Menu -->
                 <li class="nav-item cart-menu">

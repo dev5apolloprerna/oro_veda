@@ -2314,7 +2314,7 @@ body {
 .wrap-table-shopping-cart {
     overflow: auto;
     border: 1px solid var(--border-light);
-    border-radius: 10px;
+    /* border-radius: 10px; */
     background: var(--bg-white);
     box-shadow: var(--shadow-soft);
     transition: all 0.3s ease;

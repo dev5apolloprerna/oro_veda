@@ -58,7 +58,7 @@
                                     <input type="hidden" name="productid" value="{{ $id }}">
                                     <div class="mb-3">
                                         <span style="color:red;">*</span>Product
-                                        <select class="form-control" name="product_attribute_id" id="">
+                                        <select class="form-control" name="product_attribute_id" id="" required>
                                             <option value="">Select Product</option>
                                             @foreach ($Attribute as $attribute)
                                                 <option value="{{ $attribute->id }}">{{ $attribute->name }}</option>
@@ -106,17 +106,18 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                    
+
                                     <div class="mb-3">
                                         <span style="color:red;">*</span>Product USD Price
                                         <input type="text" class="form-control" name="product_attribute_usd_price"
                                             inputmode="decimal"
-                                              oninput="this.value = this.value
+                                            oninput="this.value = this.value
                                                 .replace(/[^0-9.]/g,'')        // allow digits & dot
                                                 .replace(/(\..*?)\..*/g,'$1')  // keep only the first dot
                                                 .replace(/^(\.)/,'0.')         // '.5' -> '0.5'
                                               "
-                                            placeholder="Enter Product USD Price" maxlength="100" autocomplete="off" required>
+                                            placeholder="Enter Product USD Price" maxlength="100" autocomplete="off"
+                                            required>
                                         @error('product_attribute_usd_price')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -230,7 +231,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header bg-light p-3">
-                                <h5 class="modal-title" id="exampleModalLabel">Edit Attribute</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Edit Product Attribute</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                                     id="close-modal"></button>
                             </div>
@@ -274,27 +275,28 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <span style="color:red;">*</span>Attribute Price
+                                        <span style="color:red;">*</span>Product Price
                                         <input type="text" class="form-control" name="product_attribute_price"
                                             id="Editproduct_attribute_price"
                                             oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');"
-                                            placeholder="Enter Attribute Price" maxlength="100" autocomplete="off"
+                                            placeholder="Enter Product Price" maxlength="100" autocomplete="off"
                                             required>
                                         @error('product_attribute_price')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                    
+
                                     <div class="mb-3">
-                                        <span style="color:red;">*</span>Attribute USD Price
+                                        <span style="color:red;">*</span>Product USD Price
                                         <input type="text" class="form-control" name="product_attribute_usd_price"
-                                              id="Editproduct_attribute_usd_price" inputmode="decimal"
-                                              oninput="this.value = this.value
+                                            id="Editproduct_attribute_usd_price" inputmode="decimal"
+                                            oninput="this.value = this.value
                                                 .replace(/[^0-9.]/g,'')        // allow digits & dot
                                                 .replace(/(\..*?)\..*/g,'$1')  // keep only the first dot
                                                 .replace(/^(\.)/,'0.')         // '.5' -> '0.5'
                                               "
-                                              placeholder="Enter Attribute USD Price" maxlength="100" autocomplete="off" required>
+                                            placeholder="Enter Product USD Price" maxlength="100" autocomplete="off"
+                                            required>
 
                                         @error('product_attribute_usd_price')
                                             <span class="text-danger">{{ $message }}</span>
