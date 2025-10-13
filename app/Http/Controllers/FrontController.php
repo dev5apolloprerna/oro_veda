@@ -38,6 +38,20 @@ use Razorpay\Api\Api;
 
 class FrontController extends Controller
 {
+    private function getCountryCode($ip)
+    {
+        // Use ipapi.co for free location lookup
+        $response = @file_get_contents("https://ipapi.co/{$ip}/json/");
+        if ($response) {
+            $data = json_decode($response, true);
+            if (!empty($data['country'])) {
+                return $data['country']; // returns 'IN', 'US', etc.
+            }
+        }
+        // Default fallback
+        return 'US';
+    }
+
     public function old_index(Request $request)
     {
         $currency = session('currency', 'USD');
@@ -123,14 +137,13 @@ class FrontController extends Controller
                 ->get();
             // dd($Testimonial);
 
-            $Video = Video::orderBy('id', 'desc')
-                ->where(['iStatus' => 1, 'isDelete' => 0])
-                ->first();
-
             $offers = Offer::orderBy('id', 'desc')
                 ->take(1)
                 ->where(['iStatus' => 1, 'isDelete' => 0])
                 ->get();
+
+            $ip = $request->ip();
+            $countryCode = $this->getCountryCode($ip);
 
             $featuredProduct = Product::select(
                 'products.id',
@@ -142,8 +155,36 @@ class FrontController extends Controller
                 'products.description',
                 'products.isStock',
                 'products.slugname',
-                DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id ORDER BY products.id  LIMIT 1) as photo'),
-                DB::raw('(SELECT categories.slugname FROM categories WHERE  categories.id=products.categoryId ORDER BY products.id  LIMIT 1) as category_slug')
+                // DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id ORDER BY products.id  LIMIT 1) as photo'),
+                DB::raw('(SELECT categories.slugname FROM categories WHERE  categories.id=products.categoryId ORDER BY products.id  LIMIT 1) as category_slug'),
+
+                DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id ORDER BY products.id LIMIT 1) as photo'),
+
+                // ✅ Select full product attribute details from the same lowest-price row
+                DB::raw('(SELECT pa.id
+                FROM product_attributes pa
+                WHERE pa.product_id = products.id
+                ORDER BY CAST(pa.product_attribute_price AS DECIMAL(10,2)) ASC
+                LIMIT 1) AS attribute_id'),
+
+                DB::raw('(SELECT pa.product_attribute_qty
+                FROM product_attributes pa
+                WHERE pa.product_id = products.id
+                ORDER BY CAST(pa.product_attribute_price AS DECIMAL(10,2)) ASC
+                LIMIT 1) AS product_attribute_qty'),
+
+                DB::raw('(SELECT a.name
+                FROM attributes a
+                JOIN product_attributes pa2 ON pa2.product_attribute_id = a.id
+                WHERE pa2.product_id = products.id
+                ORDER BY CAST(pa2.product_attribute_price AS DECIMAL(10,2)) ASC
+                LIMIT 1) AS attribute_name'),
+
+                DB::raw('(SELECT pa3.product_attribute_price
+                FROM product_attributes pa3
+                WHERE pa3.product_id = products.id
+                ORDER BY CAST(pa3.product_attribute_price AS DECIMAL(10,2)) ASC
+                LIMIT 1) AS product_attribute_price')
             )
                 ->orderBy('id', 'desc')
                 ->take(8)
@@ -151,7 +192,7 @@ class FrontController extends Controller
                 ->get();
             // dd($featuredProduct);
 
-            return view('frontview.index', compact('Testimonial', 'blogs', 'featuredProduct', 'offers', 'Video'));
+            return view('frontview.index', compact('Testimonial', 'blogs', 'featuredProduct', 'offers', 'countryCode'));
         } catch (\Throwable $th) {
             Log::error('Home Page Error: ' . $th->getMessage(), [
                 'exception' => $th
@@ -197,111 +238,91 @@ class FrontController extends Controller
         return view('frontview.blog_detail', compact('Blog', 'RecentBlog'));
     }
 
-    public function all_product_list(Request $request)
-    {
-
-        try {
-
-            $sort = $request->input('sort', 'latest'); // default: latest
-            $limit = $request->input('limit',  16); // default: 16
-
-            $products = Product::select(
-                'products.id',
-                'products.categoryId',
-                'products.subcategoryid',
-                'products.productname',
-                'products.description',
-                'products.slugname',
-                'products.rate',
-                'products.cut_price',
-                DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id ORDER BY products.id LIMIT 1) as photo'),
-                DB::raw('(SELECT MIN(product_attribute_price) FROM product_attributes WHERE  product_attributes.product_id=products.id ORDER BY products.id  LIMIT 1) as product_attribute_price')
-            )
-                ->join('categories', 'products.categoryId', '=', 'categories.id')
-                ->where(['products.iStatus' => 1, 'products.isDelete' => 0]);
-
-            // Apply sorting logic
-            switch ($sort) {
-                case 'popular':
-                    $products->orderBy('products.views', 'desc'); // example column
-                    break;
-                case 'rating':
-                    $products->orderBy('products.rating', 'desc'); // example column
-                    break;
-                case 'latest':
-                default:
-                    $products->orderBy('products.id', 'desc');
-                    break;
-            }
-
-            // Apply pagination with dynamic limit
-            $products = $products->paginate($limit)->appends($request->all());
-
-            return view('frontview.products', compact('products', 'Category', 'categoryid'));
-        } catch (\Throwable $th) {
-            Log::error('Product List Page Error: ' . $th->getMessage(), [
-                'request' => $request->all(),
-                'exception' => $th
-            ]);
-            return redirect()->back()->withInput()->with('error', 'Something went wrong while loading the product list.');
-        }
-    }
-
     public function product_list(Request $request, $categoryid)
     {
 
-        try {
-            $Category = Category::orderBy('id', 'desc')->where(['isDelete' => 0, 'slugname' => $categoryid])->first();
+        // try {
+        $Category = Category::orderBy('id', 'desc')->where(['isDelete' => 0, 'slugname' => $categoryid])->first();
 
-            if (!$Category) {
-                return redirect()->back()->with('error', 'Category not found.');
-            }
-
-            $sort = $request->input('sort', 'latest'); // default: latest
-            $limit = $request->input('limit',  16); // default: 16
-
-            $products = Product::select(
-                'products.id',
-                'products.categoryId',
-                'products.subcategoryid',
-                'products.productname',
-                'products.description',
-                'products.slugname',
-                'products.rate',
-                'products.cut_price',
-                DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id ORDER BY products.id LIMIT 1) as photo'),
-                DB::raw('(SELECT MIN(product_attribute_price) FROM product_attributes WHERE  product_attributes.product_id=products.id ORDER BY products.id  LIMIT 1) as product_attribute_price')
-            )
-                ->join('categories', 'products.categoryId', '=', 'categories.id')
-                ->where('categories.slugname', $categoryid)
-                ->where(['products.iStatus' => 1, 'products.isDelete' => 0]);
-
-            // Apply sorting logic
-            switch ($sort) {
-                case 'popular':
-                    $products->orderBy('products.views', 'desc'); // example column
-                    break;
-                case 'rating':
-                    $products->orderBy('products.rating', 'desc'); // example column
-                    break;
-                case 'latest':
-                default:
-                    $products->orderBy('products.id', 'desc');
-                    break;
-            }
-
-            // Apply pagination with dynamic limit
-            $products = $products->paginate($limit)->appends($request->all());
-
-            return view('frontview.products', compact('products', 'Category', 'categoryid'));
-        } catch (\Throwable $th) {
-            Log::error('Product List Page Error: ' . $th->getMessage(), [
-                'categoryid' => $categoryid,
-                'request' => $request->all(),
-                'exception' => $th
-            ]);
-            return redirect()->back()->withInput()->with('error', 'Something went wrong while loading the product list.');
+        if (!$Category) {
+            return redirect()->back()->with('error', 'Category not found.');
         }
+
+        $sort = $request->input('sort', 'latest'); // default: latest
+        $limit = $request->input('limit',  16); // default: 16
+
+        $ip = $request->ip();
+        $countryCode = $this->getCountryCode($ip);
+
+        $products = Product::select(
+            'products.id',
+            'products.categoryId',
+            'products.subcategoryid',
+            'products.productname',
+            'products.description',
+            'products.slugname',
+            'products.rate',
+            'products.usd_rate',
+            'products.cut_price',
+            DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id ORDER BY products.id LIMIT 1) as photo'),
+
+            // ✅ Select full product attribute details from the same lowest-price row
+            DB::raw('(SELECT pa.id
+              FROM product_attributes pa
+              WHERE pa.product_id = products.id
+              ORDER BY CAST(pa.product_attribute_price AS DECIMAL(10,2)) ASC
+              LIMIT 1) AS attribute_id'),
+
+            DB::raw('(SELECT pa.product_attribute_qty
+              FROM product_attributes pa
+              WHERE pa.product_id = products.id
+              ORDER BY CAST(pa.product_attribute_price AS DECIMAL(10,2)) ASC
+              LIMIT 1) AS product_attribute_qty'),
+
+            DB::raw('(SELECT a.name
+              FROM attributes a
+              JOIN product_attributes pa2 ON pa2.product_attribute_id = a.id
+              WHERE pa2.product_id = products.id
+              ORDER BY CAST(pa2.product_attribute_price AS DECIMAL(10,2)) ASC
+              LIMIT 1) AS attribute_name'),
+
+            DB::raw('(SELECT pa3.product_attribute_price
+              FROM product_attributes pa3
+              WHERE pa3.product_id = products.id
+              ORDER BY CAST(pa3.product_attribute_price AS DECIMAL(10,2)) ASC
+              LIMIT 1) AS product_attribute_price')
+        )
+            ->join('categories', 'products.categoryId', '=', 'categories.id')
+            ->where('categories.slugname', $categoryid)
+            ->where(['products.iStatus' => 1, 'products.isDelete' => 0]);
+
+        // Apply sorting logic
+        switch ($sort) {
+            case 'popular':
+                $products->orderBy('products.views', 'desc'); // example column
+                break;
+            case 'rating':
+                $products->orderBy('products.rating', 'desc'); // example column
+                break;
+            case 'latest':
+            default:
+                $products->orderBy('products.id', 'desc');
+                break;
+        }
+
+        // Apply pagination with dynamic limit
+        $products = $products->paginate($limit)->appends($request->all());
+        // dd($products);
+
+        return view('frontview.products', compact('products', 'Category', 'categoryid', 'countryCode'));
+        // } catch (\Throwable $th) {
+        //     Log::error('Product List Page Error: ' . $th->getMessage(), [
+        //         'categoryid' => $categoryid,
+        //         'request' => $request->all(),
+        //         'exception' => $th
+        //     ]);
+        //     return redirect()->back()->withInput()->with('error', 'Something went wrong while loading the product list.');
+        // }
     }
 
     public function product_detail(Request $request, $category_id = null, $product_id = null)
@@ -508,7 +529,7 @@ class FrontController extends Controller
             $cartItems = \Cart::getContent();
 
             if ($cartItems->isEmpty()) {
-                return redirect()->route('FrontIndex')->with('error', 'Your cart is empty!');
+                return redirect()->route('front.index')->with('error', 'Your cart is empty!');
             }
 
             $Shipping = Shipping::orderBy('id', 'desc')->first();

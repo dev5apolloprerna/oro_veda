@@ -356,7 +356,7 @@ Route::post('/coupon', [FrontController::class, 'couponcodeapply'])->name('coupo
 //===================================Cart routes end============================
 
 //===============================Check-Out start=============================
-Route::get('checkout', [FrontController::class, 'checkout'])->name('checkout');
+Route::get('checkout', [FrontController::class, 'checkout'])->name('front.checkout');
 Route::post('checkout/store', [FrontController::class, 'checkoutstore'])->name('checkoutstore');
 //===============================Check-Out end=============================
 
@@ -441,7 +441,6 @@ Route::get('thank-you', [RazorpayController::class, 'thank_you'])->name('razorpa
 
 
 //product listing
-Route::get('/products', [FrontController::class, 'all_product_list'])->name('front.all_product_list');
 Route::get('/{categoryid?}', [FrontController::class, 'product_list'])->name('front.product_list');
 //product detail
 Route::get('/product/{category_id?}/{product_id?}', [FrontController::class, 'product_detail'])->name('front.product_detail');

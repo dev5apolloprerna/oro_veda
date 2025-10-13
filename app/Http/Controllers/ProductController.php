@@ -6,13 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Productphotos;
-use App\Models\Inward;
-use App\Models\CategoryMultiple;
 use Illuminate\Support\Facades\DB;
 use Image;
-use App\Models\Attributes;
-use App\Models\ProductAttributes;
-use App\Models\Ledger;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -94,34 +89,19 @@ class ProductController extends Controller
                 // Unique image name
                 $imgName = time() . '_' . mt_rand(1000, 9999) . '.' . $file->getClientOriginalExtension();
 
-                // Resize & Save Thumbnail
-                if ($_SERVER['SERVER_NAME'] == "127.0.0.1") {
-                    $thumbnailPath = $root . '/oro_veda/uploads/product/thumbnail/';
-                } else {
-                    $thumbnailPath = $root . '/oro_veda/uploads/product/thumbnail/';
-                }
-                if (!file_exists($thumbnailPath)) {
-                    mkdir($thumbnailPath, 0755, true);
-                }
+                // Thumbnail path using FolderPath helper
+                $thumbnailPath = FolderPath('/uploads/product/thumbnail');
+                $originalPath = FolderPath('/uploads/product');
 
+                // Create directories if not exist
+                if (!file_exists($thumbnailPath)) mkdir($thumbnailPath, 0755, true);
+                if (!file_exists($originalPath)) mkdir($originalPath, 0755, true);
+
+                // Resize and save thumbnail
                 $img = Image::make($file->getRealPath());
-
-                // ðŸ‘‡ Resize to fixed 4:3 ratio (800x600)
                 $img->resize(800, 600)->save($thumbnailPath . '/' . $imgName);
 
-                // $img->resize(540, 720, function ($constraint) {
-                //     $constraint->aspectRatio();
-                // })->save($thumbnailPath . '/' . $imgName);
-
                 // Save original image
-                if ($_SERVER['SERVER_NAME'] == "127.0.0.1") {
-                    $originalPath = $root . '/uploads/product/';
-                } else {
-                    $originalPath = $root . '/uploads/product/';
-                }
-                if (!file_exists($originalPath)) {
-                    mkdir($originalPath, 0755, true);
-                }
                 $file->move($originalPath, $imgName);
 
                 $data = array(
@@ -188,34 +168,14 @@ class ProductController extends Controller
                 // Unique image name
                 $imgName = time() . '_' . mt_rand(1000, 9999) . '.' . $file->getClientOriginalExtension();
 
-                // Resize & Save Thumbnail
-                if ($_SERVER['SERVER_NAME'] == "127.0.0.1") {
-                    $thumbnailPath = $root . '/uploads/product/thumbnail/';
-                } else {
-                    $thumbnailPath = $root . '/oro_veda/uploads/product/thumbnail/';
-                }
-                if (!file_exists($thumbnailPath)) {
-                    mkdir($thumbnailPath, 0755, true);
-                }
+                $thumbnailPath = FolderPath('/uploads/product/thumbnail');
+                $originalPath = FolderPath('/uploads/product');
+
+                if (!file_exists($thumbnailPath)) mkdir($thumbnailPath, 0755, true);
+                if (!file_exists($originalPath)) mkdir($originalPath, 0755, true);
 
                 $img = Image::make($file->getRealPath());
-
-                // ðŸ‘‡ Resize to fixed 4:3 ratio (800x600)
                 $img->resize(800, 600)->save($thumbnailPath . '/' . $imgName);
-
-                // $img->resize(540, 720, function ($constraint) {
-                //     $constraint->aspectRatio();
-                // })->save($thumbnailPath . '/' . $imgName);
-
-                // Save original image
-                if ($_SERVER['SERVER_NAME'] == "127.0.0.1") {
-                    $originalPath = $root . '/uploads/product/';
-                } else {
-                    $originalPath = $root . '/uploads/product/';
-                }
-                if (!file_exists($originalPath)) {
-                    mkdir($originalPath, 0755, true);
-                }
                 $file->move($originalPath, $imgName);
 
                 $data = array(
@@ -241,32 +201,15 @@ class ProductController extends Controller
                 'productid' => $productId
             ])->get();
 
-            $root = $_SERVER['DOCUMENT_ROOT'];
-            if ($_SERVER['SERVER_NAME'] == "127.0.0.1") {
-                $thumbnailPath = $root . '/oro_veda/uploads/product/thumbnail/';
-                $originalPath = $root . '/oro_veda/uploads/product/';
-            } else {
-                $thumbnailPath = $root . '/oro_veda/uploads/product/thumbnail/';
-                $originalPath = $root . '/oro_veda/uploads/product/';
-            }
-
             foreach ($photos as $photo) {
-                if ($photo->strphoto) {
-                    $thumbFile = $thumbnailPath . $photo->strphoto;
-                    $originalFile = $originalPath . $photo->strphoto;
+                $photoPath = FolderPath('/uploads/product/' . $photo->strphoto);
+                $thumbPath = FolderPath('/uploads/product/thumbnail/' . $photo->strphoto);
 
-                    if (file_exists($thumbFile)) {
-                        unlink($thumbFile);
-                    }
-
-                    if (file_exists($originalFile)) {
-                        unlink($originalFile);
-                    }
-                }
+                if (file_exists($photoPath)) unlink($photoPath);
+                if (file_exists($thumbPath)) unlink($thumbPath);
             }
 
             Productphotos::where(['isDelete' => 0, 'productId' => $productId])->delete();
-
             Product::where(['isDelete' => 0, 'productId' => $productId])->delete();
 
             return redirect()->route('product.index')->with('success', 'Product Deleted Successfully!.');
@@ -283,23 +226,16 @@ class ProductController extends Controller
             $photo = Productphotos::where(['isDelete' => 0, 'productphotosid' => $id])->first();
 
             if ($photo && $photo->strphoto) {
-                $root = $_SERVER['DOCUMENT_ROOT'];
-                if ($_SERVER['SERVER_NAME'] == "127.0.0.1") {
-                    $originalPath = $root . '/oro_veda/uploads/product/' . $photo->strphoto;
-                    $thumbPath = $root . '/oro_veda/uploads/product/thumbnail/' . $photo->strphoto;
-                } else {
-                    $originalPath = $root . '/oro_veda/uploads/product/' . $photo->strphoto;
-                    $thumbPath = $root . '/oro_veda/uploads/product/thumbnail/' . $photo->strphoto;
-                }
 
-                if (file_exists($thumbPath)) {
-                    unlink($thumbPath);
-                }
+                // ✅ Use FolderPath for both paths
+                $originalPath = FolderPath('/uploads/product/' . $photo->strphoto);
+                $thumbPath = FolderPath('/uploads/product/thumbnail/' . $photo->strphoto);
 
-                if (file_exists($originalPath)) {
-                    unlink($originalPath);
-                }
-                // Delete DB record
+                // Delete files if they exist
+                if (file_exists($thumbPath)) unlink($thumbPath);
+                if (file_exists($originalPath)) unlink($originalPath);
+
+                // Delete record
                 Productphotos::where([
                     'isDelete' => 0,
                     'productphotosid' => $id
@@ -332,23 +268,16 @@ class ProductController extends Controller
             $photo = Productphotos::where(['isDelete' => 0, 'productphotosid' => $request->productphotosid])->first();
 
             if ($photo && $photo->strphoto) {
-                $root = $_SERVER['DOCUMENT_ROOT'];
-                if ($_SERVER['SERVER_NAME'] == "127.0.0.1") {
-                    $thumbnailPath = $root . '/uploads/product/thumbnail/' . $photo->strphoto;
-                    $originalPath = $root . '/uploads/product/' . $photo->strphoto;
-                } else {
-                    $thumbnailPath = $root . '/uploads/product/thumbnail/' . $photo->strphoto;
-                    $originalPath = $root . '/uploads/product/' . $photo->strphoto;
-                }
 
-                if (file_exists($thumbnailPath)) {
-                    unlink($thumbnailPath);
-                }
+                // ✅ Use FolderPath helper
+                $thumbnailPath = FolderPath('/uploads/product/thumbnail/' . $photo->strphoto);
+                $originalPath = FolderPath('/uploads/product/' . $photo->strphoto);
 
-                if (file_exists($originalPath)) {
-                    unlink($originalPath);
-                }
+                // Delete images if exist
+                if (file_exists($thumbnailPath)) unlink($thumbnailPath);
+                if (file_exists($originalPath)) unlink($originalPath);
 
+                // Delete DB record
                 DB::table('productphotos')->where([
                     'isDelete' => 0,
                     'productphotosid' => $request->productphotosid

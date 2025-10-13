@@ -6,147 +6,134 @@
 
     @include('common.frontmodalalert')
 
-    <!-- Breadcrumb Start -->
-    <section class="breadcrumb-section">
-        <div class="container-fluid ">
-            <div class="row py-5">
-                <div class="col-5 mx-auto">
-                    <h3 class="slogan">Quality Made Trust Delivered
-                    </h3>
-                    <nav class="breadcrumb  mb-30">
-                        <a class="breadcrumb-item text-dark" href="{{ route('FrontIndex') }}">Home</a>
-                        {{--  <a class="breadcrumb-item text-dark" href="#">Product</a>  --}}
-                        <span class="breadcrumb-item active">{{ $Category->categoryname }}</span>
-                    </nav>
-                </div>
+    <section class="page-header" style="background: linear-gradient(135deg, #2a7d3e, #8bc34a)">
+        <div class="header-overlay"></div>
+
+        <div class="header-content">
+            <h1>Products</h1>
+
+            <nav class="bredcrum">
+                <ul>
+                    <li><a href="{{ route('front.index') }}">Home</a></li>
+                    <li>Products</li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+
+    <section id="products" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title" data-aos="fade-up">Our Ghee Collection</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+                    Explore our complete range of premium gir cow ghee products.
+                </p>
+            </div>
+
+
+            <div class="filter-section" data-aos="fade-up">
+                <h3 style="margin-bottom: 20px;">Filter Products</h3>
+                <button class="filter-btn active">All Products</button>
+                <button class="filter-btn">Bestsellers</button>
+                <button class="filter-btn">New Arrivals</button>
+                <button class="filter-btn">Gift Boxes</button>
+                <button class="filter-btn">Combo Packs</button>
+            </div>
+
+            <div class="row g-4 product-category">
+
+                @foreach ($products as $product)
+                    @php
+                        if ($countryCode === 'IN') {
+                            $price = $product->rate; // INR price
+                            $symbol = '₹';
+                        } else {
+                            $price = $product->usd_rate; // USD price
+                            $symbol = '$';
+                        }
+                    @endphp
+                    <div class="col-md-6 col-lg-3" data-aos="zoom-in" data-aos-delay="200">
+                        <div class="card h-100 shadow-sm border-0 product-card">
+                            <div class="image-wrapper">
+                                <img src="{{ asset('uploads/product/thumbnail/') . '/' . $product->photo }}"
+                                    class="card-img-top" alt="{{ $product->productname }}">
+                                <div class="hover-icons d-flex justify-content-center align-items-center">
+                                    <form action="{{ route('wishlist.store') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" value="{{ $product->id ?? 0 }}" name="productid">
+                                        <input type="hidden" name="price" value="{{ $product->rate }}">
+
+                                        <a href="#" class="icon-btn me-2" title="Add to Wishlist">
+                                            <button type="submit" class="btn">
+                                                <i class="bi bi-heart"></i>
+                                            </button>
+                                        </a>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="card-body text-center">
+                                <h5 class="card-title fw-semibold">
+                                    {{ $product->productname . ' -' . $product->product_attribute_qty . ' ' . $product->attribute_name }}
+                                </h5>
+                                <p class="fw-bold mb-1 product-price">
+                                    <span
+                                        class="text-decoration-line-through text-muted">{{ $symbol }}{{ $product->cut_price }}</span>
+                                    {{ $symbol }}{{ $product->product_attribute_price }}
+                                </p>
+                                <p class="card-text small text-muted">
+                                    {{ \Illuminate\Support\Str::words(strip_tags($product->description), 16, '...') }}
+                                </p>
+
+                                <form action="{{ route('cart.store') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="hidden" name="productid" value="{{ $product->id }}">
+                                    <input type="hidden" name="categoryId" value="{{ $product->categoryId }}">
+                                    <input type="hidden" name="productname" value="{{ $product->productname }}">
+                                    <input type="hidden" name="image" value="{{ $product->photo }}">
+                                    <input type="hidden" name="attribute_id" value="{{ $product->attribute_id }}">
+                                    <input type="hidden" name="attribute_text"
+                                        value="{{ $product->product_attribute_qty . ' ' . $product->attribute_name }}">
+                                    <input type="hidden" name="price" value="{{ $product->product_attribute_price }}">
+                                    <input type="hidden" name="quantity" value="1">
+
+                                    <a href="#" class="btn-primary-2025 mt-2">
+                                        <button class="btn" type="submit">
+                                            Add to Cart
+                                        </button>
+                                    </a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
+
             </div>
         </div>
     </section>
-    <!-- Breadcrumb End -->
 
-    <!-- Shop Start -->
+    <!-- Coming Soon -->
     <section class="section-padding">
-        <div class="container-fluid">
-            <div class="row px-xl-5">
-
-                <!-- Shop Product Start -->
-                <div class="col-lg-12 col-md-8">
-                    <div class="row pb-3">
-
-                        @if ($products->count())
-                            @php
-                                $currentSort = request('sort', 'latest');
-                                $currentLimit = request('limit', 10);
-                            @endphp
-                            {{--  <div class="col-12 pb-1">
-                                <div class="d-flex align-items-center justify-content-end mb-4">
-
-                                    <div class="ml-2">
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-light dropdown-toggle"
-                                                data-toggle="dropdown">Sorting: {{ ucfirst($currentSort) }}</button>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item"
-                                                    href="{{ request()->fullUrlWithQuery(['sort' => 'latest']) }}">Latest</a>
-                                                <a class="dropdown-item"
-                                                    href="{{ request()->fullUrlWithQuery(['sort' => 'popular']) }}">Popularity</a>
-                                                <a class="dropdown-item"
-                                                    href="{{ request()->fullUrlWithQuery(['sort' => 'rating']) }}">Best
-                                                    Rating</a>
-                                            </div>
-                                        </div>
-                                        <div class="btn-group ml-2">
-                                            <button type="button" class="btn btn-sm btn-light dropdown-toggle"
-                                                data-toggle="dropdown">Showing: {{ $currentLimit }}</button>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item"
-                                                    href="{{ request()->fullUrlWithQuery(['limit' => 10, 'page' => 1]) }}">10</a>
-                                                <a class="dropdown-item"
-                                                    href="{{ request()->fullUrlWithQuery(['limit' => 20, 'page' => 1]) }}">20</a>
-                                                <a class="dropdown-item"
-                                                    href="{{ request()->fullUrlWithQuery(['limit' => 30, 'page' => 1]) }}">30</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>  --}}
-
-                            @foreach ($products as $product)
-                                <div class="col-lg-3 col-md-6 col-sm-6 pb-1">
-                                    <div class="product-item bg-light mb-4">
-                                        <div class="product-img position-relative overflow-hidden">
-                                            <a class=""
-                                                href="{{ route('product_detail', [$Category->slugname, $product->slugname]) }}">
-                                                <img class="img-fluid w-100"
-                                                    src="{{ asset('uploads/product/thumbnail/') . '/' . $product->photo }}"
-                                                    alt="{{ $product->productname }}"></a>
-
-                                            <!--<div class="product-action">-->
-
-                                            <!--    <form action="{{ route('cart.store') }}" method="POST"-->
-                                            <!--        enctype="multipart/form-data">-->
-                                            <!--        @csrf-->
-                                            <!--        <input type="hidden" value="{{ $product->id ?? 0 }}" name="productid">-->
-                                            <!--        <input type="hidden" value="{{ $product->categoryId }}"-->
-                                            <!--            name="categoryId">-->
-                                            <!--        <input type="hidden" value="{{ $product->productname }}"-->
-                                            <!--            name="productname">-->
-                                            <!--        <input type="hidden" value="{{ $product->photo }}" name="image">-->
-                                            <!--        <input type="hidden" name="price" value="{{ $product->rate }}">-->
-                                            <!--        <input type="hidden" name="quantity" value="1">-->
-
-                                            <!-- Add to Cart Button -->
-                                            <!--        <button type="submit" class="btn btn-outline-dark btn-square">-->
-                                            <!--            <i class="fa fa-shopping-cart"></i>-->
-                                            <!--        </button>-->
-                                            <!--    </form>-->
-
-                                            <!--    <form action="{{ route('wishlist.store') }}" method="POST">-->
-                                            <!--        @csrf-->
-                                            <!--        <input type="hidden" value="{{ $product->id ?? 0 }}" name="productid">-->
-                                            <!--        <input type="hidden" name="price" value="{{ $product->rate }}">-->
-                                            <!--        <button type="submit" class="btn btn-outline-dark btn-square">-->
-                                            <!--            <i class="far fa-heart"></i>-->
-                                            <!--        </button>-->
-                                            <!--    </form>-->
-
-
-                                            <!--</div>-->
-
-                                        </div>
-                                        <div class="text-center py-4">
-                                            <a class="h6 text-decoration-none text-truncate"
-                                                href="{{ route('product_detail', [$Category->slugname, $product->slugname]) }}">
-                                                {{ $product->productname }}
-                                            </a>
-                                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                                <h5>₹{{ $product->rate }}</h5> &nbsp;
-                                                <h6 class="text-muted ml-2"><del>₹{{ $product->cut_price }}</del></h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-
-                            <div class="col-lg-12 d-flex align-items-center justify-content-center">
-                                {{ $products->appends(request()->query())->links() }}
-                            </div>
-                        @else
-                            <div class="col-lg-12 text-center py-5">
-                                {{--  <h4 class="text-muted">No products available in this category.</h4>  --}}
-                                <img src="{{ asset('assets/front/img/no-product.gif') }}" alt="No Products"
-                                    style="max-width: 300px; margin-top: 20px;"> <br>
-                                {{--  <p class="mt-3">Please check back later or browse other categories.</p>  --}}
-                                <a href="{{ route('FrontIndex') }}" class="btn btn-primary mt-3">Back to Home</a>
-                            </div>
-                        @endif
+        <div class="container">
+            <div class="coming-soon-2025" data-aos="fade-up">
+                <h2 class="coming-soon-title">Coming Soon</h2>
+                <p style="color: white; font-size: 1.1rem;">We're expanding our organic product range to bring you more
+                    natural goodness</p>
+                <div class="coming-soon-items">
+                    <div class="coming-soon-item">
+                        <i class="bi bi-circle-fill me-2"></i> Organic Makhana
+                    </div>
+                    <div class="coming-soon-item">
+                        <i class="bi bi-circle-fill me-2"></i> Traditional Spices
+                    </div>
+                    <div class="coming-soon-item">
+                        <i class="bi bi-circle-fill me-2"></i> Herbal Teas
                     </div>
                 </div>
-                <!-- Shop Product End -->
             </div>
         </div>
     </section>
-    <!-- Shop End -->
 
 @endsection
 

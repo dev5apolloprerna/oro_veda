@@ -1,122 +1,89 @@
 @extends('layouts.front')
 @section('title', 'Cart')
 @section('content')
-    
-    <style>
-        .badge-success {
-            background-color: #28a745;
-            color: #fff;
-            font-size: 0.75rem;
-            padding: 0.35em 0.65em;
-        }
-        
-        .btn-outline-danger {
-            border: none;
-            color: #dc3545;
-        }
-        
-        .btn-outline-danger:hover {
-            background-color: #dc3545;
-            color: #fff;
-        }
-
-    </style>
 
     @include('common.frontmodalalert')
 
-    <!-- Breadcrumb Start -->
-    <section class="breadcrumb-section">
-        <div class="container-fluid ">
-            <div class="row py-5">
-                <div class="col-5 mx-auto">
-                    <h3 class="slogan">Quality Made Trust Delivered
-                    </h3>
-                    <nav class="breadcrumb  mb-30">
-                        <a class="breadcrumb-item text-dark" href="{{ route('FrontIndex') }}">Home</a>
-                        <span class="breadcrumb-item active">Cart</span>
-                    </nav>
-                </div>
-            </div>
+    <section class="page-header" style="background: linear-gradient(135deg, #2a7d3e, #8bc34a)">
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <h1>Cart</h1>
+            <nav class="bredcrum">
+                <ul>
+                    <li><a href="{{ route('front.index') }}">Home</a></li>
+                    <li>Cart</li>
+                </ul>
+            </nav>
         </div>
     </section>
-    <!-- Breadcrumb End -->
-
 
     @if (\Cart::isEmpty())
         <div class="col-lg-12 text-center py-5">
-            <img src="{{ asset('assets/front/img/no-product.gif') }}" alt="No Products"
+            <img src="{{ asset('assets/front/images/no-product.gif') }}" alt="No Products"
                 style="max-width: 300px; margin-top: 20px;"> <br>
-            <a href="{{ route('FrontIndex') }}" class="btn btn-primary mt-3">Back to Home</a>
+            <a href="{{ route('front.index') }}" class="btn-primary-2025">Back to Home</a>
         </div>
     @else
-        <!-- Cart Start -->
-        <section class="section-padding">
-            <div class="container-fluid">
-                <div class="row px-xl-5">
-                    <div class="col-lg-8 table-responsive mb-5">
-                        <table class="table table-light table-borderless table-hover text-center mb-0">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Products</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
-                                    <th>Remove</th>
+        <section class="py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="wrap-table-shopping-cart">
+                            <table class="table-shopping-cart"
+                                style="border: 1px solid var(--primary-green); border-radius:none">
+                                <tr class="table_head">
+                                    <th class="column-1">Product</th>
+                                    <th class="column-2"></th>
+                                    <th class="column-3">Price</th>
+                                    <th class="column-4">Quantity</th>
+                                    <th class="column-5">Total</th>
+                                    <th width="10%" class="column-6">Actions</th>
                                 </tr>
-                            </thead>
-                            <tbody class="align-middle">
 
                                 @foreach ($cartItems as $item)
-                                    <tr>
-                                        <td class="align-middle">
-                                            <img src="{{ asset('uploads/product') . '/' . $item->attributes->image }}"
-                                                alt="" style="width: 50px;">
-                                            {{ $item->name }}
-                                        </td>
-                                        <td class="align-middle">
-                                            ₹{{ $item->price . ' (' . $item->attribute_text . ')' }}
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="input-group quantity mx-auto" style="width: 100px;">
-                                                <div class="input-group-btn">
-                                                    <button class="btn btn-sm btn-secondary btn-minus"
-                                                        onclick="decreaseCount(this, {{ $item->id }})">
-                                                        <i class="fa fa-minus"></i>
-                                                    </button>
-                                                </div>
-                                                <input type="text"
-                                                    class="form-control form-control-sm bg-secondary border-0 text-center"
-                                                    value="{{ $item->quantity }}" id="quantity_{{ $item->id }}"
-                                                    data-price="{{ $item->price }}" readonly>
-                                                <div class="input-group-btn">
-                                                    <button class="btn btn-sm btn-secondary btn-plus"
-                                                        onclick="increaseCount(this, {{ $item->id }})">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                </div>
+                                    <tr class="table_row" style="border-bottom: 1px solid var(--primary-green)">
+                                        <td class="column-1">
+                                            <div class="how-itemcart1">
+                                                <img src="{{ asset('uploads/product') . '/' . $item->attributes->image }}"
+                                                    alt="{{ $item->name }}">
                                             </div>
                                         </td>
-                                        {{--  <td class="align-middle">₹{{ $item->price * $item->quantity }}</td>  --}}
-                                        <td class="align-middle">₹<span
-                                                id="total_{{ $item->id }}">{{ $item->price * $item->quantity }}</span>
+                                        <td class="column-2">{{ $item->name }}</td>
+                                        <td class="column-3">
+                                            ₹{{ $item->price . ' (' . $item->attribute_text . ')' }}
                                         </td>
+                                        <td class="column-4">
 
-                                        <td class="align-middle">
+                                            <div class="quantity-control">
+                                                <button onclick="decreaseCount(this, {{ $item->id }})"
+                                                    class="qty-btn">−</button>
+                                                <input class="qty-input" type="number" readonly name="quantity"
+                                                    data-price="{{ $item->price }}" id="quantity_{{ $item->id }}"
+                                                    value="{{ $item->quantity }}">
+                                                <button onclick="increaseCount(this, {{ $item->id }})"
+                                                    class="qty-btn">+</button>
+                                            </div>
+
+                                        </td>
+                                        <td class="column-5" id="total_{{ $item->id }}">
+                                            ₹{{ $item->price * $item->quantity }}</td>
+                                        <td class="column-6">
                                             <form action="{{ route('cart.remove') }}" method="post"
                                                 onsubmit="return confirm('Are you sure you want to remove this item?');">
                                                 @csrf
                                                 <input type="hidden" name="id" value="{{ $item->id }}">
-                                                <button type="submit" class="btn btn-sm btn-danger"><i
-                                                        class="fa fa-trash"></i></button>
-
+                                                <button type="submit" class="btn-delete">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>
                                 @endforeach
 
-                            </tbody>
-                        </table>
+                            </table>
+                        </div>
                     </div>
+
                     <div class="col-lg-4">
 
                         <form class="mb-30" action="{{ route('couponcodeapply') }}" method="post">
@@ -126,20 +93,20 @@
                                 <input type="text" name="coupon" class="form-control" placeholder="Coupon Code" required
                                     autocomplete="off">
                                 <div class="input-group-append">
-                                    <button type="submit" class="btn btn-primary">Apply Coupon</button>
+                                    <button type="submit" class="btn-primary-2025">Apply Coupon</button>
                                 </div>
                             </div>
                         </form>
 
-                        <h5 class="section-title position-relative text-uppercase my-3"><span class="bg-primary pr-3">Cart
-                                Summary</span></h5>
-                        <div class="bg-light p-30 mb-5">
-                            <div class="border-bottom pb-2">
-                                <div class="d-flex justify-content-between mb-3">
+                        <h3 class=" position-relative text-uppercase my-3 mt-5"><span class=" pr-3">Cart
+                                Summary</span></h3>
+                        <div class="bg-light p-30 ">
+                            <div class=" ">
+                                <div class="d-flex justify-content-between  cart-total-value">
                                     <h6>Subtotal</h6>
                                     <h6 style="margin-right: 15px;" id="subtotal">₹{{ \Cart::getSubTotal() }}</h6>
                                 </div>
-                               @if (Session::has('discount'))
+                                @if (Session::has('discount'))
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <div>
                                             <h6 class="mb-0">
@@ -148,12 +115,14 @@
                                                 </span>
                                             </h6>
                                         </div>
-                                
+
                                         <div class="d-flex align-items-center">
                                             <h6 class="mb-0 mr-2 text-danger">- ₹{{ Session::get('discount') }}</h6>
                                             <form action="{{ route('couponcoderemove') }}" method="post">
                                                 @csrf
-                                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle p-1" title="Remove Coupon">
+                                                <button type="submit"
+                                                    class="btn btn-sm btn-outline-danger rounded-circle p-1"
+                                                    title="Remove Coupon">
                                                     <i class="fa fa-times"></i>
                                                 </button>
                                             </form>
@@ -163,8 +132,10 @@
 
 
                             </div>
-                            <div class="pt-2">
-                                <div class="d-flex justify-content-between mt-2">
+                            <div class="">
+                                <div class="d-flex justify-content-between  cart-total-value">
+
+
                                     <h5>Total</h5>
                                     @php
                                         $subtotal = \Cart::getSubTotal();
@@ -173,19 +144,19 @@
                                     @endphp
                                     <h5 style="margin-right: 15px;" id="total">₹{{ $total }}</h5>
                                 </div>
-                                {{--  <button class="btn btn-block btn-primary font-weight-bold my-3">  --}}
-                                <a class="btn btn-block btn-primary font-weight-bold my-3 {{ \Cart::isEmpty() ? 'disabled' : '' }}"
-                                    href="{{ route('checkout') }}">
-                                    Proceed To Checkout
-                                </a>
-                                {{--  </button>  --}}
+
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12 text-end">
+                            <a href="{{ route('front.checkout') }}" class="btn-primary-2025">Proceed to Checkout</a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- Cart End -->
     @endif
 
 

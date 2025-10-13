@@ -18,7 +18,7 @@
                 <h3>Quick Links</h3>
                 <ul class="footer-links">
                     <li><a href="{{ route('front.index') }}">Home</a></li>
-                    <li><a href="products.html">Products</a></li>
+                    <li><a href="#">Products</a></li>
                     <li><a href="{{ route('front.about') }}">About</a></li>
                     <li><a href="{{ route('front.blog') }}">Blog</a></li>
                     <li><a href="{{ route('front.contact_us') }}">Contact</a></li>
