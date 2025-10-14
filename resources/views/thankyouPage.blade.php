@@ -50,7 +50,7 @@
             <!--</h6>-->
             <div class="bredcrum">
                 <ul>
-                    <li><a class="text-white" href="{{ route('FrontIndex') }}">Home</a></li>
+                    <li><a class="text-white" href="{{ route('front.index') }}">Home</a></li>
                     <li><img src="{{ asset('assets/images/breadcrumb.png') }}" alt=""></li>
                 </ul>
             </div>
