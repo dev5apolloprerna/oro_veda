@@ -25,7 +25,6 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
-        // dd($request);
         try {
             \Cart::add([
                 'id' => $request->attribute_id,

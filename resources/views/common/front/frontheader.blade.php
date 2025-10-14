@@ -2,7 +2,6 @@
     $session = Session::get('customerid');
     $count = \Cart::getContent()->count();
     $cartItems = \Cart::getContent();
-
     $wishlist_count = App\Models\Wishlist::where([
         'iStatus' => 1,
         'isDelete' => 0,
@@ -30,19 +29,7 @@
                     </a>
                 </div>
                 <!-- ===== NEW CURRENCY SWITCHER ===== -->
-                <!-- <div class="currency-switcher dropdown">
-            <div class="currency-trigger" role="button" id="currencyDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-currency-exchange"></i>
-                <span class="currency-code">USD</span>
-                <i class="bi bi-chevron-down"></i>
-            </div>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="currencyDropdown">
-                <li><a class="dropdown-item active" href="#" data-currency="USD" data-symbol="$">USD ($)</a></li>
-                <li><a class="dropdown-item" href="#" data-currency="EUR" data-symbol="€">EUR (€)</a></li>
-                <li><a class="dropdown-item" href="#" data-currency="GBP" data-symbol="£">GBP (£)</a></li>
-                <li><a class="dropdown-item" href="#" data-currency="INR" data-symbol="₹">INR (₹)</a></li>
-            </ul>
-        </div> -->
+
                 <div class="social-links">
                     <a href="#" class="social-icon facebook" aria-label="Facebook">
                         <i class="bi bi-facebook"></i>
@@ -112,23 +99,23 @@
                         <span class="cart-count" id="cartCount">{{ $count }}</span>
                     </a>
                     <div class="cart-dropdown" id="cartDropdown">
-                        <div class="cart-item">
-                            <img src="assets/images/product/1ltr.png" alt="Ghee" class="cart-item-img">
-                            <div class="cart-item-details">
-                                <div class="cart-item-name">A2 Desi Cow Ghee</div>
-                                <div class="cart-item-price">₹999</div>
+                        @foreach ($cartItems as $item)
+                            <div class="cart-item">
+                                <img src="{{ asset('uploads/product') . '/' . $item->attributes->image }}"
+                                    alt="{{ $item->name }}" class="cart-item-img">
+                                <div class="cart-item-details">
+                                    <div class="cart-item-name">{{ $item->name }}</div>
+                                    <div class="cart-item-price">
+                                        ₹{{ $item->price . ' (' . $item->attribute_text . ')' }} </div>
+                                    <div class="d-flex "><span class="cart-item-name"> Qty:
+                                        </span> <span> {{ $item->quantity }}</span></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="cart-item">
-                            <img src="assets/images/product/garlic.png" alt="Flavored Ghee" class="cart-item-img">
-                            <div class="cart-item-details">
-                                <div class="cart-item-name">Garlic Ghee</div>
-                                <div class="cart-item-price">₹499</div>
-                            </div>
-                        </div>
+                        @endforeach
+
                         <div class="cart-footer d-flex justify-content-between">
-                            <a href="cart.html" class="view-cart-btn">View Cart</a>
-                            <div class="cart-total">Total: ₹1,498</div>
+                            <a href="{{ route('cart.list') }}" class="view-cart-btn">View Cart</a>
+                            <div class="cart-total">Total: ₹{{ \Cart::getSubTotal() }}</div>
 
                         </div>
                     </div>

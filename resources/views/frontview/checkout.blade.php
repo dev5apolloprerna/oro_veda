@@ -2,7 +2,31 @@
 @section('title', 'Checkout')
 @section('content')
 
+    <div id="razorpay-gradient-bg"></div>
+
+    <style>
+        #razorpay-gradient-bg {
+            background: linear-gradient(135deg, #2a7d3e, #8bc34a, #5ebd4b);
+            background-size: 200% 200%;
+            animation: moveGradient 6s ease infinite;
+        }
+
+        @keyframes moveGradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style>
     @include('common.frontmodalalert')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <section class="page-header" style="background: linear-gradient(135deg, #2a7d3e, #8bc34a)">
         <div class="header-overlay"></div>
@@ -22,10 +46,12 @@
     <section class="checkout-container container">
         <div class="row g-4">
             <!-- Billing Details -->
-            <div class="col-lg-7">
-                <div class="billing-details">
-                    <h4>Billing Details</h4>
-                    <form>
+            <form id="checkout-form">
+
+                <div class="col-lg-7">
+                    <div class="billing-details">
+                        <h4>Billing Details</h4>
+
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label>First Name *</label>
@@ -60,23 +86,22 @@
                                 placeholder="House number and street name" required="required" autocomplete="off"
                                 value="{{ old('billStreetAddress1') }}">
                             <input type="text" name="billStreetAddress2" class="form-control"
-                                placeholder="Apartment, suite, etc. (optional)" required="required" autocomplete="off"
+                                placeholder="Apartment, suite, etc. (optional)" autocomplete="off"
                                 value="{{ old('billStreetAddress2') }}">
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label>Country *</label>
-                                <select class="form-select" required>
+                                <select name="country" class="form-select" required>
                                     <option value="">Select Country</option>
-                                    <!-- <option>Gujarat</option> -->
-                                    <!-- <option>Maharashtra</option> -->
-                                    <!-- <option>Rajasthan</option> -->
+                                    <option value="India">India</option>
+                                    <option value="Us">Us</option>
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label>State *</label>
-                                <select class="form-select" required>
+                                <select name="state" class="form-select" required>
                                     <option value="">Select State</option>
                                     <option>Gujarat</option>
                                     <option>Maharashtra</option>
@@ -88,79 +113,102 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label>Town / City *</label>
-                                <input type="text" class="form-control" required>
+                                <input name="city" type="text" class="form-control" required
+                                    value="{{ old('city') }}">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label>PIN Code *</label>
-                                <input type="text" class="form-control" required>
+                                <input name="pincode" type="text" class="form-control" required
+                                    value="{{ old('pincode') }}">
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label>Order Notes (optional)</label>
-                            <textarea class="form-control" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                            <textarea name="orderNote" class="form-control" placeholder="Notes about your order, e.g. special notes for delivery.">{{ old('orderNote') }}</textarea>
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Order Summary -->
-            <div class="col-lg-5">
-                <div class="order-summary">
+                <!-- Order Summary -->
+                <div class="col-lg-5">
+                    <div class="order-summary">
 
-                    <h5>Your Order</h5>
-                    <table class="table">
-                        <tbody>
-                            @php
-                                $cartItems = \Cart::getContent();
-                                $subtotal = \Cart::getSubTotal();
-                                $discount = session('discount', 0);
-                                $grandTotal = $subtotal - $discount;
-                            @endphp
+                        <h5>Your Order</h5>
+                        <table class="table">
+                            <tbody>
+                                @php
+                                    $cartItems = \Cart::getContent();
+                                    $subtotal = \Cart::getSubTotal();
+                                    $discount = session('discount', 0);
+                                    $grandTotal = $subtotal - $discount;
+                                @endphp
 
-                            @foreach ($cartItems as $item)
+                                @foreach ($cartItems as $item)
+                                    <tr>
+                                        <td> {{ $item->name . ' (' . $item->attribute_text . ')' }}
+                                        </td>
+                                        <td> Qty : {{ $item->quantity }} </td>
+                                        <td>₹{{ number_format($item->price * $item->quantity, 2) }}</td>
+                                    </tr>
+                                @endforeach
+
                                 <tr>
-                                    <td> {{ $item->name . ' (' . $item->attribute_text . ')' }} </td>
-                                    <td> Qty : {{ $item->quantity }} </td>
-                                    <td>₹{{ number_format($item->price * $item->quantity, 2) }}</td>
-                                </tr>
-                            @endforeach
-
-                            <tr>
-                                <td class="fw-bold">Subtotal</td>
-                                <td></td>
-                                <td>₹{{ number_format($subtotal, 2) }}</td>
-                            </tr>
-
-                            @if ($discount > 0)
-                                <tr>
-                                    <td>Discount</td>
+                                    <td class="fw-bold">Subtotal</td>
                                     <td></td>
-                                    <td>- ₹₹{{ number_format($discount, 2) }}</td>
+                                    <td>₹{{ number_format($subtotal, 2) }}</td>
                                 </tr>
-                            @endif
 
-                            {{--  <tr>
+                                @if ($discount > 0)
+                                    <tr>
+                                        <td>Discount</td>
+                                        <td></td>
+                                        <td>- ₹{{ number_format($discount, 2) }}</td>
+                                    </tr>
+                                @endif
+
+                                {{--  <tr>
                                 <td class="fw-bold">Shipping</td>
                                 <td></td>
                                 <td>₹0.00</td>
                             </tr>  --}}
 
-                            <tr>
-                                <td>Total</td>
-                                <td></td>
-                                <td><strong>₹{{ number_format($grandTotal, 2) }}</strong></td>
-                            </tr>
+                                <tr>
+                                    <td>Total</td>
+                                    <td></td>
+                                    <td><strong>₹{{ number_format($grandTotal, 2) }}</strong></td>
+                                </tr>
 
-                        </tbody>
-                    </table>
-                    <button class="btn-place-order">Place Order</button>
+                            </tbody>
+                        </table>
+                        <button type="submit" class="btn-place-order {{ \Cart::isEmpty() ? 'disabled' : '' }}">
+                            Place Order
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </form>
+
         </div>
     </section>
 
+    <!-- Razorpay Loader Overlay -->
+    <div class="overlay" id="overlay"
+        style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;">
+        <div class="loader"
+            style="border: 8px solid #f3f3f3; border-top: 8px solid #402d52; border-radius: 50%; width: 50px; height: 50px; animation: spin 2s linear infinite;">
+        </div>
+    </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="processingModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content text-center p-4">
+                <!--<h4>Thank you!</h4>-->
+                <p>Your order is being processed. Please wait...</p>
+                <div class="spinner-border text-primary mx-auto" role="status"></div>
+            </div>
+        </div>
+    </div>
 
 @endsection
 
@@ -241,9 +289,13 @@
                             "amount": response.amount * 100,
                             "currency": "INR",
                             "order_id": response.razorpay_order_id,
-                            "name": "Sparsh Cosmo Group",
+                            "name": "Oro Veda",
                             "description": "Order Payment",
+                            "theme": {
+                                "color": "#2a7d3e" // your main brand color
+                            },
                             "handler": function(r) {
+                                $('#razorpay-gradient-bg').fadeOut(300);
                                 $.post("{{ route('razprpay.success') }}", {
                                     razorpay_payment_id: r.razorpay_payment_id,
                                     razorpay_order_id: r.razorpay_order_id,
@@ -261,9 +313,12 @@
                                 "email": response.email,
                                 "contact": response.mobile
                             },
-                            "theme": {
-                                "color": "#eb268f"
+                            "modal": {
+                                ondismiss: function() {
+                                    $('#razorpay-gradient-bg').fadeOut(300);
+                                }
                             },
+
                             modal: {
                                 ondismiss: function() {
                                     // Hide the processing modal
@@ -281,6 +336,9 @@
                             }
                         };
                         const rzp = new Razorpay(options);
+
+                        // Show gradient overlay before opening modal
+                        $('#razorpay-gradient-bg').fadeIn(300);
                         rzp.open();
                         hideLoader();
                     } else {

@@ -54,56 +54,61 @@
                     @endphp
                     <div class="col-md-6 col-lg-3" data-aos="zoom-in" data-aos-delay="200">
                         <div class="card h-100 shadow-sm border-0 product-card">
-                            <div class="image-wrapper">
-                                <img src="{{ asset('uploads/product/thumbnail/') . '/' . $product->photo }}"
-                                    class="card-img-top" alt="{{ $product->productname }}">
-                                <div class="hover-icons d-flex justify-content-center align-items-center">
-                                    <form action="{{ route('wishlist.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" value="{{ $product->id ?? 0 }}" name="productid">
-                                        <input type="hidden" name="price" value="{{ $product->rate }}">
+                            <a href="{{ route('front.product_detail', [$product->category_slug, $product->slugname]) }}">
+                                <div class="image-wrapper">
+                                    <img src="{{ asset('uploads/product/thumbnail/') . '/' . $product->photo }}"
+                                        class="card-img-top" alt="{{ $product->productname }}">
+                                    <div class="hover-icons d-flex justify-content-center align-items-center">
+                                        <form action="{{ route('wishlist.store') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" value="{{ $product->id ?? 0 }}" name="productid">
+                                            <input type="hidden" name="price" value="{{ $product->rate }}">
 
-                                        <a href="#" class="icon-btn me-2" title="Add to Wishlist">
-                                            <button type="submit" class="btn">
-                                                <i class="bi bi-heart"></i>
+                                            <a href="#" class="icon-btn me-2" title="Add to Wishlist">
+                                                <button type="submit" class="btn">
+                                                    <i class="bi bi-heart"></i>
+                                                </button>
+                                            </a>
+                                        </form>
+                                    </div>
+                                </div>
+                            </a>
+
+                            <a href="{{ route('front.product_detail', [$product->category_slug, $product->slugname]) }}">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title fw-semibold">
+                                        {{ $product->productname . ' -' . $product->product_attribute_qty . ' ' . $product->attribute_name }}
+                                    </h5>
+                                    <p class="fw-bold mb-1 product-price">
+                                        <span
+                                            class="text-decoration-line-through text-muted">{{ $symbol }}{{ $product->cut_price }}</span>
+                                        {{ $symbol }}{{ $product->product_attribute_price }}
+                                    </p>
+                                    <p class="card-text small text-muted">
+                                        {{ \Illuminate\Support\Str::words(strip_tags($product->description), 16, '...') }}
+                                    </p>
+
+                                    <form action="{{ route('cart.store') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" name="productid" value="{{ $product->id }}">
+                                        <input type="hidden" name="categoryId" value="{{ $product->categoryId }}">
+                                        <input type="hidden" name="productname" value="{{ $product->productname }}">
+                                        <input type="hidden" name="image" value="{{ $product->photo }}">
+                                        <input type="hidden" name="attribute_id" value="{{ $product->attribute_id }}">
+                                        <input type="hidden" name="attribute_text"
+                                            value="{{ $product->product_attribute_qty . ' ' . $product->attribute_name }}">
+                                        <input type="hidden" name="price"
+                                            value="{{ $product->product_attribute_price }}">
+                                        <input type="hidden" name="quantity" value="1">
+
+                                        <a href="#" class="btn-primary-2025 mt-2">
+                                            <button class="btn" type="submit">
+                                                Add to Cart
                                             </button>
                                         </a>
                                     </form>
                                 </div>
-                            </div>
-
-                            <div class="card-body text-center">
-                                <h5 class="card-title fw-semibold">
-                                    {{ $product->productname . ' -' . $product->product_attribute_qty . ' ' . $product->attribute_name }}
-                                </h5>
-                                <p class="fw-bold mb-1 product-price">
-                                    <span
-                                        class="text-decoration-line-through text-muted">{{ $symbol }}{{ $product->cut_price }}</span>
-                                    {{ $symbol }}{{ $product->product_attribute_price }}
-                                </p>
-                                <p class="card-text small text-muted">
-                                    {{ \Illuminate\Support\Str::words(strip_tags($product->description), 16, '...') }}
-                                </p>
-
-                                <form action="{{ route('cart.store') }}" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    <input type="hidden" name="productid" value="{{ $product->id }}">
-                                    <input type="hidden" name="categoryId" value="{{ $product->categoryId }}">
-                                    <input type="hidden" name="productname" value="{{ $product->productname }}">
-                                    <input type="hidden" name="image" value="{{ $product->photo }}">
-                                    <input type="hidden" name="attribute_id" value="{{ $product->attribute_id }}">
-                                    <input type="hidden" name="attribute_text"
-                                        value="{{ $product->product_attribute_qty . ' ' . $product->attribute_name }}">
-                                    <input type="hidden" name="price" value="{{ $product->product_attribute_price }}">
-                                    <input type="hidden" name="quantity" value="1">
-
-                                    <a href="#" class="btn-primary-2025 mt-2">
-                                        <button class="btn" type="submit">
-                                            Add to Cart
-                                        </button>
-                                    </a>
-                                </form>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 @endforeach
@@ -134,9 +139,5 @@
             </div>
         </div>
     </section>
-
-@endsection
-
-@section('scripts')
 
 @endsection

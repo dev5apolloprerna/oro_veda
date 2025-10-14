@@ -51,15 +51,36 @@
                 <!-- Product Info -->
                 <div class="col-md-6" data-aos="fade-left">
                     <h2 class="fw-bold mb-3 product-title">{{ $ProductDetail->productname }}</h2>
-                    <p class="fs-4 fw-semibold mb-3 product-price">₹{{ $ProductDetail->rate }}</p>
+                    <p class="fs-4 fw-semibold mb-3 product-price">₹ <span id="product-price">
+                            {{ $ProductDetail->rate }} </span>
+                    </p>
 
-                    <!-- Quantity + Add to Cart -->
+                    @php
+                        $selectedAttrId = $ProductDetail->min_attr_id ?? null;
+                    @endphp
+
                     <div class="d-flex align-items-center mb-4">
-                        <label for="quantity" class="me-3 fw-semibold">Quantity:</label>
-                        <input type="number" id="quantity" class="form-control w-25 me-3" value="1" min="1">
+                        <label for="size" class="form-label me-3 fw-semibold">Size</label>
+                        <select id="attribute-select" name="size" class="form-select w-25 me-3" required>
+                            @foreach ($attributes as $attribute)
+                                <option value="{{ $attribute->id }}"
+                                    data-price="{{ (float) $attribute->product_attribute_price }}"
+                                    data-text="{{ $attribute->product_attribute_qty . ' ' . $attribute->attribute_name }}"
+                                    {{ (int) $attribute->id === (int) $selectedAttrId ? 'selected' : '' }}>
+                                    {{ $attribute->product_attribute_qty . ' ' . $attribute->attribute_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <!-- Quantity + Add to Cart -->
+                    <form action="{{ route('cart.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="d-flex align-items-center mb-4">
+                            <label for="quantity" class="me-3 fw-semibold">Quantity:</label>
+                            <input type="number" name="quantity" id="quantity" class="form-control w-25 me-3"
+                                value="1" min="1">
 
-                        <form action="{{ route('cart.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
+
 
                             <input type="hidden" name="productid" value="{{ $ProductDetail->id }}">
                             <input type="hidden" name="categoryId" value="{{ $ProductDetail->categoryId }}">
@@ -73,8 +94,8 @@
                                 Add to Cart
                             </button>
                             {{--  <a href="#" class="btn-primary-2025 text-white px-4">Add to Cart</a>  --}}
-                        </form>
-                    </div>
+                        </div>
+                    </form>
 
                     <!-- Short Highlights -->
                     <ul class="list-unstyled text-muted">
@@ -183,6 +204,29 @@
                     slidesPerView: 3
                 },
             },
+        });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Set initial price based on selected attribute
+            let initialPrice = document.querySelector('#attribute-select option:checked');
+            document.getElementById('product-price').innerText = initialPrice.getAttribute('data-price');
+            document.getElementById('selected-attribute-id').value = initialPrice.value;
+            document.getElementById('hidden-price').value = initialPrice.getAttribute('data-price'); // ✅ fixed
+            document.getElementById('selected-attribute-text').value = initialPrice.getAttribute('data-text');
+        });
+
+        document.getElementById('attribute-select').addEventListener('change', function() {
+            let selectedOption = this.options[this.selectedIndex];
+            let newPrice = selectedOption.getAttribute('data-price');
+            let selectedId = selectedOption.value;
+            let attributeText = selectedOption.getAttribute('data-text');
+
+            document.getElementById('product-price').innerText = newPrice;
+            document.getElementById('hidden-price').value = newPrice;
+            document.getElementById('selected-attribute-id').value = selectedId;
+            document.getElementById('selected-attribute-text').value = attributeText;
         });
     </script>
 
