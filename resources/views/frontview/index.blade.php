@@ -219,43 +219,43 @@
                     @endphp
 
                     <div class="col-md-6 col-lg-3" data-aos="zoom-in" data-aos-delay="200">
-                        {{--  <a href="{{ route('front.product_detail', [$products->category_slug, $products->slugname]) }}">  --}}
-                        <div class="card h-100 shadow-sm border-0 product-card">
-                            <div class="image-wrapper">
-                                <img src="{{ asset('uploads/product/thumbnail/' . $products->photo) }}"
-                                    class="card-img-top" alt="{{ $products->productname }}">
-                                <div class="hover-icons d-flex justify-content-center align-items-center">
-                                    <form action="{{ route('wishlist.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" value="{{ $products->id ?? 0 }}" name="productid">
-                                        <input type="hidden" name="price" value="{{ $products->rate }}">
-                                        <a href="#" class="icon-btn me-2">
-                                            <button type="submit" class="btn" title="Add to Wishlist">
-                                                <i class="bi bi-heart"></i>
-                                            </button>
-                                        </a>
-                                    </form>
+                        <a href="{{ route('front.product_detail', [$products->category_slug, $products->slugname]) }}">
+                            <div class="card h-100 shadow-sm border-0 product-card">
+                                <div class="image-wrapper">
+                                    <img src="{{ asset('uploads/product/thumbnail/' . $products->photo) }}"
+                                        class="card-img-top" alt="{{ $products->productname }}">
+                                    <div class="hover-icons d-flex justify-content-center align-items-center">
+                                        <form action="{{ route('wishlist.store') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" value="{{ $products->id ?? 0 }}" name="productid">
+                                            <input type="hidden" name="price" value="{{ $products->rate }}">
+                                            <a href="#" class="icon-btn me-2">
+                                                <button type="submit" class="btn" title="Add to Wishlist">
+                                                    <i class="bi bi-heart"></i>
+                                                </button>
+                                            </a>
+                                        </form>
 
-                                    {{--  <a href="#" class="icon-btn" title="Add to Cart"><i
+                                        {{--  <a href="#" class="icon-btn" title="Add to Cart"><i
                                             class="bi bi-cart3"></i></a>  --}}
+                                    </div>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title fw-semibold">
+                                        {{ $products->productname . ' -' . $products->product_attribute_qty . ' ' . $products->attribute_name }}
+                                    </h5>
+                                    <p class="fw-bold mb-1 product-price">
+                                        <span
+                                            class="text-decoration-line-through text-muted">{{ $symbol }}{{ $products->cut_price }}</span>
+                                        {{ $symbol }}{{ $products->product_attribute_price }}
+                                    </p>
+                                    <p class="card-text small text-muted">
+                                        {{ \Illuminate\Support\Str::words(strip_tags($products->description), 20, '...') }}
+                                    </p>
+                                    {{--  <a href="#" class="btn-primary-2025 mt-2">Add to Cart</a>  --}}
                                 </div>
                             </div>
-                            <div class="card-body text-center">
-                                <h5 class="card-title fw-semibold">
-                                    {{ $products->productname . ' -' . $products->product_attribute_qty . ' ' . $products->attribute_name }}
-                                </h5>
-                                <p class="fw-bold mb-1 product-price">
-                                    <span
-                                        class="text-decoration-line-through text-muted">{{ $symbol }}{{ $products->cut_price }}</span>
-                                    {{ $symbol }}{{ $products->product_attribute_price }}
-                                </p>
-                                <p class="card-text small text-muted">
-                                    {{ \Illuminate\Support\Str::words(strip_tags($products->description), 20, '...') }}
-                                </p>
-                                {{--  <a href="#" class="btn-primary-2025 mt-2">Add to Cart</a>  --}}
-                            </div>
-                        </div>
-                        {{--  </a>  --}}
+                        </a>
                     </div>
                 @endforeach
 
@@ -350,15 +350,19 @@
 
                 @foreach ($blogs as $blog)
                     <div class="blog-card-2025" data-aos="flip-left" data-aos-delay="200">
-                        <div class="blog-image-2025">
-                            <img src="{{ asset('uploads/Blog/Thumbnail/' . '/' . $blog->strPhoto) }}"
-                                alt="{{ $blog->strTitle }}">
-                        </div>
+                        <a href="{{ route('front.blog_detail', $blog->strSlug) }}" class="blog-link-2025">
+                            <div class="blog-image-2025">
+                                <img src="{{ asset('uploads/Blog/Thumbnail/' . '/' . $blog->strPhoto) }}"
+                                    alt="{{ $blog->strTitle }}">
+                            </div>
+                        </a>
                         <div class="blog-content-2025">
                             <p class="blog-meta-2025"> {{ date('M d, Y', strtotime($blog->created_at)) }} </p>
-                            <h3 class="blog-title-2025">
-                                {{ \Illuminate\Support\Str::words(strip_tags($blog->strTitle), 8, '...') }}
-                            </h3>
+                            <a href="{{ route('front.blog_detail', $blog->strSlug) }}" class="blog-link-2025">
+                                <h3 class="blog-title-2025">
+                                    {{ \Illuminate\Support\Str::words(strip_tags($blog->strTitle), 8, '...') }}
+                                </h3>
+                            </a>
                             <p class="blog-excerpt-2025">
                                 {{ \Illuminate\Support\Str::words(strip_tags($blog->strDescription), 20, '...') }}
                             </p>

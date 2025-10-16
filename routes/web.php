@@ -341,7 +341,7 @@ Route::get('/blog/{slugname?}', [FrontController::class, 'blog_detail'])->name('
 
 
 Route::get('/contact-us', [FrontController::class, 'contactus'])->name('front.contact_us');
-Route::post('/contact-us', [FrontController::class, 'contact_us_store'])->name('contact_us_store');
+Route::post('/contact-us', [FrontController::class, 'contact_us_store'])->name('front.contact_us_store');
 
 Route::get('refresh_captcha', [FrontController::class, 'refreshCaptcha'])->name('refresh_captcha');
 

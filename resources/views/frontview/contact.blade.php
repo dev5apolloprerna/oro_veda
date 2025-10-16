@@ -57,31 +57,68 @@
                 <h3><i class="fa-solid fa-pen-to-square"></i> Get In Touch</h3>
             </div>
             <div class="block-content">
-                <form action="#">
+                <form action="{{ route('front.contact_us_store') }}" method="post" autocomplete="off">
+                    @csrf
                     <div class="input-grid">
                         <div class="input-field">
-                            <input type="text" placeholder="First Name" required class="form-input">
+                            <input type="text" name="first_name" placeholder="First Name" required
+                                class="form-input @error('first_name') is-invalid @enderror"
+                                value="{{ old('first_name') }}">
+                            @error('first_name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="Last Name" required class="form-input">
+                            <input type="text" name="last_name" placeholder="Last Name" required
+                                class="form-input @error('last_name') is-invalid @enderror" value="{{ old('last_name') }}">
+                            @error('last_name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="input-grid">
                         <div class="input-field">
-                            <input type="email" placeholder="Email Address" required class="form-input">
+                            <input type="email" name="email" placeholder="Email Address" required
+                                class="form-input @error('email') is-invalid @enderror" value="{{ old('email') }}">
+                            @error('email')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="Subject" required class="form-input">
+                            <input type="text" name="subject" placeholder="Subject" required
+                                class="form-input @error('subject') is-invalid @enderror" value="{{ old('subject') }}">
+                            @error('subject')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="input-field">
-                        <textarea placeholder="Message..." rows="5" required class="form-input"></textarea>
+                        <textarea name="message" placeholder="Message..." rows="5" required
+                            class="form-input @error('message') is-invalid @enderror">{{ old('message') }}</textarea>
+                        @error('message')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
-                    <!-- <div class="input-field captcha-wrapper">
-                                <div class="captcha-display">
-                                </div>
-                                <input type="text" placeholder="Enter Captcha" required class="form-input">
-                            </div> -->
+
+                    <div class="form-group{{ $errors->has('captcha') ? ' has-error' : '' }}">
+
+                        <div class="form-group mt-4 mb-4">
+                            <div class="captcha">
+                                <span>{!! captcha_img() !!}</span>
+                                <button type="button" class="btn btn-danger" class="reload" id="reload">
+                                    &#x21bb;
+                                </button>
+                            </div>
+                        </div>
+                        <input id="captcha" type="text" class="form-control" placeholder="Enter Captcha" name="captcha"
+                            required>
+                        @if ($errors->has('captcha'))
+                            <span class="help-block">
+                                <strong class="">{{ $errors->first('captcha') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
                     <button type="submit" class="send-button">Submit Message</button>
                 </form>
             </div>

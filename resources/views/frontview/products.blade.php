@@ -4,6 +4,26 @@
 
 @section('content')
 
+    <style>
+        .filter-btn {
+            border: 1px solid #2a7d3e;
+            color: #2a7d3e;
+            background-color: transparent;
+            border-radius: 20px;
+            padding: 6px 18px;
+            margin: 4px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: linear-gradient(135deg, #2a7d3e, #8bc34a);
+            color: #fff;
+            border-color: transparent;
+        }
+    </style>
+
     @include('common.frontmodalalert')
 
     <section class="page-header" style="background: linear-gradient(135deg, #2a7d3e, #8bc34a)">
@@ -33,12 +53,23 @@
 
             <div class="filter-section" data-aos="fade-up">
                 <h3 style="margin-bottom: 20px;">Filter Products</h3>
-                <button class="filter-btn active">All Products</button>
-                <button class="filter-btn">Bestsellers</button>
-                <button class="filter-btn">New Arrivals</button>
-                <button class="filter-btn">Gift Boxes</button>
-                <button class="filter-btn">Combo Packs</button>
+
+                <a href="{{ route('front.product_list', $categoryid) }}"
+                    class="filter-btn {{ request('filter') == '' ? 'active' : '' }}">All</a>
+
+                <a href="{{ route('front.product_list', [$categoryid, 'filter' => 'bestsellers']) }}"
+                    class="filter-btn {{ request('filter') == 'bestsellers' ? 'active' : '' }}">Bestsellers</a>
+
+                <a href="{{ route('front.product_list', [$categoryid, 'filter' => 'newarrivals']) }}"
+                    class="filter-btn {{ request('filter') == 'newarrivals' ? 'active' : '' }}">New Arrivals</a>
+
+                <a href="{{ route('front.product_list', [$categoryid, 'filter' => 'giftboxes']) }}"
+                    class="filter-btn {{ request('filter') == 'giftboxes' ? 'active' : '' }}">Gift Boxes</a>
+
+                <a href="{{ route('front.product_list', [$categoryid, 'filter' => 'combopacks']) }}"
+                    class="filter-btn {{ request('filter') == 'combopacks' ? 'active' : '' }}">Combo Packs</a>
             </div>
+
 
             <div class="row g-4 product-category">
 
@@ -77,7 +108,7 @@
                             <a href="{{ route('front.product_detail', [$product->category_slug, $product->slugname]) }}">
                                 <div class="card-body text-center">
                                     <h5 class="card-title fw-semibold">
-                                        {{ $product->productname . ' -' . $product->product_attribute_qty . ' ' . $product->attribute_name }}
+                                        {{ $product->productname . ' - ' . $product->product_attribute_qty . ' ' . $product->attribute_name }}
                                     </h5>
                                     <p class="fw-bold mb-1 product-price">
                                         <span
