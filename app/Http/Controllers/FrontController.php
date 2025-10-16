@@ -248,7 +248,8 @@ class FrontController extends Controller
                 return redirect()->back()->with('error', 'Category not found.');
             }
 
-            $limit = $request->input('limit',  16); // default: 16
+            $limit = $request->input('limit',  16);
+            $filter = $request->input('filter');
 
             $ip = $request->ip();
             $countryCode = $this->getCountryCode($ip);
@@ -256,7 +257,6 @@ class FrontController extends Controller
             $products = Product::select(
                 'products.id',
                 'products.categoryId',
-                'products.subcategoryid',
                 'products.productname',
                 'products.description',
                 'products.slugname',
@@ -297,11 +297,22 @@ class FrontController extends Controller
                 ->where('categories.slugname', $categoryid)
                 ->where(['products.iStatus' => 1, 'products.isDelete' => 0]);
 
+            // ✅ Apply filter if provided
+            if ($filter == 'bestsellers') {
+                $products->where('products.isBestSeller', 1);
+            } elseif ($filter == 'newarrivals') {
+                $products->where('products.isNewArrival', 1);
+            } elseif ($filter == 'giftboxes') {
+                $products->where('products.isGiftBoxes', 1);
+            } elseif ($filter == 'combopacks') {
+                $products->where('products.isComboPacks', 1);
+            }
+
             // Apply pagination with dynamic limit
             $products = $products->paginate($limit)->appends($request->all());
             // dd($products);
 
-            return view('frontview.products', compact('products', 'Category', 'categoryid', 'countryCode'));
+            return view('frontview.products', compact('products', 'Category', 'categoryid', 'countryCode', 'filter'));
         } catch (\Throwable $th) {
             Log::error('Product List Page Error: ' . $th->getMessage(), [
                 'categoryid' => $categoryid,
@@ -323,7 +334,6 @@ class FrontController extends Controller
                 'products.description',
                 'products.isStock',
                 'products.categoryId',
-                'products.subcategoryid',
                 'products.isFeatures',
                 DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id  LIMIT 1) as photo'),
 
@@ -391,7 +401,7 @@ class FrontController extends Controller
                 ->orderByRaw('CAST(product_attributes.product_attribute_qty AS UNSIGNED) desc')
                 ->get();
 
-            return view('frontview.productdetail', compact('ProductDetail', 'Photos',  'Category', 'category_id', 'product_id', 'RelatedProduct', 'attributes', 'minPrice'));
+            return view('frontview.productdetail', compact('ProductDetail', 'Photos',  'Category', 'category_id', 'product_id', 'RelatedProduct', 'attributes'));
         } catch (\Throwable $th) {
             Log::error('Product Detail Page Error: ' . $th->getMessage(), [
                 'category_id' => $category_id,
@@ -419,60 +429,59 @@ class FrontController extends Controller
 
     public function contact_us_store(Request $request)
     {
-        try {
-            $request->validate(
-                [
-                    'name' => 'required|string|max:255',
-                    'mobileNumber' => 'required|digits:10',
-                    'email' => 'required|email',
-                    'subject' => 'required|string|max:255',
-                    'message' => 'required|string',
-                    'captcha' => 'required|captcha'
-                ],
-                [
-                    'captcha.captcha' => 'Invalid captcha code.'
-                ]
-            );
+        // try {
+        $request->validate(
+            [
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'email' => 'required|email',
+                'subject' => 'required|string|max:255',
+                'message' => 'required|string',
+                'captcha' => 'required|captcha'
+            ],
+            [
+                'captcha.captcha' => 'Invalid captcha code.'
+            ]
+        );
 
-            $data = array(
-                'name' => $request->name,
-                'subject' => $request->subject,
-                'email' => $request->email,
-                'mobileNumber' => $request->mobileNumber,
-                'message' => $request->message,
-                "strIp" => $request->ip(),
-                "created_at" => now()
-            );
-            Inquiry::create($data);
+        $data = array(
+            'name' => $request->first_name . ' ' . $request->last_name,
+            'email' => $request->email,
+            'subject' => $request->subject,
+            'message' => $request->message,
+            "strIp" => $request->ip(),
+            "created_at" => now()
+        );
+        Inquiry::create($data);
 
-            $SendEmailDetails = DB::table('sendemaildetails')->where(['id' => 4])->first();
+        $SendEmailDetails = DB::table('sendemaildetails')->where(['id' => 4])->first();
 
-            if ($SendEmailDetails) {
-                $msg = [
-                    'FromMail' => $SendEmailDetails->strFromMail,
-                    'Title' => $SendEmailDetails->strTitle,
-                    'ToEmail' => "contact@sparshcosmo-group.com",
-                    'Subject' => $SendEmailDetails->strSubject
-                ];
+        if ($SendEmailDetails) {
+            $msg = [
+                'FromMail' => $SendEmailDetails->strFromMail,
+                'Title' => $SendEmailDetails->strTitle,
+                'ToEmail' => $SendEmailDetails->ToMail,
+                'Subject' => $SendEmailDetails->strSubject
+            ];
 
-                // ✅ Send email
-                Mail::send('emails.contactemail', ['data' => $data], function ($message) use ($msg) {
-                    $message->from($msg['FromMail'], $msg['Title']);
-                    $message->to($msg['ToEmail'])->subject($msg['Subject']);
-                });
-            }
-
-            return redirect()->route('contactthankyou');
-        } catch (\Throwable $th) {
-            Log::error('Contact Form Submission Error: ' . $th->getMessage(), [
-                'request_data' => $request->all(),
-                'exception' => $th
-            ]);
-
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'Something went wrong while submitting the form. Please try again later.');
+            // ✅ Send email
+            Mail::send('emails.contactemail', ['data' => $data], function ($message) use ($msg) {
+                $message->from($msg['FromMail'], $msg['Title']);
+                $message->to($msg['ToEmail'])->subject($msg['Subject']);
+            });
         }
+
+        return redirect()->route('contactthankyou');
+        // } catch (\Throwable $th) {
+        //     Log::error('Contact Form Submission Error: ' . $th->getMessage(), [
+        //         'request_data' => $request->all(),
+        //         'exception' => $th
+        //     ]);
+
+        //     return redirect()->back()
+        //         ->withInput()
+        //         ->with('error', 'Something went wrong while submitting the form. Please try again later.');
+        // }
     }
 
     public function contactthankyou()
@@ -613,7 +622,6 @@ class FrontController extends Controller
 
     public function checkoutstore(Request $request)
     {
-        // dd($request);
         $request->validate([
             'billFirstName' => 'required|string|max:255',
             'billLastName' => 'required|string|max:255',
@@ -694,7 +702,7 @@ class FrontController extends Controller
             'shiiping_address2' => $request->billStreetAddress2,
             'shipping_city' => $request->city,
             'shiiping_state' => $request->state,
-            'shipping_pincode' => $request->pinCode,
+            'shipping_pincode' => $request->pincode,
             'country' => $request->country,
             'amount' => $subtotal,
             'discount' => $discount,
@@ -1194,45 +1202,6 @@ class FrontController extends Controller
         } catch (\Throwable $th) {
             Log::error('Logout Error: ' . $th->getMessage());
             return redirect()->back()->with('error', 'Failed to logout.');
-        }
-    }
-
-    public function HeaderSearch(Request $request)
-    {
-        try {
-            $headerSearch = $request->headersearch;
-
-            // Only proceed if there's a search term
-            if (!$headerSearch) {
-                return redirect()->back()->with('error', 'Please enter a search term.');
-            }
-
-            $products = Product::select(
-                'products.id',
-                'products.categoryId',
-                'products.subcategoryid',
-                'products.productname',
-                'products.slugname',
-                'products.rate',
-                'products.cut_price',
-                'categories.slugname as category_slug',
-                DB::raw('( SELECT strphoto FROM productphotos WHERE productphotos.productid = products.id ORDER BY productphotos.productphotosid LIMIT 1 ) as photo'),
-                DB::raw('( SELECT MIN(product_attribute_price) FROM product_attributes WHERE product_attributes.product_id = products.id ) as product_attribute_price')
-            )
-                ->leftJoin('categories', 'products.categoryId', '=', 'categories.id')
-                ->where('products.iStatus', 1)
-                ->where('products.isDelete', 0)
-                ->where('products.productname', 'LIKE', '%' . $headerSearch . '%')
-                ->orderByDesc('products.id')
-                ->paginate(16)
-                ->appends($request->all());
-
-            $productCount = $products->total();
-
-            return view('frontview.Searchdata', compact('products', 'productCount', 'headerSearch'));
-        } catch (\Throwable $th) {
-            Log::error('Header Search Error: ' . $th->getMessage());
-            return redirect()->back()->with('error', 'Search failed. Please try again.');
         }
     }
 

@@ -21,13 +21,14 @@ class ProductController extends Controller
         $Product = Product::select(
             'products.id',
             'products.categoryId',
-            'products.subcategoryid',
             'products.productname',
             'products.rate',
             'products.usd_rate',
-            'products.isFeatures',
+            'products.isBestSeller',
+            'products.isNewArrival',
+            'products.isGiftBoxes',
+            'products.isComboPacks',
             'products.iStatus',
-            DB::raw('(SELECT categoryname FROM categories WHERE categories.id = products.subcategoryid) AS subcategoryname'),
             DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id ORDER BY products.id  LIMIT 1) as photo'),
             'categories.categoryname'
         )
@@ -59,11 +60,13 @@ class ProductController extends Controller
                 'photo' => 'required',
             ]);
 
-            $isFeatures = $request->isFeatures == "on" ? 1 : 0;
+            $isBestSeller = $request->isBestSeller == "on" ? 1 : 0;
+            $isNewArrival = $request->isNewArrival == "on" ? 1 : 0;
+            $isGiftBoxes = $request->isGiftBoxes == "on" ? 1 : 0;
+            $isComboPacks = $request->isComboPacks == "on" ? 1 : 0;
 
             $Data = array(
                 'categoryId' => $request->categoryId ?? 0,
-                'subcategoryid' => $request->subcategoryid ?? 0,
                 'productname' => $request->productname,
                 'slugname' => Str::slug($request->productname),
                 'rate' => $request->rate,
@@ -71,7 +74,10 @@ class ProductController extends Controller
                 'usd_rate' => $request->usd_rate,
                 'usd_cut_price' => $request->usd_cut_price,
                 'description' => $request->description,
-                'isFeatures' => $isFeatures ?? 0,
+                'isBestSeller' => $isBestSeller ?? 0,
+                'isNewArrival' => $isNewArrival ?? 0,
+                'isGiftBoxes' => $isGiftBoxes ?? 0,
+                'isComboPacks' => $isComboPacks ?? 0,
                 'meta_title' => $request->meta_title,
                 'meta_keyword' => $request->meta_keyword,
                 'meta_description' => $request->meta_description,
@@ -126,9 +132,7 @@ class ProductController extends Controller
 
         $product = Product::where(['isDelete' => 0, 'id' => $id])->first();
 
-        $SubCategory = Category::where(['isDelete' => 0, 'id' => $product->subcategoryid])->get();
-
-        return view('admin.product.edit', compact('product', 'Category', 'SubCategory'));
+        return view('admin.product.edit', compact('product', 'Category'));
     }
 
     public function update(Request $request, $id)
@@ -138,12 +142,14 @@ class ProductController extends Controller
             'productname' => 'required|unique:products,productname,' . $id . ',id',
         ]);
 
-        $isFeatures = $request->isFeatures == "on" ? 1 : 0;
+        $isBestSeller = $request->isBestSeller == "on" ? 1 : 0;
+        $isNewArrival = $request->isNewArrival == "on" ? 1 : 0;
+        $isGiftBoxes = $request->isGiftBoxes == "on" ? 1 : 0;
+        $isComboPacks = $request->isComboPacks == "on" ? 1 : 0;
 
         Product::where(['isDelete' => 0, 'id' => $id])
             ->update([
                 'categoryId' => $request->categoryId ?? 0,
-                'subcategoryid' => $request->subcategoryid ?? 0,
                 'productname' => $request->productname,
                 'slugname' => Str::slug($request->productname),
                 'rate' => $request->rate,
@@ -151,7 +157,10 @@ class ProductController extends Controller
                 'usd_rate' => $request->usd_rate,
                 'usd_cut_price' => $request->usd_cut_price,
                 'description' => $request->description,
-                'isFeatures' => $isFeatures ?? 0,
+                'isBestSeller' => $isBestSeller ?? 0,
+                'isNewArrival' => $isNewArrival ?? 0,
+                'isGiftBoxes' => $isGiftBoxes ?? 0,
+                'isComboPacks' => $isComboPacks ?? 0,
                 'meta_title' => $request->meta_title,
                 'meta_keyword' => $request->meta_keyword,
                 'meta_description' => $request->meta_description,

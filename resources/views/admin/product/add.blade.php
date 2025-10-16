@@ -102,7 +102,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-4 col-md-6">
+                                            <div class="col-lg-3 col-md-6">
                                                 <div>
                                                     <span style="color:red;">*</span> Rate (MRP)
                                                     <input type="text" class="form-control" name="rate" id="strPhoto"
@@ -114,7 +114,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-4 col-md-6">
+                                            <div class="col-lg-3 col-md-6">
                                                 <div>
                                                     <span style="color:red;">*</span> Cut Price (MRP)
                                                     <input type="text" class="form-control" placeholder="Enter Cut Price"
@@ -126,54 +126,31 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                             <div class="col-lg-4 col-md-6">
-                                                <div>
-                                                    <span style="color:red;">*</span>USD Rate (MRP)
-                                                    <input type="text" class="form-control" name="usd_rate" id="strPhoto"
-                                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');"
-                                                        maxlength="5" placeholder="Enter USD Rate" required autocomplete="off">
-                                                    @error('usd_rate')
-                                                        <span class="text-danger">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
 
-                                            <div class="col-lg-4 col-md-6">
-                                                <div>
-                                                    <span style="color:red;">*</span>USD Cut Price (MRP)
-                                                    <input type="text" class="form-control" placeholder="Enter Cut Price"
-                                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');"
-                                                        maxlength="5" name="usd_cut_price" autocomplete="off"
-                                                        value="{{ old('usd_cut_price') }}" required autocomplete="off">
-                                                    @error('usd_cut_price')
-                                                        <span class="text-danger">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-4 col-md-6">
+                                            <div class="col-lg-3 col-md-6">
                                                 <div>
                                                     <span style="color:red;">*</span> USD Rate (MRP)
-                                                    <input type="text" class="form-control" name="usd_rate" id="usd_rate"
-                                                        inputmode="decimal"
-                                                      oninput="this.value = this.value
+                                                    <input type="text" class="form-control" name="usd_rate"
+                                                        id="usd_rate" inputmode="decimal"
+                                                        oninput="this.value = this.value
                                                         .replace(/[^0-9.]/g,'')        // allow digits & dot
                                                         .replace(/(\..*?)\..*/g,'$1')  // keep only the first dot
                                                         .replace(/^(\.)/,'0.')         // '.5' -> '0.5'
                                                       "
-                                                        maxlength="5" placeholder="Enter USD Rate" required autocomplete="off">
+                                                        maxlength="5" placeholder="Enter USD Rate" required
+                                                        autocomplete="off">
                                                     @error('usd_rate')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-4 col-md-6">
+                                            <div class="col-lg-3 col-md-6">
                                                 <div>
                                                     <span style="color:red;">*</span> USD Cut Price (MRP)
-                                                    <input type="text" class="form-control" placeholder="Enter USD Cut Price"
-                                                        inputmode="decimal"
-                                                          oninput="this.value = this.value
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Enter USD Cut Price" inputmode="decimal"
+                                                        oninput="this.value = this.value
                                                             .replace(/[^0-9.]/g,'')        // allow digits & dot
                                                             .replace(/(\..*?)\..*/g,'$1')  // keep only the first dot
                                                             .replace(/^(\.)/,'0.')         // '.5' -> '0.5'
@@ -185,11 +162,32 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                            
-                                            <div class="col-lg-4 col-md-6">
+
+                                            <div class="col-lg-3 col-md-6">
                                                 <div class="mt-4">
-                                                    <input type="checkbox" name="isFeatures" id="isFeatures">
-                                                    Featured Product
+                                                    <input type="checkbox" name="isBestSeller" id="isBestSeller">
+                                                    Bestsellers
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-6">
+                                                <div class="mt-4">
+                                                    <input type="checkbox" name="isNewArrival" id="isNewArrival">
+                                                    New Arrivals
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-6">
+                                                <div class="mt-4">
+                                                    <input type="checkbox" name="isGiftBoxes" id="isGiftBoxes">
+                                                    Gift Boxes
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-6">
+                                                <div class="mt-4">
+                                                    <input type="checkbox" name="isComboPacks" id="isComboPacks">
+                                                    Combo Packs
                                                 </div>
                                             </div>
 

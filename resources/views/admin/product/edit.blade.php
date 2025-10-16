@@ -111,7 +111,7 @@
 
                                             </div>
 
-                                            <div class="col-lg-4 col-md-6">
+                                            <div class="col-lg-3 col-md-6">
                                                 <div>
                                                     <span style="color:red;">*</span> Rate (MRP)
                                                     <input type="text" class="form-control" placeholder="Enter Rate"
@@ -124,7 +124,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-4 col-md-6">
+                                            <div class="col-lg-3 col-md-6">
                                                 <div>
                                                     <span style="color:red;">*</span> Cut Price (MRP)
                                                     <input type="text" class="form-control" placeholder="Enter Cut Price"
@@ -137,12 +137,12 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-4 col-md-6">
+                                            <div class="col-lg-3 col-md-6">
                                                 <div>
                                                     <span style="color:red;">*</span>USD Rate (MRP)
                                                     <input type="text" class="form-control" placeholder="Enter USD Rate"
                                                         inputmode="decimal"
-                                                          oninput="this.value = this.value
+                                                        oninput="this.value = this.value
                                                             .replace(/[^0-9.]/g,'')        // allow digits & dot
                                                             .replace(/(\..*?)\..*/g,'$1')  // keep only the first dot
                                                             .replace(/^(\.)/,'0.')         // '.5' -> '0.5'
@@ -155,12 +155,12 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-4 col-md-6">
+                                            <div class="col-lg-3 col-md-6">
                                                 <div>
                                                     <span style="color:red;">*</span> USD Cut Price (MRP)
-                                                    <input type="text" class="form-control" placeholder="Enter USD Cut Price"
-                                                        inputmode="decimal"
-                                                              oninput="this.value = this.value
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Enter USD Cut Price" inputmode="decimal"
+                                                        oninput="this.value = this.value
                                                                 .replace(/[^0-9.]/g,'')        // allow digits & dot
                                                                 .replace(/(\..*?)\..*/g,'$1')  // keep only the first dot
                                                                 .replace(/^(\.)/,'0.')         // '.5' -> '0.5'
@@ -174,11 +174,35 @@
                                             </div>
 
 
-                                            <div class="col-lg-4 col-md-6">
+                                            <div class="col-lg-3 col-md-6">
                                                 <div class="mt-4">
-                                                    <input type="checkbox" name="isFeatures" id="isFeatures"
-                                                        {{ $product->isFeatures == 1 ? 'checked' : null }}>
-                                                    Featured Product
+                                                    <input type="checkbox" name="isBestSeller" id="isBestSeller"
+                                                        {{ $product->isBestSeller == 1 ? 'checked' : null }}>
+                                                    Bestsellers
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-6">
+                                                <div class="mt-4">
+                                                    <input type="checkbox" name="isNewArrival" id="isNewArrival"
+                                                        {{ $product->isNewArrival == 1 ? 'checked' : null }}>
+                                                    New Arrivals
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-6">
+                                                <div class="mt-4">
+                                                    <input type="checkbox" name="isGiftBoxes" id="isGiftBoxes"
+                                                        {{ $product->isGiftBoxes == 1 ? 'checked' : null }}>
+                                                    Gift Boxes
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-6">
+                                                <div class="mt-4">
+                                                    <input type="checkbox" name="isComboPacks" id="isComboPacks"
+                                                        {{ $product->isComboPacks == 1 ? 'checked' : null }}>
+                                                    Combo Packs
                                                 </div>
                                             </div>
 

@@ -69,7 +69,6 @@
                                             <th scope="col">Category Name</th>
                                             <th scope="col">Rate</th>
                                             <th scope="col">USD Rate</th>
-                                            <th scope="col">Featured Product</th>
                                             <th scope="col">Status</th>
                                         </tr>
                                     </thead>
@@ -98,9 +97,7 @@
                                                 <td width="2%">
                                                     {{ $product->usd_rate ? '$' . $product->usd_rate : '-' }}
                                                 </td>
-                                                <td width="2%">
-                                                    {{ $product->isFeatures == 1 ? 'Yes' : 'No' }}
-                                                </td>
+
                                                 <td width="2%">
                                                     @if ($product->iStatus == 0)
                                                         <span class="badge badge-gradient-danger">Inactive</span>
