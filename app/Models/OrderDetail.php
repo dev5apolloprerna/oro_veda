@@ -16,13 +16,14 @@ class OrderDetail extends Model
         'customerid',
         'productId',
         'categoryId',
-        'subcategoryid',
         'size',
-        'info',
         'quantity',
-        'weight',
         'rate',
         'amount',
-        'isRefund',
+        'iStatus',
+        'isDelete',
+        'created_at',
+        'updated_at',
+        'strIP'
     ];
 }

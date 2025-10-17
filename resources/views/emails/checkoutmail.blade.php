@@ -54,7 +54,7 @@
                 </tr>
                 <tr>
                     <td><strong>Country:</strong></td>
-                    <td>{{ $Order->country ?? 'N/A' }}</td>
+                    <td>{{ $CountryName->countryName ?? 'N/A' }}</td>
                 </tr>
                 <tr>
                     <td><strong>Pincode:</strong></td>

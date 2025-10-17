@@ -75,6 +75,7 @@
                                                                         <th class="all">Customer Name</th>
                                                                         <th class="all">Email</th>
                                                                         <th class="all">Mobile</th>
+                                                                        <th class="all">Country</th>
                                                                         <th class="all">City</th>
                                                                         <th class="all">State</th>
                                                                         <th class="all">Pincode</th>
@@ -100,8 +101,9 @@
 
                                                                             <td>{{ $dispatched->shipping_email }}</td>
                                                                             <td>{{ $dispatched->shipping_mobile }}</td>
+                                                                            <td>{{ $dispatched->countryName }}</td>
                                                                             <td>{{ $dispatched->shipping_city }}</td>
-                                                                            <td>{{ $dispatched->stateName }}</td>
+                                                                            <td>{{ $dispatched->shiiping_state }}</td>
                                                                             <td>{{ $dispatched->shipping_pincode }}</td>
                                                                             <td>{{ $dispatched->netAmount }}</td>
                                                                             <td>

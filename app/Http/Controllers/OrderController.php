@@ -27,13 +27,17 @@ class OrderController extends Controller
 
             $Courier = Courier::orderBy('id', 'desc')->where(['iStatus' => 1, 'isDelete' => 0])->get();
 
-            $Pend = Order::orderBy('order_id', 'desc')
-                ->where(['iStatus' => 1, 'isDelete' => 0, 'isDispatched' => 0, 'dispatchCourierId' => 0, 'order.isPayment' => 1])
+            $Pend = Order::select(
+                'order.*',
+                'countries.countryName'
+            )
+                ->orderBy('order_id', 'desc')
+                ->where(['order.iStatus' => 1, 'order.isDelete' => 0, 'order.isDispatched' => 0, 'order.dispatchCourierId' => 0, 'order.isPayment' => 1])
                 ->when($request->fromdate, fn($query, $FromDate) => $query
                     ->where('order.created_at', '>=', date('Y-m-d 00:00:00', strtotime($FromDate))))
                 ->when($request->todate, fn($query, $ToDate) => $query
                     ->where('order.created_at', '<=', date('Y-m-d 23:59:59', strtotime($ToDate))))
-                ->leftJoin('state', 'order.shiiping_state', '=', 'state.stateId');
+                ->leftJoin('countries', 'order.country', '=', 'countries.id');
 
             if ($request->strStatus != "") {
                 $Pend->where('order.isPayment', '=', $request->strStatus);
@@ -42,82 +46,6 @@ class OrderController extends Controller
             $Pending = $Pend->paginate(15);
 
             return view('admin.order.pending', compact('Pending', 'FromDate', 'ToDate', 'Courier', 'Status'));
-        }
-    }
-
-    public function userpending(Request $request)
-    {
-        $Courier = Courier::orderBy('id', 'desc')->where(['iStatus' => 1, 'isDelete' => 0])->get();
-
-        $Pending = Order::orderBy('order_id', 'desc')
-            ->where(['iStatus' => 1, 'isDelete' => 0, 'isDispatched' => 0, 'dispatchCourierId' => 2])
-            ->join('state', 'order.shiiping_state', '=', 'state.stateId')
-            ->paginate(15);
-
-        return view('admin.order.userpending', compact('Pending', 'Courier'));
-    }
-
-    public function tirupati(Request $request)
-    {
-        if (Auth::user()->id  == 1) {
-            $Courier = Courier::orderBy('id', 'desc')->where(['iStatus' => 1, 'isDelete' => 0])->get();
-
-            $Pending = Order::orderBy('order_id', 'desc')
-                ->where(['iStatus' => 1, 'isDelete' => 0, 'isDispatched' => 0, 'dispatchCourierId' => 1])
-                ->join('state', 'order.shiiping_state', '=', 'state.stateId')
-                ->paginate(15);
-
-            return view('admin.order.tirupati', compact('Pending', 'Courier'));
-        }
-    }
-
-    public function delivery(Request $request)
-    {
-        if (Auth::user()->id  == 1) {
-            $Courier = Courier::orderBy('id', 'desc')->where(['iStatus' => 1, 'isDelete' => 0])->get();
-
-            $Pending = Order::orderBy('order_id', 'desc')
-                ->where(['iStatus' => 1, 'isDelete' => 0, 'isDispatched' => 0, 'dispatchCourierId' => 2])
-                ->join('state', 'order.shiiping_state', '=', 'state.stateId')
-                ->paginate(15);
-
-            return view('admin.order.delivery', compact('Pending', 'Courier'));
-        }
-    }
-
-    public function orderMovedToCourier(Request $request)
-    {
-        try {
-            // //dd('hello');
-            // // dd($request);
-            // $Data = 0;
-            // $data = array('iStatus' => 1, 'isDelete' => 0);
-            // foreach ($request->check_list as $id) {
-            //     $Data = Order::where('id', '=', $id)->update([
-            //         'dispatchCourierId' => $request->strCourier
-            //         ]);
-            // }
-            // echo $Data;
-
-            // Initialize variable to store the count of updated orders
-            $updatedOrdersCount = 0;
-
-            // Define data array to update orders
-            $data = [
-                'dispatchCourierId' => $request->strCourier,
-                'iStatus' => 1, // Assuming this is intentional
-                'isDelete' => 0 // Assuming this is intentional
-            ];
-
-            // Loop through the list of IDs in the request
-            foreach ($request->check_list as $id) {
-                // Update order with the given ID
-                $updatedOrdersCount += Order::where('order_id', $id)->update($data);
-            }
-            // Output the count of updated orders
-            echo $updatedOrdersCount;
-        } catch (\Throwable $th) {
-            return redirect()->back()->withInput()->with('error', $th->getMessage());
         }
     }
 
@@ -135,11 +63,12 @@ class OrderController extends Controller
                 'order.shipping_mobile',
                 'order.shipping_city',
                 'order.shipping_pincode',
+                'order.shiiping_state',
                 'order.netAmount',
                 'order.isPayment',
                 'courier.name',
                 'courier.url',
-                'state.stateName',
+                'countries.countryName',
                 'order.docketNo',
                 'order.isDispatched',
 
@@ -151,7 +80,7 @@ class OrderController extends Controller
                 ->when($request->todate, fn($query, $ToDate) => $query
                     ->where('order.created_at', '<=', date('Y-m-d 23:59:59', strtotime($ToDate))))
                 ->join('courier', 'order.courier', '=', 'courier.id')
-                ->join('state', 'order.shiiping_state', '=', 'state.stateId')
+                ->leftJoin('countries', 'order.country', '=', 'countries.id')
                 ->paginate(15);
             //dd($Dispatched);
 
@@ -165,13 +94,17 @@ class OrderController extends Controller
             $FromDate = $request->fromdate;
             $ToDate = $request->todate;
 
-            $Cancel = Order::orderBy('order_id', 'desc')
-                ->where(['iStatus' => 1, 'isDelete' => 0, 'isDispatched' => 2])
+            $Cancel = Order::select(
+                'order.*',
+                'countries.countryName'
+            )
+                ->orderBy('order_id', 'desc')
+                ->where(['order.iStatus' => 1, 'order.isDelete' => 0, 'order.isDispatched' => 2])
                 ->when($request->fromdate, fn($query, $FromDate) => $query
                     ->where('order.created_at', '>=', date('Y-m-d 00:00:00', strtotime($FromDate))))
                 ->when($request->todate, fn($query, $ToDate) => $query
                     ->where('order.created_at', '<=', date('Y-m-d 23:59:59', strtotime($ToDate))))
-                ->join('state', 'order.shiiping_state', '=', 'state.stateId')
+                ->leftJoin('countries', 'order.country', '=', 'countries.id')
                 ->paginate(15);
 
             return view('admin.order.cancel', compact('Cancel', 'FromDate', 'ToDate'));
@@ -308,16 +241,15 @@ class OrderController extends Controller
     {
 
         $Shipping = Shipping::select('rate as shippingcharge')->orderBy('id', 'desc')->first();
-        $data = Order::select('order.*', 'state.stateName')->orderBy('order_id', 'DESC')->where(['iStatus' => 1, 'isDelete' => 0, 'order_id' => $id])
-            ->join('state', 'state.stateId', '=', 'order.shiiping_state')->first();
+        $data = Order::select(
+            'order.*',
+            'countries.countryName'
+        )
+            ->where(['order.iStatus' => 1, 'order.isDelete' => 0, 'order.order_id' => $id])
+            ->leftJoin('countries', 'order.country', '=', 'countries.id')
+            ->first();
         // dd($data);
         $detail = OrderDetail::select(
-            'order.cutomerName',
-            'order.mobile',
-            'order.email',
-            'order.address',
-            'order.state',
-            'order.city',
             'order.shipping_cutomerName',
             'order.shipping_mobile',
             'order.shipping_email',
@@ -327,7 +259,6 @@ class OrderController extends Controller
             'order.shipping_city',
             'order.shipping_pincode',
             'order.amount as totalamount',
-            'order.pincode',
             'orderdetail.quantity',
             'orderdetail.rate',
             'orderdetail.amount',
@@ -361,32 +292,24 @@ class OrderController extends Controller
 
             $data = Order::select(
                 'order.*',
-                'state.stateName',
                 'courier.id',
-                'courier.name as couriername',
+                'countries.countryName'
             )
                 ->orderBy('order_id', 'DESC')
                 ->where(['order.iStatus' => 1, 'order.isDelete' => 0, 'order.order_id' => $id])
-                ->join('state', 'state.stateId', '=', 'order.shiiping_state')
+                ->leftJoin('countries', 'order.country', '=', 'countries.id')
                 ->leftjoin('courier', 'order.courier', '=', 'courier.id')
                 ->first();
 
             $detail = OrderDetail::select(
                 'order.order_id',
-                'order.cutomerName',
                 'order.shipping_cutomerName',
-                'order.mobile',
                 'order.shipping_mobile',
-                'order.email',
                 'order.shipping_email',
-                'order.address',
                 'order.shiiping_address1',
                 'order.shiiping_address2',
-                'order.state',
                 'order.shiiping_state',
-                'order.city',
                 'order.shipping_city',
-                'order.pincode',
                 'order.shipping_pincode',
                 'order.docketNo',
                 'order.discount',
@@ -414,7 +337,6 @@ class OrderController extends Controller
                 ->leftJoin('attributes', 'product_attributes.product_attribute_id', '=', 'attributes.id')
                 ->get();
 
-
             $pdf = PDF::loadView('admin.order.invoice', ['data' => $data, 'detail' => $detail, 'Shipping' => $Shipping]);
 
             return $pdf->stream('Report.pdf');
@@ -434,9 +356,12 @@ class OrderController extends Controller
     {
         if (Auth::user()->id  == 1) {
 
-            $data = Order::orderBy('order_id', 'desc')
-                ->where(['iStatus' => 1, 'isDelete' => 0, 'order_id' => $id])
-                ->join('state', 'order.shiiping_state', '=', 'state.stateId')
+            $data = Order::select(
+                'order.*',
+                'countries.countryName'
+            )
+                ->where(['order.iStatus' => 1, 'order.isDelete' => 0, 'order.order_id' => $id])
+                ->leftJoin('countries', 'order.country', '=', 'countries.id')
                 ->first();
             // dd($data);
 

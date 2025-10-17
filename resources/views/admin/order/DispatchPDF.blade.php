@@ -23,30 +23,26 @@
             <td>{{ $data->shiiping_address1 }}</td>
             <td>&nbsp;</td>
         </tr>
-        <tr>
-            <td style="width:60%">{{ $data->shiiping_address2 }}</td>
-            <td>&nbsp;</td>
-        </tr>
+        @if ($data->shiiping_address2)
+            <tr>
+                <td style="width:60%">{{ $data->shiiping_address2 }}</td>
+                <td>&nbsp;</td>
+            </tr>
+        @endif
         <tr>
             <td>{{ $data->shipping_city . ' - ' . $data->shipping_pincode }}</td>
             <td>&nbsp;</td>
         </tr>
 
         <tr>
-            <?php if($data->shipping_mobile){ ?>
             <td>{{ $data->shipping_mobile }}</td>
-            <?php } else if($data->shipping_mobile1){ ?>
-            <td>{{ $data->shipping_mobile1 }}</td>
-            <?php } else { ?>
-            <td> {{ $data->shipping_mobile . ' , ' . $data->shipping_mobile1 }}</td>
-            <?php } ?>
         </tr>
         <tr>
-            <td>{{ $data->stateName }}</td>
+            <td>{{ $data->shiiping_state }}</td>
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td>{{ $data->country }}</td>
+            <td>{{ $data->countryName }}</td>
             <td>&nbsp;</td>
         </tr>
         <tr>

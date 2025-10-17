@@ -229,6 +229,7 @@
                                             @csrf
                                             <input type="hidden" value="{{ $products->id ?? 0 }}" name="productid">
                                             <input type="hidden" name="price" value="{{ $products->rate }}">
+                                            <input type="hidden" name="attribute_id" value="{{ $products->attribute_id }}">
                                             <a href="#" class="icon-btn me-2">
                                                 <button type="submit" class="btn" title="Add to Wishlist">
                                                     <i class="bi bi-heart"></i>

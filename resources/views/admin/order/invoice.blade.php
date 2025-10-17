@@ -14,8 +14,8 @@
     }
 
     th {
-        background-color: #8A3C8B;
-        /* Purple */
+        /* Gradient for table headers */
+        background: linear-gradient(135deg, #2a7d3e, #8bc34a) !important;
         color: white;
         text-align: center;
     }
@@ -34,37 +34,25 @@
     }
 
     .highlight {
-        background-color: #603813;
+        /* Gradient for highlighted cells */
+        background: linear-gradient(135deg, #2a7d3e, #8bc34a) !important;
         color: white;
         font-weight: bold;
         text-align: center;
     }
 
     .totals {
-        background-color: #f6f0e3;
+        background: #f0f9f0;
+        /* light soft background for totals */
         font-weight: 600;
     }
 
     .totals-row {
-        background-color: #F8A43A;
-        /* Orange */
+        /* Gradient for totals row */
+        background: linear-gradient(135deg, #2a7d3e, #8bc34a) !important;
         font-weight: bold;
         color: white;
         border-top: 2px solid #603813;
-    }
-
-    .totals {
-        background-color: #FFF4E5;
-        /* Optional soft background */
-        font-weight: 600;
-    }
-
-    .highlight {
-        background-color: #EB268F;
-        /* Pink */
-        color: white;
-        font-weight: bold;
-        text-align: center;
     }
 </style>
 
@@ -72,7 +60,9 @@
 <table style="width: 100%;">
     <tr class="no-border">
         <td class="header-logo">
-            <img width="150" src="https://www.sparshcosmo-group.com/assets/front/img/logo.png" alt="Logo">
+            <img width="150"
+                src="https://z-cdn-media.chatglm.cn/files/ebf4f35e-4670-409e-9919-fce52af2755c_VArli%20art%20logo%20%282%29.png?auth_key=1791268795-d8f64ca02b6d4db397c7da0deff53a2d-0-ab1c221906f5e997a247bf82da051826"
+                alt="Logo">
         </td>
     </tr>
 </table>
@@ -97,9 +87,10 @@
     </tr>
     <tr>
         <td>Gujarat – 380028</td>
-        <td>{{ $data->shipping_city . ', ' . $data->shipping_pincode . ' - ' . $data->stateName . ', ' . $data->country }}
+        <td>{{ $data->shipping_city . ', ' . $data->shipping_pincode . ' - ' . $data->shiiping_state . ', ' . $data->countryName }}
         </td>
     </tr>
+
     @if ($data->couriername || $data->docketNo)
         <tr>
             <td></td>
@@ -123,13 +114,13 @@
 <!-- Product Table -->
 <table style="width: 100%; margin-top: 10px;">
     <tr>
-        <th style="background-color: #f8a43a; color: #ffffff;">Sr No</th>
-        <th style="background-color: #f8a43a; color: #ffffff;">Product Name</th>
-        <th style="background-color: #f8a43a; color: #ffffff;">Photo</th>
-        <td style="background-color: #f8a43a; color: #ffffff;">Size</td>
-        <th style="background-color: #f8a43a; color: #ffffff;">Qty</th>
-        <th style="background-color: #f8a43a; color: #ffffff;">Rate</th>
-        <th style="background-color: #f8a43a; color: #ffffff;">Amount</th>
+        <th>Sr No</th>
+        <th>Product Name</th>
+        <th>Photo</th>
+        <td>Size</td>
+        <th>Qty</th>
+        <th>Rate</th>
+        <th>Amount</th>
     </tr>
 
     @php

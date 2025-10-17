@@ -32,6 +32,7 @@ class Customer extends Model
         'token',
         'guid',
         'otp',
+        'otp_expires_at',
         'address',
         'address1',
         'state',

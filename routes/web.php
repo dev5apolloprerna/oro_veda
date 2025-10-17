@@ -10,7 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\OfferController;
-use App\Http\Controllers\FrontController;
+
 use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ShippingController;
@@ -20,6 +20,7 @@ use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\MetaDataController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\Front\FrontController;
 use App\Http\Controllers\RazorpayController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\OtherPagesController;
@@ -331,19 +332,16 @@ Route::prefix('admin')->name('testimonial.')->middleware('auth')->group(function
 
 //=======================================Front Start=============================================
 
-Route::any('/old_index', [FrontController::class, 'old_index'])->name('old_index');
-
 Route::any('/', [FrontController::class, 'index'])->name('front.index');
 Route::any('/about', [FrontController::class, 'about'])->name('front.about');
 
 Route::get('/blog', [FrontController::class, 'blog'])->name('front.blog');
 Route::get('/blog/{slugname?}', [FrontController::class, 'blog_detail'])->name('front.blog_detail');
 
-
 Route::get('/contact-us', [FrontController::class, 'contactus'])->name('front.contact_us');
 Route::post('/contact-us', [FrontController::class, 'contact_us_store'])->name('front.contact_us_store');
-
 Route::get('refresh_captcha', [FrontController::class, 'refreshCaptcha'])->name('refresh_captcha');
+
 
 //===================================Cart routes start============================
 Route::get('cart', [CartController::class, 'cartList'])->name('cart.list');
@@ -351,51 +349,42 @@ Route::post('cart', [CartController::class, 'addToCart'])->name('cart.store');
 Route::post('update-cart', [CartController::class, 'updateCart'])->name('cart.update');
 Route::post('remove', [CartController::class, 'removeCart'])->name('cart.remove');
 Route::post('clear', [CartController::class, 'clearAllCart'])->name('cart.clear');
-
 Route::post('/coupon', [FrontController::class, 'couponcodeapply'])->name('couponcodeapply');
+Route::post('/remove-coupon', [FrontController::class, 'removeCoupon'])->name('couponcoderemove');
 //===================================Cart routes end============================
+
 
 //===============================Check-Out start=============================
 Route::get('checkout', [FrontController::class, 'checkout'])->name('front.checkout');
 Route::post('checkout/store', [FrontController::class, 'checkoutstore'])->name('checkoutstore');
+Route::get('/get/user/data', [FrontController::class, 'get_userdata'])->name('front.get_userdata');
 //===============================Check-Out end=============================
 
+
+//=================================LOGIN==================================================
 //login
-Route::get('/Login', [FrontController::class, 'frontlogin'])->name('FrontLogin');
-Route::post('login/store', [FrontController::class, 'frontloginstore'])->name('FrontLoginStore');
+Route::get('/Login', [FrontController::class, 'frontlogin'])->name('front.login');
+Route::post('login/store', [FrontController::class, 'frontloginstore'])->name('front.login_store');
 
 //OTP
-Route::get('otp/{guid?}', [FrontController::class, 'otp'])->name('FrontOtp');
-Route::any('otp/submit', [FrontController::class, 'otpsubmit'])->name('FrontOtpSubmit');
+Route::get('otp/{guid?}', [FrontController::class, 'otp'])->name('front.otp');
+Route::any('otp/submit', [FrontController::class, 'verifyOtp'])->name('front.otp_store');
+Route::get('/resend-otp', [FrontController::class, 'resendOtp'])->name('front.resend_otp');
 
 
-//register
-Route::get('Register', [FrontController::class, 'register'])->name('FrontRegister');
-Route::post('Register/Store', [FrontController::class, 'registerstore'])->name('registerstore');
 //Log-Out
 Route::get('front/logout', [FrontController::class, 'Frontlogout'])->name('Frontlogout');
-
-//Forgot-Password Page
-Route::get('Forgot-Password', [FrontController::class, 'forgotpassword'])->name('forgotpassword');
-Route::post('forgotpassword', [FrontController::class, 'forgotpasswordsubmit'])->name('forgotpasswordsubmit');
-
-//New-Password Page
-Route::get('reset-password/{token}', [FrontController::class, 'showResetForm'])->name('password.reset');
-Route::post('reset-password', [FrontController::class, 'set_new_password_submit'])->name('set_new_password_submit');
-
-
-Route::get('Profile', [FrontController::class, 'profile'])->name('FrontProfile');
 
 
 //==========================after login tab view start=============================
 //personal information
 Route::get('My-Account', [FrontController::class, 'myaccount'])->name('myaccount');
 Route::post('My-Account', [FrontController::class, 'myaccountedit'])->name('myaccountedit');
-//change password
-Route::get('Change-Password', [FrontController::class, 'changepassword'])->name('changepassword');
-Route::post('Change-Password', [FrontController::class, 'changepasswordsubmit'])->name('changepasswordsubmit');
+
+Route::get('Profile', [FrontController::class, 'profile'])->name('front.profile');
+
 //my orders
-Route::get('My-Order', [FrontController::class, 'myorders'])->name('myorders');
+Route::get('My-Order', [FrontController::class, 'myorders'])->name('front.myorders');
 //my orders detail
 Route::get('My-Order/detail/{id}', [FrontController::class, 'myordersdetails'])->name('myordersdetails');
 
@@ -403,9 +392,10 @@ Route::get('My-Order/detail/{id}', [FrontController::class, 'myordersdetails'])-
 Route::get('Order/{ORDER_ID?}/{guid?}', [FrontController::class, 'customerorder'])->name('customerorder');
 
 //My-WishList page
-Route::get('My-WishList', [FrontController::class, 'mywish_list'])->name('mywishlist.index');
+Route::get('My-WishList', [FrontController::class, 'mywish_list'])->name('front.mywishlist');
 //add to My-WishList
 Route::any('WishList', [FrontController::class, 'wishlist_store'])->name('wishlist.store');
+Route::any('wish-list/delete', [FrontController::class, 'wishlist_delete'])->name('wishlist.delete');
 //==========================after login tab view end=============================
 
 //privacy policy
@@ -416,20 +406,13 @@ Route::get('Privacy-Policy', [FrontController::class, 'privacypolicy'])->name('p
 Route::get('No-Return/No-Exchange', [FrontController::class, 'noReturnNoExchange'])->name('noReturnNoExchange');
 
 
-Route::get('payment-success', [FrontController::class, 'payment_success'])->name('payment_success');
-Route::get('payment-fail', [FrontController::class, 'payment_fail'])->name('payment_fail');
-
-
-
 Route::get('/weight-bind', [FrontController::class, 'weightBind'])->name('productweight.weightBind');
 
 Route::get('/Page-Not-Available', [FrontController::class, 'ordernotavailable'])->name('ordernotavailable');
 
-Route::any('/Search', [FrontController::class, 'HeaderSearch'])->name('HeaderSearch');
 
 Route::get('/Thank-You', [FrontController::class, 'contactthankyou'])->name('contactthankyou');
 
-Route::get('/check/mobile', [FrontController::class, 'checkmobile'])->name('checkmobile');
 
 //payment
 Route::get('card-payment/{id}', [RazorpayController::class, 'index'])->name('razorpay.index')->where(['id' => '[0-9]+']);
@@ -447,5 +430,3 @@ Route::get('/product/{category_id?}/{product_id?}', [FrontController::class, 'pr
 
 //cms pages
 Route::get('/page/{slugname?}', [FrontController::class, 'cms_pages'])->name('cms_pages');
-
-Route::post('/remove-coupon', [FrontController::class, 'removeCoupon'])->name('couponcoderemove');

@@ -74,32 +74,6 @@
                                                                 name="frmparameter" id="frmparameter">
                                                                 @csrf
                                                                 @method('post')
-                                                                {{--  <div class="row  align-items-center">
-                                                                    <div class="col-md-4  mb-2">
-                                                                        <div class="d-flex align-items-center">
-                                                                            <select name="strCourier"
-                                                                                class="form-control input-group d-flex justify-content-right">
-                                                                                <option value="">Select Courier
-                                                                                </option>
-                                                                                <option value="1">Shree Tirupati
-                                                                                    Courier Services Pvt. Ltd.</option>
-                                                                                <option value="2">Delhivery Tracking
-                                                                                </option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-3 mb-2">
-                                                                        <div
-                                                                            class="input-group d-flex justify-content-right">
-                                                                            <button onclick="multiDelete()" id="Btnmybtn"
-                                                                                value="Delete Selected" type="button"
-                                                                                class="btn btn-primary mx-2">
-                                                                                Update
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>  --}}
-                                                                <hr />
 
                                                                 <table id="scroll-horizontal"
                                                                     class="table nowrap align-middle" style="width:100%">
@@ -120,6 +94,7 @@
                                                                             <th class="all">Order Date</th>
                                                                             <th class="all">Customer Name</th>
                                                                             <th class="all">Mobile</th>
+                                                                            <th class="all">Country</th>
                                                                             <th class="all">City</th>
                                                                             <th class="all">State</th>
                                                                             <th class="all">Pincode</th>
@@ -139,7 +114,7 @@
                                                                                 ->leftJoin('order', 'orderdetail.orderID', '=', 'order.order_id')
                                                                                 ->leftJoin('products', 'orderdetail.productId', '=', 'products.id')
                                                                                 ->get();
-                                                                            {{--  dd($detail);  --}}
+                                                                            
                                                                             $Count = $detail->count() + 3;
                                                                             ?>
                                                                             <tr class="text-center"
@@ -170,8 +145,9 @@
                                                                                 <td>{{ $pending->shipping_cutomerName }}
                                                                                 </td>
                                                                                 <td>{{ $pending->shipping_mobile }}</td>
+                                                                                <td>{{ $pending->countryName }}</td>
                                                                                 <td>{{ $pending->shipping_city }}</td>
-                                                                                <td>{{ $pending->stateName }}</td>
+                                                                                <td>{{ $pending->shiiping_state }}</td>
                                                                                 <td>{{ $pending->shipping_pincode }}</td>
 
                                                                                 <td>{{ $pending->netAmount }}</td>

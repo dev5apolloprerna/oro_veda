@@ -54,8 +54,8 @@
                                             <td>{{ $data->shiiping_address1 . ',' . $data->shiiping_address2 }}</td>
                                             <td>{{ $data->shipping_city ?? '-' }}</td>
                                             <td>{{ $data->shipping_pincode }}</td>
-                                            <td>{{ $data->stateName }}</td>
-                                            <td>{{ $data->country }}</td>
+                                            <td>{{ $data->shiiping_state }}</td>
+                                            <td>{{ $data->countryName }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -88,7 +88,7 @@
                                     <tbody>
                                         <?php $i = 1;
                                         $iTotal = 0;
-
+                                        
                                         ?>
                                         @foreach ($detail as $details)
                                             <tr class="text-center"
@@ -97,7 +97,7 @@
                                                 <td>{{ $details->productname }}</td>
                                                 <td>
                                                     <a target="_blank"
-                                                        href="{{ asset('/uploads/product/yhumbnail/') . '/' . $details->photo }}">
+                                                        href="{{ asset('/uploads/product/thumbnail/') . '/' . $details->photo }}">
                                                         <img width="50" height="50"
                                                             src="{{ asset('uploads/product/thumbnail/') . '/' . $details->photo }}">
                                                     </a>

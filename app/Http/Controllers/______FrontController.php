@@ -151,9 +151,7 @@ class FrontController extends Controller
                 'products.productname',
                 'products.rate',
                 'products.cut_price',
-                'products.weight',
                 'products.description',
-                'products.isStock',
                 'products.slugname',
                 // DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id ORDER BY products.id  LIMIT 1) as photo'),
                 DB::raw('(SELECT categories.slugname FROM categories WHERE  categories.id=products.categoryId ORDER BY products.id  LIMIT 1) as category_slug'),
@@ -188,7 +186,7 @@ class FrontController extends Controller
             )
                 ->orderBy('id', 'desc')
                 ->take(8)
-                ->where(['products.iStatus' => 1, 'products.isDelete' => 0, 'products.isFeatures' => 1])
+                ->where(['products.iStatus' => 1, 'products.isDelete' => 0])
                 ->get();
             // dd($featuredProduct);
 
@@ -799,123 +797,126 @@ class FrontController extends Controller
     public function frontloginstore(Request $request)
     {
         $request->validate([
-            'customermobile' => 'required|digits:10',
-            'password' => 'required',
+            'email' => 'required|email'
         ]);
 
         try {
-            $customer = Customer::where('customermobile', $request->customermobile)->first();
 
-            if ($customer && Hash::check($request->password, $customer->password)) {
-                // Login successful – set session
-                session()->put('customerid', $customer->customerid);
-                session()->put('customername', $customer->customername);
-                session()->put('customermobile', $customer->customermobile);
-                session()->put('customeremail', $customer->customeremail);
+            $customer = Customer::where('customeremail', $request->email)->first();
 
-                return redirect()->route('FrontIndex')->with('success', 'Login successful!');
+            if (!$customer) {
+                return back()->with('error', 'Email not registered. Please sign up first.');
             }
 
-            return back()->with('error', 'Invalid mobile or password');
+            // Generate 6-digit OTP
+            $otp = rand(1000, 9999);
+
+            // Expiry time (5 minutes from now)
+            $expiresAt = Carbon::now()->addMinutes(5);
+
+            // Update customer table with OTP and expiry
+            $customer->update([
+                'otp' => $otp,
+                'otp_expires_at' => $expiresAt,
+            ]);
+
+            // Store email in session for OTP verification
+            session(['front_login_email' => $request->email]);
+
+            $SendEmailDetails = DB::table('sendemaildetails')->where(['id' => 8])->first();
+
+            if ($SendEmailDetails) {
+                $msg = [
+                    'FromMail' => $SendEmailDetails->strFromMail,
+                    'Title' => $SendEmailDetails->strTitle,
+                    'ToEmail' => $request->email,
+                    'Subject' => $SendEmailDetails->strSubject
+                ];
+
+                $data = [
+                    'name' => $customer->customername ?? 'User',
+                    'email' => $request->email,
+                    'otp' => $otp,
+                    'title' => $SendEmailDetails->strTitle ?? 'Login Verification',
+                    'subject' => $SendEmailDetails->strSubject ?? 'Your Login OTP',
+                    'company_name' => 'Oroveda'
+                ];
+
+                // ✅ Send email
+                Mail::send('emails.login_verification', ['data' => $data], function ($message) use ($msg) {
+                    $message->from($msg['FromMail'], $msg['Title']);
+                    $message->to($msg['ToEmail'])->subject($msg['Subject']);
+                });
+            } else {
+                Log::warning('SendEmailDetails with ID 8 not found.');
+            }
+
+            return redirect()->route('front.otp')->with('success', 'OTP has been sent to your email. It will expire in 5 minutes.');
         } catch (\Throwable $th) {
             Log::error('Front Login Error: ' . $th->getMessage(), [
                 'line' => $th->getLine(),
-                'file' => $th->getFile()
+                'file' => $th->getFile(),
             ]);
+
             return back()->with('error', 'Something went wrong. Please try again.');
         }
     }
 
-    public function forgotpassword(Request $request)
+    public function otp(Request $request)
     {
         try {
-            return view('frontview.forgotpassword');
+            return view('frontview.otp');
         } catch (\Throwable $th) {
-            Log::error('Forgot Password Page Error: ' . $th->getMessage());
-            return redirect()->route('FrontIndex')->with('error', 'Unable to load forgot password page.');
+            Log::error('Front Login Page Error: ' . $th->getMessage());
+            return redirect()->route('FrontIndex')->with('error', 'Failed to load login page.');
         }
     }
 
-    public function forgotpasswordsubmit(Request $request)
+    public function verifyOtp(Request $request)
     {
-        try {
-            $request->validate([
-                'email' => 'required|email|exists:customer,customeremail',
-            ]);
+        $request->validate([
+            'email' => 'required|email',
+            'otp' => 'required|numeric'
+        ]);
 
-            $user = Customer::where('customeremail', $request->email)->firstOrFail();
-            $token = Str::random(64);
+        $customer = Customer::where('customeremail', $request->email)
+            ->where('otp', $request->otp)
+            ->first();
+        // dd($customer);
 
-            DB::table('password_resets')->updateOrInsert(
-                ['email' => $user->customeremail],
-                ['token' => $token, 'created_at' => Carbon::now()]
-            );
-
-            $resetLink = url('/reset-password/' . $token . '?email=' . urlencode($user->customeremail));
-            Mail::to($user->customeremail)->send(new PasswordResetMail($user, $resetLink));
-
-
-            return back()->with('success', 'Password reset link sent to your email.');
-        } catch (\Throwable $e) {
-            Log::error('Forgot Password Submit Error: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
-            ]);
-            return back()->with('error', 'Something went wrong. Please try again later.');
+        if (!$customer) {
+            return back()->with('error', 'Invalid OTP.');
         }
+
+        // Check expiry
+        if (Carbon::now()->greaterThan($customer->otp_expires_at)) {
+            return back()->with('error', 'OTP expired. Please request a new one.');
+        }
+
+        // ✅ OTP valid — you can log them in or mark verified
+        $customer->update([
+            'otp' => null,
+            'otp_expires_at' => null,
+        ]);
+
+        // Example: store session or redirect to dashboard
+        session(['customer_id' => $customer->customerid]);
+
+        return redirect()->route('front.dashboard')->with('success', 'Login successful!');
     }
 
-    public function showResetForm(Request $request)
+    public function resendOtp()
     {
-        try {
-            $token = $request->route('token');
-            $email = $request->query('email');
-
-            return view('frontview.newpassword', compact('token', 'email'));
-        } catch (\Throwable $e) {
-            Log::error('Show Reset Form Error: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
-            ]);
-            return redirect()->route('FrontIndex')->with('error', 'Invalid or broken reset link.');
+        $email = session('front_login_email');
+        if (!$email) {
+            return redirect()->route('front.login')->with('error', 'Session expired. Please login again.');
         }
+
+        // Reuse your OTP sending logic here
+        return $this->frontloginstore(new Request(['email' => $email]));
     }
 
-    public function set_new_password_submit(Request $request)
-    {
-        try {
 
-            $request->validate([
-                'token' => 'required',
-                'email' => 'required|email|exists:customer,customeremail',
-                'password' => 'required|min:6|confirmed',
-            ]);
-
-            $tokenData = DB::table('password_resets')
-                ->where('email', $request->email)
-                ->where('token', $request->token)
-                ->first();
-
-            if (!$tokenData) {
-                return back()->withErrors(['email' => 'Invalid or expired password reset token.']);
-            }
-
-            if (Carbon::parse($tokenData->created_at)->addMinutes(5)->isPast()) {
-                return back()->with(['error' => 'This password reset link has expired. Please request a new one.']);
-            }
-
-            Customer::where(['customeremail' => $request->email])->update([
-                "password"  => Hash::make($request->password)
-            ]);
-
-            DB::table('password_resets')->where('email', $request->email)->delete();
-
-            return redirect()->route('FrontIndex')->with('success', 'Your password has been reset successfully!');
-        } catch (\Throwable $e) {
-            Log::error('Set New Password Error: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
-            ]);
-            return back()->with('error', 'Unable to reset password. Please try again.');
-        }
-    }
 
     public function profile(Request $request)
     {
@@ -923,7 +924,7 @@ class FrontController extends Controller
             if (Session::get('customerid')) {
                 return view('frontview.profile');
             } else {
-                return redirect()->route('FrontLogin')->with('error', 'Please login to access your profile.');
+                return redirect()->route('front.login')->with('error', 'Please login to access your profile.');
             }
         } catch (\Throwable $th) {
             Log::error('Profile Page Error: ' . $th->getMessage());
@@ -937,7 +938,7 @@ class FrontController extends Controller
             if (Session::get('customerid')) {
                 return view('frontview.myaccount');
             } else {
-                return redirect()->route('FrontLogin')->with('error', 'Please login to access your account.');
+                return redirect()->route('front.login')->with('error', 'Please login to access your account.');
             }
         } catch (\Throwable $th) {
             Log::error('My Account Page Error: ' . $th->getMessage());
@@ -951,7 +952,7 @@ class FrontController extends Controller
             $session = Session::get('customerid');
 
             if (!$session) {
-                return redirect()->route('FrontLogin')->with('error', 'Session expired. Please login again.');
+                return redirect()->route('front.login')->with('error', 'Session expired. Please login again.');
             }
 
             Session::forget(['customername', 'customeremail', 'customermobile']);
@@ -980,53 +981,13 @@ class FrontController extends Controller
         }
     }
 
-    public function changepassword(Request $request)
-    {
-        try {
-            if (Session::get('customerid')) {
-                return view('frontview.changepassword');
-            } else {
-                return redirect()->route('FrontLogin')->with('error', 'Please login to change your password.');
-            }
-        } catch (\Throwable $th) {
-            Log::error('Change Password Page Error: ' . $th->getMessage());
-            return redirect()->route('FrontIndex')->with('error', 'Failed to load password change page.');
-        }
-    }
-
-    public function changepasswordsubmit(Request $request)
-    {
-        try {
-            $session = Session::get('customerid');
-            $newpassword = $request->newpassword;
-            $confirmpassword = $request->confirmpassword;
-
-            if ($newpassword !== $confirmpassword) {
-                return back()->with('passworderror', 'New password and confirm password do not match.');
-            }
-
-            DB::table('customer')
-                ->where(['iStatus' => 1, 'isDelete' => 0, 'customerid' => $session])
-                ->update(['password' => Hash::make($confirmpassword)]);
-
-            return back()->with('passwordsuccess', 'Password changed successfully!');
-        } catch (\Throwable $th) {
-            Log::error('Change Password Error: ' . $th->getMessage(), [
-                'line' => $th->getLine(),
-                'file' => $th->getFile(),
-                'input' => $request->all(),
-            ]);
-            return redirect()->back()->withInput()->with('error', 'Something went wrong while changing your password.');
-        }
-    }
-
     public function myorders(Request $request)
     {
         try {
             $customerId = Session::get('customerid');
 
             if (!$customerId) {
-                return redirect()->route('FrontLogin')->with('error', 'Please login to view your orders.');
+                return redirect()->route('front.login')->with('error', 'Please login to view your orders.');
             }
 
             $orderItems  = OrderDetail::select(
@@ -1075,7 +1036,7 @@ class FrontController extends Controller
             $session = Session::get('customerid');
 
             if (!$session) {
-                return redirect()->route('FrontLogin')->with('error', 'Please login to view order details.');
+                return redirect()->route('front.login')->with('error', 'Please login to view order details.');
             }
 
             $Order = OrderDetail::select(
@@ -1107,7 +1068,7 @@ class FrontController extends Controller
             $session = Session::get('customerid');
 
             if (!$session) {
-                return redirect()->route('FrontLogin')->with('error', 'Please login to access wishlist.');
+                return redirect()->route('front.login')->with('error', 'Please login to access wishlist.');
             }
 
             $wishlist = wishlist::select(
@@ -1135,7 +1096,7 @@ class FrontController extends Controller
             $session = Session::get('customerid');
 
             if (!$session) {
-                return redirect()->route('FrontLogin')->with('error', 'Please login to use wishlist.');
+                return redirect()->route('front.login')->with('error', 'Please login to use wishlist.');
             }
 
             $wishlist = Wishlist::where([

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Country;
 use Illuminate\Http\Request;
 use App\Models\Payment;
 use Razorpay\Api\Api;
@@ -170,7 +171,7 @@ class RazorpayController extends Controller
                 'isPayment' => 1
             ]);
 
-            $StateName = State::where("stateId", $Order->shiiping_state)->first();
+            $CountryName = Country::where("id", $Order->country)->first();
             $SendEmailDetails = DB::table('sendemaildetails')->where('id', 9)->first();
             $root = $_SERVER['DOCUMENT_ROOT'];
             $filePath = $root . '/mailers/checkoutmail.html';
@@ -273,7 +274,8 @@ class RazorpayController extends Controller
                     'Order' => $Order,
                     'OrderDetail' => $OrderDetail,
                     'htmlRows' => $html, // optional if rendering rows in controller
-                    'StateName' => $StateName,
+                    'StateName' => $Order->shiiping_state,
+                    'CountryName' => $CountryName->countryName,
                 ], function ($message) use ($adminMailData) {
                     $message->from($adminMailData['FromMail'], $adminMailData['Title']);
                     $message->to($adminMailData['ToEmail'])->subject($adminMailData['Subject']);
@@ -294,7 +296,8 @@ class RazorpayController extends Controller
                     'Order' => $Order,
                     'OrderDetail' => $OrderDetail,
                     'htmlRows' => $html, // optional if rendering rows in controller
-                    'StateName' => $StateName,
+                    'StateName' => $Order->shiiping_state,
+                    'CountryName' => $CountryName->countryName,
                 ], function ($message) use ($customerMailData) {
                     $message->from($customerMailData['FromMail'], $customerMailData['Title']);
                     $message->to($customerMailData['ToEmail'])->subject($customerMailData['Subject']);
