@@ -54,6 +54,31 @@
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
+                                <label>Country *</label>
+                                <select name="country" class="form-select" required>
+                                    <option value="">Select Country</option>
+                                    @foreach ($countries as $country)
+                                        <option value="{{ $country->id }}">{{ $country->countryName }}</option>
+                                    @endforeach
+
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Phone *</label>
+                                <input type="text" name="billPhone"
+                                    class="form-control @error('billPhone') is-invalid @enderror"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                    maxlength="10" minlength="10" required="required" autocomplete="off"
+                                    value="{{ old('billPhone') }}">
+                                @error('billPhone')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
                                 <label>First Name *</label>
                                 <input type="text" name="billFirstName" class="form-control"
                                     value="{{ old('billFirstName') }}" required="required" autocomplete="off">
@@ -67,16 +92,13 @@
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label>Phone *</label>
-                                <input type="text" name="billPhone" class="form-control"
-                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');"
-                                    maxlength="10" minlength="10" required="required" autocomplete="off"
-                                    value="{{ old('billPhone') }}">
-                            </div>
-                            <div class="col-md-6 mb-3">
                                 <label>Email Address *</label>
-                                <input type="email" name="billEmail" id="billEmail" class="form-control"
+                                <input type="email" name="billEmail"
+                                    class="form-control @error('billEmail') is-invalid @enderror"
                                     value="{{ old('billEmail') }}" required="required" autocomplete="off">
+                                @error('billEmail')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
 
@@ -92,30 +114,18 @@
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label>Country *</label>
-                                <select name="country" class="form-select" required>
-                                    <option value="">Select Country</option>
-                                    <option value="India">India</option>
-                                    <option value="Us">Us</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
                                 <label>State *</label>
-                                <select name="state" class="form-select" required>
-                                    <option value="">Select State</option>
-                                    <option>Gujarat</option>
-                                    <option>Maharashtra</option>
-                                    <option>Rajasthan</option>
-                                </select>
+                                <input type="text" name="state" class="form-control" value="{{ old('state') }}"
+                                    required="required" autocomplete="off">
                             </div>
-                        </div>
-
-                        <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label>Town / City *</label>
                                 <input name="city" type="text" class="form-control" required
                                     value="{{ old('city') }}">
                             </div>
+                        </div>
+
+                        <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label>PIN Code *</label>
                                 <input name="pincode" type="text" class="form-control" required
@@ -218,7 +228,7 @@
         function checkcustomer() {
 
             var phone = $('#billPhone').val();
-            var url = "{{ route('checkmobile') }}";
+            var url = "{{ route('front.get_userdata') }}";
 
             if (phone.length == 10) {
                 $.ajax({
@@ -273,6 +283,10 @@
         $('#checkout-form').submit(function(e) {
             e.preventDefault();
             showLoader();
+
+            // Clear old errors
+            $('.invalid-feedback').remove();
+            $('.is-invalid').removeClass('is-invalid');
 
             $.ajax({
                 url: "{{ route('checkoutstore') }}",
@@ -346,9 +360,33 @@
                         hideLoader();
                     }
                 },
-                error: function(err) {
-                    alert('Checkout failed. Please try again.');
+                error: function(xhr) {
+
                     hideLoader();
+
+                    if (xhr.status === 422) {
+                        const errors = xhr.responseJSON.errors;
+
+                        $.each(errors, function(field, messages) {
+                            const input = $('[name="' + field + '"]');
+
+                            if (input.length) {
+                                input.addClass('is-invalid');
+
+                                // Add error message
+                                const errorDiv = $(
+                                        '<div class="invalid-feedback d-block"></div>')
+                                    .text(messages[0]);
+
+                                input.after(errorDiv);
+                            } else {
+                                // If field not found, show toast or alert
+                                toastr.error(messages[0]);
+                            }
+                        });
+                    } else {
+                        toastr.error('An unexpected error occurred.');
+                    }
                 }
             });
         });

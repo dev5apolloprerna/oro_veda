@@ -76,6 +76,7 @@
 
                                                                         <th class="all">Email</th>
                                                                         <th class="all">Mobile</th>
+                                                                        <th class="all">Country</th>
                                                                         <th class="all">City</th>
                                                                         <th class="all">State</th>
                                                                         <th class="all">Pincode</th>
@@ -101,8 +102,9 @@
 
                                                                             <td>{{ $cancel->shipping_email }}</td>
                                                                             <td>{{ $cancel->shipping_mobile }}</td>
+                                                                            <td>{{ $cancel->countryName }}</td>
                                                                             <td>{{ $cancel->shipping_city }}</td>
-                                                                            <td>{{ $cancel->stateName }}</td>
+                                                                            <td>{{ $cancel->shiiping_state }}</td>
                                                                             <td>{{ $cancel->shipping_pincode }}</td>
                                                                             <td>{{ $cancel->netAmount }}</td>
                                                                             <td>

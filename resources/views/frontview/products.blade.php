@@ -93,6 +93,7 @@
                                         <form action="{{ route('wishlist.store') }}" method="POST">
                                             @csrf
                                             <input type="hidden" value="{{ $product->id ?? 0 }}" name="productid">
+                                            <input type="hidden" name="attribute_id" value="{{ $product->attribute_id }}">
                                             <input type="hidden" name="price" value="{{ $product->rate }}">
 
                                             <a href="#" class="icon-btn me-2" title="Add to Wishlist">

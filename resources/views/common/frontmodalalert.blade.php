@@ -1,57 +1,47 @@
 @if (Session::has('success') || Session::has('error'))
     <style>
-        .sparsh-modal .modal-content {
-            border-radius: 16px;
-            background: #fff0f5;
-            border: 3px solid #e91e63;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            animation: bounceIn 0.5s ease-out;
+        /* === Oroveda Alert Modal === */
+        .oroveda-modal .modal-content {
+            border-radius: 18px;
+            background: #ffffff;
+            border: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
             overflow: hidden;
+            animation: fadeInUp 0.4s ease-out;
+            position: relative;
         }
 
-        @keyframes bounceIn {
+        @keyframes fadeInUp {
             0% {
-                transform: scale(0.5);
+                transform: translateY(30px);
                 opacity: 0;
             }
 
-            80% {
-                transform: scale(1.05);
-                opacity: 1;
-            }
-
             100% {
-                transform: scale(1);
+                transform: translateY(0);
+                opacity: 1;
             }
         }
 
-        .sparsh-modal .modal-header {
-            background: linear-gradient(45deg, #e91e63, #f06292);
+        .oroveda-modal .modal-header {
+            background: linear-gradient(135deg, #2a7d3e, #8bc34a);
             color: white;
             text-align: center;
             justify-content: center;
             padding: 25px;
             border-bottom: none;
+            position: relative;
         }
 
-        .sparsh-modal .modal-body {
-            text-align: center;
-            padding: 30px;
+        .oroveda-modal .modal-header img {
+            width: 100px;
+            border-radius: 5%;
+            background: #fff;
+            padding: 8px;
+            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
         }
 
-        .sparsh-modal .modal-body i {
-            font-size: 48px;
-            color: {{ Session::has('success') ? '#4caf50' : '#f44336' }};
-            margin-bottom: 10px;
-        }
-
-        .sparsh-modal .modal-body h5 {
-            font-weight: bold;
-            color: #e91e63;
-            margin-bottom: 10px;
-        }
-
-        .sparsh-modal .btn-close {
+        .oroveda-modal .btn-close {
             position: absolute;
             top: 15px;
             right: 20px;
@@ -61,18 +51,50 @@
             opacity: 1;
         }
 
-        .sparsh-modal-logo {
-            width: 100px;
-            margin: 0 auto 10px;
+        .oroveda-modal .modal-body {
+            text-align: center;
+            padding: 35px 25px;
+        }
+
+        .oroveda-modal .modal-body i {
+            font-size: 56px;
+            color: {{ Session::has('success') ? '#4CAF50' : '#f44336' }};
+            margin-bottom: 15px;
+            animation: popIn 0.5s ease-out;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .oroveda-modal .modal-body h5 {
+            font-weight: 700;
+            color: #2a7d3e;
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+
+        .oroveda-modal .modal-body p {
+            color: #444;
+            font-size: 1rem;
+            margin-bottom: 0;
         }
     </style>
 
-    <div class="modal fade sparsh-modal" id="frontAlertModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade oroveda-modal" id="frontAlertModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
 
                 <div class="modal-header position-relative">
-                    <img src="{{ asset('assets/front/img/logo.png') }}" alt="Sparsh Logo" class="sparsh-modal-logo">
+                    <img src="{{ asset('assets/front/images/logo.png') }}" alt="Oroveda Logo">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -90,7 +112,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             const modal = new bootstrap.Modal(document.getElementById('frontAlertModal'));
             modal.show();
-            setTimeout(() => modal.hide(), 4000); // Auto-hide after 4s
+            setTimeout(() => modal.hide(), 4000); // Auto-hide after 4 seconds
         });
     </script>
 @endif
