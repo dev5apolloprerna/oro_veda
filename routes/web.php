@@ -45,7 +45,7 @@ use Illuminate\Support\Facades\Route;
 //     return view('errors.404'); // Make sure the view path matches your custom 404 page
 // });
 
-Route::redirect('/login', '/admin/login')->name('login');
+Route::get('login', fn() => redirect()->route('admin.login'))->name('login');
 
 Route::middleware('guest:admin')->group(function () {
     Route::get('/admin/login', [AdminLoginController::class, 'showAdminLoginForm'])->name('admin.login');
@@ -373,7 +373,7 @@ Route::get('/resend-otp', [FrontController::class, 'resendOtp'])->name('front.re
 
 
 //Log-Out
-Route::get('front/logout', [FrontController::class, 'Frontlogout'])->name('Frontlogout');
+Route::get('front/logout', [FrontController::class, 'Frontlogout'])->name('front.logout');
 
 
 //==========================after login tab view start=============================

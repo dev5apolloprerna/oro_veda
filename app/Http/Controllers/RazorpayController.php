@@ -174,7 +174,13 @@ class RazorpayController extends Controller
             $CountryName = Country::where("id", $Order->country)->first();
             $SendEmailDetails = DB::table('sendemaildetails')->where('id', 9)->first();
             $root = $_SERVER['DOCUMENT_ROOT'];
-            $filePath = $root . '/mailers/checkoutmail.html';
+            if ($server === '127.0.0.1') {
+                $filePath = $root . '/mailers/checkoutmail.html';
+            } elseif ($server === 'http://getdemo.in/') {
+                $filePath = $root . '/mailers/checkoutmail.html';
+            } else {
+                $filePath = $root . '/mailers/contactemail.html';
+            }
 
             if (!file_exists($filePath)) {
                 Log::error("Email template not found: $filePath");

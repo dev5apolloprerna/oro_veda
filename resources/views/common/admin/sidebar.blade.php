@@ -25,14 +25,6 @@
                             <div class="menu-dropdown collapse show" id="sidebarMore" style="">
                                 <ul class="nav nav-sm flex-column">
 
-                                    {{--  <li class="nav-item">
-                                    <a class="nav-link menu-link @if (request()->routeIs('banner.index')) {{ 'active' }} @endif"
-                                        href="{{ route('banner.index') }}">
-                                        <i class="fa-regular fa-rectangle-list"></i>
-                                        <span data-key="t-dashboards">Banner</span>
-                                    </a>
-                                </li>  --}}
-
                                     <li class="nav-item">
                                         <a class="nav-link menu-link @if (request()->routeIs('blog.index')) {{ 'active' }} @endif"
                                             href="{{ route('blog.index') }}">

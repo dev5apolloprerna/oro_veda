@@ -4,7 +4,7 @@
 
 @section('content')
 
-@include('common.frontmodalalert')
+    @include('common.frontmodalalert')
 
     <div class="container my-5">
         <div class="row">
@@ -24,24 +24,24 @@
                                 <div class="card-header">
                                     <h5 class="card-title-profile mb-0">
                                         <i class="bi bi-person-circle me-2"></i>Profile Information
-                                    </h5>                                    
+                                    </h5>
                                 </div>
                                 <div class="card-body">
                                     <form id="profileInfoForm">
                                         <div class="mb-3">
                                             <label for="profileName" class="form-label">Full Name</label>
-                                            <input type="text" class="form-control" id="profileName" value="{{$customer->customername}}"
-                                                disabled>
+                                            <input type="text" class="form-control" id="profileName"
+                                                value="{{ $customer->customername }}" disabled>
                                         </div>
                                         <div class="mb-3">
                                             <label for="profileEmail" class="form-label">Email Address</label>
                                             <input type="email" class="form-control" id="profileEmail"
-                                                value="{{$customer->customeremail}}" disabled>
+                                                value="{{ $customer->customeremail }}" disabled>
                                         </div>
                                         <div class="mb-3">
                                             <label for="profilePhone" class="form-label">Phone Number</label>
                                             <input type="tel" class="form-control" id="profilePhone"
-                                                value="{{$customer->customermobile}}" disabled>
+                                                value="{{ $customer->customermobile }}" disabled>
                                         </div>
                                         <button type="submit" class="btn btn-save-changes w-100 mt-2 d-none">Save
                                             Changes</button>
@@ -59,12 +59,16 @@
                                 </div>
                                 <div class="card-body">
                                     <p class="address-text">
-                                        <strong>{{$customer->customername}}</strong><br>
-                                        {{$customer->billStreetAddress1}}<br>
-                                        {{$customer->billStreetAddress2}}<br>
-                                        Ahmedabad, Gujarat - {{$customer->pincode}}<br>
-                                        India
-                                    </p>                                    
+                                        <strong>{{ $customer->customername }}</strong><br>
+                                        @if ($customer->billStreetAddress1)
+                                            {{ $customer->billStreetAddress1 }}<br>
+                                        @endif
+                                        @if ($customer->billStreetAddress2)
+                                            {{ $customer->billStreetAddress2 }}<br>
+                                        @endif
+                                        {{ $customer->city }}, {{ $customer->state }} - {{ $customer->pincode }}<br>
+                                        {{ $Country->countryName }}
+                                    </p>
                                 </div>
                             </div>
                         </div>

@@ -37,7 +37,7 @@
                         <p class="blog-meta">Posted on {{ date('M d, Y', strtotime($Blog->created_at)) }}</p>
                     </header>
 
-                    <img src="{{ asset('Blog/Thumbnail/' . '/' . $Blog->strPhoto) }}" alt="{{ $Blog->strTitle }}"
+                    <img src="{{ asset('uploads/Blog/Thumbnail/' . $Blog->strPhoto) }}" alt="{{ $Blog->strTitle }}"
                         class="featured-image">
 
                     <div class="blog-content">
@@ -53,7 +53,7 @@
 
                         @foreach ($RecentBlog as $blogs)
                             <a href="{{ route('front.blog_detail', $blogs->strSlug) }}" class="recent-post-item">
-                                <img src="{{ asset('Blog/Thumbnail/' . '/' . $blogs->strPhoto) }}"
+                                <img src="{{ asset('uploads/Blog/Thumbnail/' . '/' . $blogs->strPhoto) }}"
                                     alt="{{ $blogs->strTitle }}" class="recent-post-thumb">
                                 <div class="recent-post-content">
                                     <p class="recent-post-title">{{ $blogs->strTitle }}</p>
