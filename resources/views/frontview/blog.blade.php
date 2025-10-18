@@ -27,7 +27,7 @@
                     <div class="blog-card-2025" data-aos="flip-left" data-aos-delay="200">
                         <a href="{{ route('front.blog_detail', $blog->strSlug) }}" class="blog-link-2025">
                             <div class="blog-image-2025">
-                                <img src="{{ asset('Blog/Thumbnail/' . '/' . $blog->strPhoto) }}"
+                                <img src="{{ asset('uploads/Blog/Thumbnail/' . $blog->strPhoto) }}"
                                     alt="{{ $blog->strTitle }}">
                             </div>
                         </a>

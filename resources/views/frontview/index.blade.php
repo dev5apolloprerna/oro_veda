@@ -219,8 +219,9 @@
                     @endphp
 
                     <div class="col-md-6 col-lg-3" data-aos="zoom-in" data-aos-delay="200">
-                        <a href="{{ route('front.product_detail', [$products->category_slug, $products->slugname]) }}">
-                            <div class="card h-100 shadow-sm border-0 product-card">
+
+                        <div class="card h-100 shadow-sm border-0 product-card">
+                            <a href="{{ route('front.product_detail', [$products->category_slug, $products->slugname]) }}">
                                 <div class="image-wrapper">
                                     <img src="{{ asset('uploads/product/thumbnail/' . $products->photo) }}"
                                         class="card-img-top" alt="{{ $products->productname }}">
@@ -229,7 +230,8 @@
                                             @csrf
                                             <input type="hidden" value="{{ $products->id ?? 0 }}" name="productid">
                                             <input type="hidden" name="price" value="{{ $products->rate }}">
-                                            <input type="hidden" name="attribute_id" value="{{ $products->attribute_id }}">
+                                            <input type="hidden" name="attribute_id"
+                                                value="{{ $products->attribute_id }}">
                                             <a href="#" class="icon-btn me-2">
                                                 <button type="submit" class="btn" title="Add to Wishlist">
                                                     <i class="bi bi-heart"></i>
@@ -241,6 +243,9 @@
                                             class="bi bi-cart3"></i></a>  --}}
                                     </div>
                                 </div>
+                            </a>
+
+                            <a href="{{ route('front.product_detail', [$products->category_slug, $products->slugname]) }}">
                                 <div class="card-body text-center">
                                     <h5 class="card-title fw-semibold">
                                         {{ $products->productname . ' -' . $products->product_attribute_qty . ' ' . $products->attribute_name }}
@@ -255,8 +260,8 @@
                                     </p>
                                     {{--  <a href="#" class="btn-primary-2025 mt-2">Add to Cart</a>  --}}
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     </div>
                 @endforeach
 

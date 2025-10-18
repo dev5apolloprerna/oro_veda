@@ -839,8 +839,9 @@ class FrontController extends Controller
             if (Session::get('customer_id')) {
                 $id = Session::get('customer_id');
                 $customer = Customer::where('customerid', $id)->first();
+                $Country = Country::where('id', $customer->country)->first();
 
-                return view('frontview.after_login.profile', compact('customer'));
+                return view('frontview.after_login.profile', compact('customer', 'Country'));
             } else {
                 return redirect()->route('front.login')->with('error', 'Please login to access your profile.');
             }
@@ -1099,14 +1100,9 @@ class FrontController extends Controller
     public function Frontlogout(Request $request)
     {
         try {
-            $request->session()->forget([
-                'customerid',
-                'customername',
-                'customermobile',
-                'customeremail'
-            ]);
+            $request->session()->forget(['customer_id']);
 
-            return redirect()->route('FrontIndex');
+            return redirect()->route('front.index');
         } catch (\Throwable $th) {
             Log::error('Logout Error: ' . $th->getMessage());
             return redirect()->back()->with('error', 'Failed to logout.');

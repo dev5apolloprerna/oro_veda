@@ -1,5 +1,5 @@
 @php
-    $session = Session::get('customerid');
+    $session = Session::get('customer_id');
     $count = \Cart::getContent()->count();
     $cartItems = \Cart::getContent();
     $wishlist_count = App\Models\Wishlist::where([
@@ -8,10 +8,6 @@
         'customerid' => $session,
     ])->count();
 @endphp
-
-
-
-
 
 <!-- Header with Top Bar and Navigation -->
 <header class="header-2025" id="mainHeader">
@@ -90,7 +86,11 @@
                 <li class="nav-item"><a href="{{ route('front.about') }}" class="nav-link">About</a></li>
                 <li class="nav-item"><a href="{{ route('front.blog') }}" class="nav-link">Blog</a></li>
                 <li class="nav-item"><a href="{{ route('front.contact_us') }}" class="nav-link">Contact</a></li>
-                <li class="nav-item"><a href="#" class="nav-cta">Shop Now</a></li>
+
+                @if (!$session)
+                    <li class="nav-item"><a href="{{ route('front.login') }}" class="nav-cta">Login</a></li>
+                @endif
+
 
                 <!-- 🛒 Cart Menu -->
                 <li class="nav-item cart-menu">
@@ -98,7 +98,41 @@
                         <i class="bi bi-cart3"></i>
                         <span class="cart-count" id="cartCount">{{ $count }}</span>
                     </a>
-                    <div class="cart-dropdown" id="cartDropdown">
+                    @if ($count > 0)
+                        <div class="cart-dropdown" id="cartDropdown">
+                            @foreach ($cartItems as $item)
+                                <div class="cart-item">
+                                    <img src="{{ asset('uploads/product') . '/' . $item->attributes->image }}"
+                                        alt="{{ $item->name }}" class="cart-item-img">
+                                    <div class="cart-item-details">
+                                        <div class="cart-item-name">{{ $item->name }}</div>
+                                        <div class="cart-item-price">
+                                            ₹{{ $item->price . ' (' . $item->attribute_text . ')' }} </div>
+                                        <div class="d-flex "><span class="cart-item-name"> Qty:
+                                            </span> <span> {{ $item->quantity }}</span></div>
+                                    </div>
+                                </div>
+                            @endforeach
+
+                            <div class="cart-footer d-flex justify-content-between">
+                                <a href="{{ route('cart.list') }}" class="view-cart-btn">View Cart</a>
+                                <div class="cart-total">Total: ₹{{ \Cart::getSubTotal() }}</div>
+
+                            </div>
+                        </div>
+                    @endif
+                </li>
+
+
+                <li class="nav-item cart-menu">
+
+                    @if (isset($session))
+                        <a href="#" class="nav-link cart-icon">
+                            <i class="bi bi-person"></i>
+                        </a>
+                    @endif
+
+                    <div class="cart-dropdown" id="cartDropdown" style="width: 150px">
                         @foreach ($cartItems as $item)
                             <div class="cart-item">
                                 <img src="{{ asset('uploads/product') . '/' . $item->attributes->image }}"
@@ -113,11 +147,24 @@
                             </div>
                         @endforeach
 
-                        <div class="cart-footer d-flex justify-content-between">
-                            <a href="{{ route('cart.list') }}" class="view-cart-btn">View Cart</a>
-                            <div class="cart-total">Total: ₹{{ \Cart::getSubTotal() }}</div>
-
-                        </div>
+                        @if (isset($session))
+                            <div class="cart-footer ">
+                                <div class="cart-total"
+                                    style="text-align:start;  border-bottom: 1px solid #ccc; color:#2a7d3e;font-weight: 100;padding-bottom: 5px">
+                                    <a href="{{ route('front.profile') }}">
+                                        <i class="bi bi-person-circle"></i> My
+                                        Profile
+                                    </a>
+                                </div>
+                                <div class="cart-total"
+                                    style="text-align:start; color:#2a7d3e;font-weight: 100;padding-bottom: 5px">
+                                    <a href="{{ route('front.logout') }}">
+                                        <i class="bi bi-box-arrow-right"></i>
+                                        Logout
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </li>
             </ul>
