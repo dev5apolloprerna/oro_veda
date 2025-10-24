@@ -106,7 +106,8 @@
                                                                             <td>{{ $cancel->shipping_city }}</td>
                                                                             <td>{{ $cancel->shiiping_state }}</td>
                                                                             <td>{{ $cancel->shipping_pincode }}</td>
-                                                                            <td>{{ $cancel->netAmount }}</td>
+                                                                            <td>{{ $cancel->currency }}{{ $cancel->netAmount }}
+                                                                            </td>
                                                                             <td>
                                                                                 @if ($cancel->isPayment == 0)
                                                                                     Pending

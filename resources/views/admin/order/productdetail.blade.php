@@ -88,7 +88,7 @@
                                     <tbody>
                                         <?php $i = 1;
                                         $iTotal = 0;
-                                        
+
                                         ?>
                                         @foreach ($detail as $details)
                                             <tr class="text-center"
@@ -106,7 +106,8 @@
                                                 </td>
                                                 <td>{{ $details->quantity }}</td>
                                                 <td>{{ $details->rate }}</td>
-                                                <td class="text-center">Rs.{{ $details->amount }}</td>
+                                                <td class="text-center">{{ $details->currency }}{{ $details->amount }}
+                                                </td>
                                             </tr>
                                             <?php $i++; ?>
 
@@ -126,7 +127,7 @@
                                             <th></th>
                                             <th></th>
                                             <th class="text-center">Total:- &nbsp;</th>
-                                            <th class="text-center">Rs.{{ $total }}</th>
+                                            <th class="text-center">{{ $details->currency }}{{ $total }}</th>
                                         </tr>
                                         <tr>
                                             <th></th>
@@ -135,7 +136,8 @@
                                             <th></th>
                                             <th></th>
                                             <th class="text-center">Discount:- &nbsp;</th>
-                                            <th class="text-center">Rs.{{ $data->discount ?? 0 }}</th>
+                                            <th class="text-center">{{ $details->currency }}{{ $data->discount ?? 0 }}
+                                            </th>
                                         </tr>
                                         <tr>
                                             <th></th>
@@ -144,7 +146,7 @@
                                             <th></th>
                                             <th></th>
                                             <th class="text-center">Net Amount:- &nbsp;</th>
-                                            <th class="text-center">Rs.{{ $data->netAmount }}</th>
+                                            <th class="text-center">{{ $details->currency }}{{ $data->netAmount }}</th>
                                         </tr>
                                     </tbody>
 

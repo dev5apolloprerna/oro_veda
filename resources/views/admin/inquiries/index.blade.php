@@ -37,8 +37,8 @@
                                         <tr>
                                             <th width="1%">No</th>
                                             <th width="5%">Name</th>
-                                            <th width="2%">Mobile</th>
                                             <th width="2%">Email</th>
+                                            <th width="2%">Subject</th>
                                             <th width="1%">Action</th>
                                         </tr>
                                     </thead>
@@ -48,18 +48,18 @@
                                             <tr class="text-center">
                                                 <td>{{ $i + $inquiries->perPage() * ($inquiries->currentPage() - 1) }}
                                                 <td>{{ $inquiry->name }}</td>
-                                                <td>{{ $inquiry->mobileNumber }}</td>
                                                 <td>{{ $inquiry->email }}</td>
+                                                <td>{{ $inquiry->subject }}</td>
                                                 <td>
                                                     <div class="gap-2">
                                                         <a class="mx-1" title="View" href="#"
-                                                            onclick="viewData(<?= $inquiry->inquiry_id ?>)"
-                                                            data-bs-toggle="modal" data-bs-target="#ViewModal">
+                                                            onclick="viewData(<?= $inquiry->id ?>)" data-bs-toggle="modal"
+                                                            data-bs-target="#ViewModal">
                                                             <i class="fa-solid fa-eye"></i>
                                                         </a>
                                                         <a class="" href="#" data-bs-toggle="modal"
                                                             title="Delete" data-bs-target="#deleteRecordModal"
-                                                            onclick="deleteData(<?= $inquiry->inquiry_id ?>);">
+                                                            onclick="deleteData(<?= $inquiry->id ?>);">
                                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                                         </a>
 
@@ -136,34 +136,33 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <table width="100%">
-                            <tbody>
-                                <tr>
-                                    <td class="text-center" style="width: 20%;text-align: justify;padding: 5px;">Name</td>
-                                    <td class="text-center" id="showname"></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" style="width: 20%;text-align: justify;padding: 5px;">Subject</td>
-                                    <td class="text-center" id="showsubject"></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" style="width: 20%;text-align: justify;padding: 5px;">Mobile</td>
-                                    <td class="text-center" id="showmobileNumber"></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" style="width: 20%;text-align: justify;padding: 5px;">Email</td>
-                                    <td class="text-center" id="showemail"></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" style="width: 20%;padding: 5px;">Message</td>
-                                    <td class="text-center" id="showMessage"></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center" style="width: 20%;text-align: justify;padding: 5px;">Name
+                                        </td>
+                                        <td class="text-center" id="showname"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center" style="width: 20%;text-align: justify;padding: 5px;">Email
+                                        </td>
+                                        <td class="text-center" id="showemail"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center" style="width: 20%;text-align: justify;padding: 5px;">Subject
+                                        </td>
+                                        <td class="text-center" id="showsubject"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center" style="width: 20%;padding: 5px;">Message</td>
+                                        <td class="text-center" id="showMessage"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
-    </div>
     </div>
     <!--View Modal End -->
 
@@ -192,7 +191,6 @@
                         $("#modal-title").html(obj.name);
                         $("#showname").html(obj.name);
                         $("#showsubject").html(obj.subject);
-                        $("#showmobileNumber").html(obj.mobileNumber);
                         $("#showemail").html(obj.email);
                         $("#showMessage").html(obj.message);
                     }

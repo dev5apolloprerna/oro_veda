@@ -40,6 +40,14 @@
                                     <th width="10%" class="column-6">Actions</th>
                                 </tr>
 
+                                @php
+                                    if ($countryCode === 'IN') {
+                                        $symbol = '₹';
+                                    } else {
+                                        $symbol = '$';
+                                    }
+                                @endphp
+
                                 @foreach ($cartItems as $item)
                                     <tr class="table_row" style="border-bottom: 1px solid var(--primary-green)">
                                         <td class="column-1">
@@ -50,7 +58,7 @@
                                         </td>
                                         <td class="column-2">{{ $item->name }}</td>
                                         <td class="column-3">
-                                            ₹{{ $item->price . ' (' . $item->attribute_text . ')' }}
+                                            {{ $symbol }}{{ $item->price . ' (' . $item->attribute_text . ')' }}
                                         </td>
                                         <td class="column-4">
 
@@ -58,15 +66,15 @@
                                                 <button onclick="decreaseCount(this, {{ $item->id }})"
                                                     class="qty-btn">−</button>
                                                 <input class="qty-input" type="number" readonly name="quantity"
-                                                    data-price="{{ $item->price }}" id="quantity_{{ $item->id }}"
-                                                    value="{{ $item->quantity }}">
+                                                    data-price="{{ $item->price }}" data-symbol="{{ $symbol }}"
+                                                    id="quantity_{{ $item->id }}" value="{{ $item->quantity }}">
                                                 <button onclick="increaseCount(this, {{ $item->id }})"
                                                     class="qty-btn">+</button>
                                             </div>
 
                                         </td>
                                         <td class="column-5" id="total_{{ $item->id }}">
-                                            ₹{{ $item->price * $item->quantity }}</td>
+                                            {{ $symbol }}{{ $item->price * $item->quantity }}</td>
                                         <td class="column-6">
                                             <form action="{{ route('cart.remove') }}" method="post"
                                                 onsubmit="return confirm('Are you sure you want to remove this item?');">
@@ -104,7 +112,8 @@
                             <div class=" ">
                                 <div class="d-flex justify-content-between  cart-total-value">
                                     <h6>Subtotal</h6>
-                                    <h6 style="margin-right: 15px;" id="subtotal">₹{{ \Cart::getSubTotal() }}</h6>
+                                    <h6 style="margin-right: 15px;" id="subtotal">
+                                        {{ $symbol }}{{ \Cart::getSubTotal() }}</h6>
                                 </div>
                                 @if (Session::has('discount'))
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -117,7 +126,8 @@
                                         </div>
 
                                         <div class="d-flex align-items-center">
-                                            <h6 class="mb-0 mr-2 text-danger">- ₹{{ Session::get('discount') }}</h6>
+                                            <h6 class="mb-0 mr-2 text-danger">-
+                                                {{ $symbol }}{{ Session::get('discount') }}</h6>
                                             <form action="{{ route('couponcoderemove') }}" method="post">
                                                 @csrf
                                                 <button type="submit"
@@ -142,7 +152,8 @@
                                         $discount = Session::get('discount', 0);
                                         $total = $subtotal - $discount;
                                     @endphp
-                                    <h5 style="margin-right: 15px;" id="total">₹{{ $total }}</h5>
+                                    <h5 style="margin-right: 15px;" id="total">{{ $symbol }}{{ $total }}
+                                    </h5>
                                 </div>
 
                             </div>
@@ -201,16 +212,22 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        let price = document.getElementById('quantity_' + itemId).getAttribute('data-price');
-                        let total = price * quantity;
-                        document.getElementById('quantity_' + itemId).value = quantity;
-                        document.getElementById('total_' + itemId).innerText = total;
 
-                        // Optionally update subtotal/total
+                        let input = document.getElementById('quantity_' + itemId);
+                        let price = parseFloat(input.getAttribute('data-price')) || 0;
+
+                        let total = price * quantity;
+
+                        input.value = quantity;
+                        document.getElementById('total_' + itemId).innerText = total.toFixed(2);
+
                         if (data.cart_summary) {
-                            document.getElementById('subtotal').innerText = `₹${data.cart_summary.subtotal}`;
-                            document.getElementById('total').innerText = `₹${data.cart_summary.total}`;
+
+                            document.getElementById('subtotal').innerText = data.cart_summary.subtotal.toFixed(
+                                2);
+                            document.getElementById('total').innerText = data.cart_summary.total.toFixed(2);
                         }
+
                     }
                 });
         }

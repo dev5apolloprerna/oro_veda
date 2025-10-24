@@ -159,7 +159,7 @@ class Cart
      */
 
 
-    public function add($id, $productid  = null, $categoryId = null, $attribute_text  = null, $name = null, $price = null, $quantity = null, $attributes = array(), $conditions = array(), $associatedModel = null)
+    public function add($id, $productid  = null, $categoryId = null, $attribute_text  = null, $name = null, $price = null, $symbol = null, $quantity = null, $attributes = array(), $conditions = array(), $associatedModel = null)
     {
         // if the first argument is an array,
         // we will need to call add again
@@ -175,6 +175,7 @@ class Cart
                         $item['attribute_text'],
                         $item['name'],
                         $item['price'],
+                        $item['symbol'],
                         $item['quantity'],
                         Helpers::issetAndHasValueOrAssignDefault($item['attributes'], array()),
                         Helpers::issetAndHasValueOrAssignDefault($item['conditions'], array()),
@@ -189,6 +190,7 @@ class Cart
                     $id['attribute_text'],
                     $id['name'],
                     $id['price'],
+                    $id['symbol'],
                     $id['quantity'],
                     Helpers::issetAndHasValueOrAssignDefault($id['attributes'], array()),
                     Helpers::issetAndHasValueOrAssignDefault($id['conditions'], array()),
@@ -206,6 +208,7 @@ class Cart
             'attribute_text' => $attribute_text,
             'name' => $name,
             'price' => Helpers::normalizePrice($price),
+            'symbol' => $symbol,
             'quantity' => $quantity,
             'attributes' => new ItemAttributeCollection($attributes),
             'conditions' => $conditions

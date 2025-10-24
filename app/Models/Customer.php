@@ -22,7 +22,6 @@ class Customer extends Model
         'customername',
         'password',
         'customermobile',
-        'customermobile1',
         'customeremail',
         'iStatus',
         'isDelete',

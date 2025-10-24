@@ -14,7 +14,7 @@
                         <li class="nav-item">
                             <a class="nav-link menu-link @if (request()->routeIs('home')) {{ 'active' }} @endif"
                                 href="{{ route('home') }}">
-                                <i class="mdi mdi-speedometer"></i>
+                                <i class="mdi mdi-view-dashboard-outline"></i>
                                 <span data-key="t-dashboards">Dashboards</span>
                             </a>
                         </li>
@@ -28,7 +28,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link menu-link @if (request()->routeIs('blog.index')) {{ 'active' }} @endif"
                                             href="{{ route('blog.index') }}">
-                                            <i class="fa-solid fa-box-open"></i>
+                                            <i class="fa-solid fa-blog"></i>
                                             <span data-key="t-dashboards">Blog</span>
                                         </a>
                                     </li>
@@ -43,7 +43,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link menu-link @if (request()->routeIs('product.index')) {{ 'active' }} @endif"
                                             href="{{ route('product.index') }}">
-                                            <i class="fa-solid fa-box-open"></i>
+                                            <i class="fa-solid fa-box"></i>
                                             <span data-key="t-dashboards">Product</span>
                                         </a>
                                     </li>
@@ -57,7 +57,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link menu-link @if (request()->routeIs('courier.index')) {{ 'active' }} @endif"
                                             href="{{ route('courier.index') }}">
-                                            <i class="fa-solid fa-truck-ramp-box"></i>
+                                            <i class="fa-solid fa-truck-fast"></i>
                                             <span data-key="t-dashboards">Courier</span>
                                         </a>
                                     </li>
@@ -65,7 +65,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link menu-link @if (request()->routeIs('video.index')) {{ 'active' }} @endif"
                                             href="{{ route('video.index') }}">
-                                            <i class="fa-solid fa-truck-ramp-box"></i>
+                                            <i class="fa-solid fa-video"></i>
                                             <span data-key="t-dashboards">Video</span>
                                         </a>
                                     </li>
@@ -73,7 +73,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link menu-link @if (request()->routeIs('testimonial.index')) {{ 'active' }} @endif"
                                             href="{{ route('testimonial.index') }}">
-                                            <i class="fa-solid fa-truck-ramp-box"></i>
+                                            <i class="fa-solid fa-comments"></i>
                                             <span data-key="t-dashboards">Testimonial</span>
                                         </a>
                                     </li>
@@ -93,14 +93,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('order.pending') }}" data-bs-toggle="collapse"
                                 role="button" aria-expanded="true" aria-controls="sidebarMore">
-                                <i class="ri-briefcase-2-line"></i> Order </a>
+                                <i class="fa-solid fa-cart-shopping"></i> Order </a>
                             <div class="menu-dropdown collapse show" id="sidebarMore" style="">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
                                         <a class="nav-link menu-link @if (request()->routeIs('order.pending')) {{ 'active' }} @endif"
                                             href="{{ route('order.pending') }}">
-                                            <i class="fa-solid fa-clock"></i>
-                                            <span data-key="t-dashboards">Order</span>
+                                            <i class="fa-solid fa-list-check"></i>
+                                            <span data-key="t-dashboards">All Order</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -133,7 +133,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#sidebarMore" data-bs-toggle="collapse" role="button"
                                 aria-expanded="true" aria-controls="sidebarMore">
-                                <i class="ri-briefcase-2-line"></i> Setting </a>
+                                <i class="fa-solid fa-gear"></i> Setting </a>
                             <div class="menu-dropdown collapse show" id="sidebarMore" style="">
                                 <ul class="nav nav-sm flex-column">
                                     {{--  <li class="nav-item">
@@ -147,7 +147,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link menu-link @if (request()->routeIs('otherpages.index')) {{ 'active' }} @endif"
                                             href="{{ route('otherpages.index') }}">
-                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-file-lines"></i>
                                             <span data-key="t-dashboards">Other Pages </span>
                                         </a>
                                     </li>

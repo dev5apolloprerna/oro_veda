@@ -9,7 +9,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
 
-                    <img src="{{ asset('assets/front/img/payment_fail.png') }}" alt="Payment Failed" class="img-fluid mb-4"
+                    <img src="{{ asset('assets/front/images/payment_fail.png') }}" alt="Payment Failed" class="img-fluid mb-4"
                         style="max-width: 320px;">
 
                     <h2 class="text-danger mb-3">Oops! Your Payment Didn't Go Through</h2>
@@ -21,8 +21,8 @@
                         This could be due to a network issue, cancelled transaction, or insufficient balance.
                     </p>
 
-                    <a href="{{ route('cart.list') }}" class="btn btn-outline-primary mx-2">Back to Cart</a>
-                    <a href="{{ route('FrontIndex') }}" class="btn btn-primary mx-2">Continue Shopping</a>
+                    <a href="{{ route('cart.list') }}" class="btn-primary-2025 mx-2">Back to Cart</a>
+                    <a href="{{ route('front.index') }}" class="btn-primary-2025 mx-2">Continue Shopping</a>
 
                 </div>
             </div>

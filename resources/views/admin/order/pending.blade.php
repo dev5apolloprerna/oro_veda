@@ -114,7 +114,7 @@
                                                                                 ->leftJoin('order', 'orderdetail.orderID', '=', 'order.order_id')
                                                                                 ->leftJoin('products', 'orderdetail.productId', '=', 'products.id')
                                                                                 ->get();
-                                                                            
+
                                                                             $Count = $detail->count() + 3;
                                                                             ?>
                                                                             <tr class="text-center"
@@ -222,14 +222,15 @@
                                                                                     <td colspan="2"
                                                                                         class="price text-left"
                                                                                         data-title="Price">
-                                                                                        <span> &#x20B9; {{ $item->rate }}
+                                                                                        <span> {{ $item->currency }}
+                                                                                            {{ $item->rate }}
                                                                                         </span>
                                                                                     </td>
 
                                                                                     <td colspan="2"
                                                                                         class="total-amount text-right"
                                                                                         data-title="Total">
-                                                                                        <span> &#x20B9;
+                                                                                        <span> {{ $item->currency }}
                                                                                             {{ $item->rate * $item->quantity }}</span>
                                                                                     </td>
 

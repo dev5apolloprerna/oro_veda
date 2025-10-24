@@ -140,6 +140,14 @@
                     </div>
                 </div>
 
+                @php
+                    if ($countryCode === 'IN') {
+                        $symbol = '₹';
+                    } else {
+                        $symbol = '$';
+                    }
+                @endphp
+
                 <!-- Order Summary -->
                 <div class="col-lg-5">
                     <div class="order-summary">
@@ -159,21 +167,21 @@
                                         <td> {{ $item->name . ' (' . $item->attribute_text . ')' }}
                                         </td>
                                         <td> Qty : {{ $item->quantity }} </td>
-                                        <td>₹{{ number_format($item->price * $item->quantity, 2) }}</td>
+                                        <td>{{ $symbol }}{{ number_format($item->price * $item->quantity, 2) }}</td>
                                     </tr>
                                 @endforeach
 
                                 <tr>
                                     <td class="fw-bold">Subtotal</td>
                                     <td></td>
-                                    <td>₹{{ number_format($subtotal, 2) }}</td>
+                                    <td>{{ $symbol }}{{ number_format($subtotal, 2) }}</td>
                                 </tr>
 
                                 @if ($discount > 0)
                                     <tr>
                                         <td>Discount</td>
                                         <td></td>
-                                        <td>- ₹{{ number_format($discount, 2) }}</td>
+                                        <td>- {{ $symbol }}{{ number_format($discount, 2) }}</td>
                                     </tr>
                                 @endif
 
@@ -186,7 +194,7 @@
                                 <tr>
                                     <td>Total</td>
                                     <td></td>
-                                    <td><strong>₹{{ number_format($grandTotal, 2) }}</strong></td>
+                                    <td><strong>{{ $symbol }}{{ number_format($grandTotal, 2) }}</strong></td>
                                 </tr>
 
                             </tbody>
@@ -301,7 +309,7 @@
                         const options = {
                             "key": "{{ config('app.razorpay_key') }}",
                             "amount": response.amount * 100,
-                            "currency": "INR",
+                            "currency": response.currency,
                             "order_id": response.razorpay_order_id,
                             "name": "Oro Veda",
                             "description": "Order Payment",

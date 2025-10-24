@@ -11,7 +11,6 @@
 
         <div class="header-content">
             <h1>Products</h1>
-
             <nav class="bredcrum">
                 <ul>
                     <li><a href="{{ route('front.index') }}">Home</a></li>
@@ -48,11 +47,18 @@
                     </div>
                 </div>
 
+                @php
+                    // decide which base symbol and product-level price to show
+                    $isIN = $countryCode === 'IN';
+                    $symbol = $isIN ? '₹' : '$';
+                @endphp
+
                 <!-- Product Info -->
                 <div class="col-md-6" data-aos="fade-left">
                     <h2 class="fw-bold mb-3 product-title">{{ $ProductDetail->productname }}</h2>
-                    <p class="fs-4 fw-semibold mb-3 product-price">₹ <span id="product-price">
-                            {{ $ProductDetail->rate }} </span>
+                    <p class="fs-4 fw-semibold mb-3 product-price">
+                        {{ $symbol }}
+                        <span id="product-price">{{ $isIN ? $ProductDetail->rate : $ProductDetail->usd_rate }}</span>
                     </p>
 
                     @php
@@ -63,8 +69,37 @@
                         <label for="size" class="form-label me-3 fw-semibold">Size</label>
                         <select id="attribute-select" name="size" class="form-select w-25 me-3" required>
                             @foreach ($attributes as $attribute)
-                                <option value="{{ $attribute->id }}"
-                                    data-price="{{ (float) $attribute->product_attribute_price }}"
+                                @php
+                                    // attribute price in INR from DB
+                                    $attrInr = (float) $attribute->product_attribute_price;
+
+                                    // if visitor is IN -> use INR attribute price directly
+                                    if ($isIN) {
+                                        $attrPriceForView = number_format($attrInr, 2, '.', '');
+                                    } else {
+                                        // For non-IN visitors:
+                                        // If your attribute has its own USD value (e.g., $attribute->product_attribute_usd_price) use it.
+                                        // Otherwise convert using product-level ratio passed from controller.
+                                        if (
+                                            isset($attribute->product_attribute_usd_price) &&
+                                            $attribute->product_attribute_usd_price != ''
+                                        ) {
+                                            $attrPriceForView = number_format(
+                                                (float) $attribute->product_attribute_usd_price,
+                                                2,
+                                                '.',
+                                                '',
+                                            );
+                                        } elseif ($conversionRatio > 0) {
+                                            $attrPriceForView = number_format($attrInr * $conversionRatio, 2, '.', '');
+                                        } else {
+                                            // fallback to INR price if conversion unavailable
+                                            $attrPriceForView = number_format($attrInr, 2, '.', '');
+                                        }
+                                    }
+                                @endphp
+
+                                <option value="{{ $attribute->id }}" data-price="{{ $attrPriceForView }}"
                                     data-text="{{ $attribute->product_attribute_qty . ' ' . $attribute->attribute_name }}"
                                     {{ (int) $attribute->id === (int) $selectedAttrId ? 'selected' : '' }}>
                                     {{ $attribute->product_attribute_qty . ' ' . $attribute->attribute_name }}
@@ -87,7 +122,9 @@
                             <input type="hidden" name="productname" value="{{ $ProductDetail->productname }}">
                             <input type="hidden" name="image" value="{{ $ProductDetail->photo }}">
                             <input type="hidden" name="attribute_id" id="selected-attribute-id" value="">
-                            <input type="hidden" name="price" id="hidden-price" value="{{ $ProductDetail->rate }}">
+                            <input type="hidden" name="price" id="hidden-price"
+                                value="{{ $isIN ? $ProductDetail->rate : $ProductDetail->usd_rate }}">
+                            <input type="hidden" name="symbol" value="{{ $symbol }}">
                             <input type="hidden" name="attribute_text" id="selected-attribute-text" value="">
 
                             <button class="btn-primary-2025 text-white px-4" type="submit">
@@ -209,26 +246,26 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Set initial price based on selected attribute
-            let initialPrice = document.querySelector('#attribute-select option:checked');
-            document.getElementById('product-price').innerText = initialPrice.getAttribute('data-price');
-            document.getElementById('selected-attribute-id').value = initialPrice.value;
-            document.getElementById('hidden-price').value = initialPrice.getAttribute('data-price'); // ✅ fixed
-            document.getElementById('selected-attribute-text').value = initialPrice.getAttribute('data-text');
-        });
+            // set initial UI values from server-rendered option
+            const initialOption = $('#attribute-select option:selected');
+            const initPrice = parseFloat(initialOption.data('price')) || 0;
+            $('#product-price').text(initPrice.toFixed(2));
+            $('#hidden-price').val(initPrice.toFixed(2));
+            $('#selected-attribute-id').val(initialOption.val());
+            $('#selected-attribute-text').val(initialOption.data('text'));
 
-        document.getElementById('attribute-select').addEventListener('change', function() {
-            let selectedOption = this.options[this.selectedIndex];
-            let newPrice = selectedOption.getAttribute('data-price');
-            let selectedId = selectedOption.value;
-            let attributeText = selectedOption.getAttribute('data-text');
-
-            document.getElementById('product-price').innerText = newPrice;
-            document.getElementById('hidden-price').value = newPrice;
-            document.getElementById('selected-attribute-id').value = selectedId;
-            document.getElementById('selected-attribute-text').value = attributeText;
+            // on change, read the already-correct price from data-price
+            $('#attribute-select').on('change', function() {
+                const selected = $(this).find(':selected');
+                const price = parseFloat(selected.data('price')) || 0;
+                $('#product-price').text(price.toFixed(2));
+                $('#hidden-price').val(price.toFixed(2));
+                $('#selected-attribute-id').val(selected.val());
+                $('#selected-attribute-text').val(selected.data('text'));
+            });
         });
     </script>
+
 
 
 

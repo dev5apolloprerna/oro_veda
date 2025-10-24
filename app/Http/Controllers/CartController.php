@@ -8,14 +8,21 @@ use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
-    public function cartList()
+    public function cartList(Request $request)
     {
         try {
             $cartItems = \Cart::getContent();
-            // dd($cartItems);
+
             $session = Session::get('customerid');
 
-            return view('frontview.cart', compact('cartItems'));
+            $subtotal = \Cart::getSubTotal();
+            $discount = session()->get('discount', 0);
+            $total = $subtotal - $discount;
+
+            $ip = $request->ip();
+            $countryCode = getCountryCode($ip);
+
+            return view('frontview.cart', compact('cartItems',  'subtotal', 'discount', 'total', 'countryCode'));
         } catch (\Throwable $th) {
             Log::error('Cart List Error: ' . $th->getMessage(), ['trace' => $th->getTraceAsString()]);
             return back()->with('error', 'Failed to load cart.');
@@ -34,6 +41,7 @@ class CartController extends Controller
                 'attribute_text' => $request->attribute_text,
                 'name' => $request->productname,
                 'price' => $request->price,
+                'symbol' => $request->symbol,
                 'quantity' => $request->quantity,
                 'attributes' => array(
                     'image' => $request->image,
@@ -87,7 +95,7 @@ class CartController extends Controller
                 ]
             );
 
-            $subtotal = \Cart::getSubTotal(); // If your cart library supports it
+            $subtotal = \Cart::getSubTotal();
             $total = $subtotal;
 
             return response()->json([

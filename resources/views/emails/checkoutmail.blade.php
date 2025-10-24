@@ -10,7 +10,7 @@
     <!-- Header -->
     <tr>
         <td style="padding: 30px; text-align: center; color: #000;">
-            <img src="https://getdemo.in/designer2/oroveda/assets/images/logo.png" alt="OroVeda Logo"
+            <img src="https://www.getdemo.in/oro_veda/assets/images/logo.png" alt="OroVeda Logo"
                 style="width: 180px; margin-bottom: 10px;">
             <h2 style="margin: 0; font-size: 24px; color: #2a7d3e;">Thank you for your order!</h2>
             <p style="margin: 5px 0 0; font-size: 14px; color: #666;">{{ config('app.name') }}</p>
@@ -97,7 +97,7 @@
                             <td style="padding: 10px; text-align: center;">{{ $i++ }}</td>
                             <td style="padding: 10px;">{{ $cartItem->productname }}</td>
                             <td style="padding: 10px; text-align: center;">
-                                <img src="https://sparshcosmo-group.com/uploads/product/thumbnail/{{ $cartItem->photo }}"
+                                <img src="https://www.getdemo.in/oro_veda/uploads/product/thumbnail/{{ $cartItem->photo }}"
                                     width="40" height="40" style="border-radius: 5px;">
                             </td>
                             <td style="padding: 10px; text-align: center;">

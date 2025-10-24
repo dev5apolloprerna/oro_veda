@@ -211,9 +211,11 @@
                     @php
                         if ($countryCode === 'IN') {
                             $price = $products->rate; // INR price
+                            $cut_price = $products->cut_price; // INR price
                             $symbol = '₹';
                         } else {
                             $price = $products->usd_rate; // USD price
+                            $cut_price = $products->usd_cut_price; // INR price
                             $symbol = '$';
                         }
                     @endphp
@@ -229,7 +231,7 @@
                                         <form action="{{ route('wishlist.store') }}" method="POST">
                                             @csrf
                                             <input type="hidden" value="{{ $products->id ?? 0 }}" name="productid">
-                                            <input type="hidden" name="price" value="{{ $products->rate }}">
+                                            <input type="hidden" name="price" value="{{ $price }}">
                                             <input type="hidden" name="attribute_id"
                                                 value="{{ $products->attribute_id }}">
                                             <a href="#" class="icon-btn me-2">
@@ -252,8 +254,8 @@
                                     </h5>
                                     <p class="fw-bold mb-1 product-price">
                                         <span
-                                            class="text-decoration-line-through text-muted">{{ $symbol }}{{ $products->cut_price }}</span>
-                                        {{ $symbol }}{{ $products->product_attribute_price }}
+                                            class="text-decoration-line-through text-muted">{{ $symbol }}{{ $cut_price }}</span>
+                                        {{ $symbol }}{{ $price }}
                                     </p>
                                     <p class="card-text small text-muted">
                                         {{ \Illuminate\Support\Str::words(strip_tags($products->description), 20, '...') }}
