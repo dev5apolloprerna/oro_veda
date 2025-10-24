@@ -60,9 +60,7 @@
 <table style="width: 100%;">
     <tr class="no-border">
         <td class="header-logo">
-            <img width="150"
-                src="https://z-cdn-media.chatglm.cn/files/ebf4f35e-4670-409e-9919-fce52af2755c_VArli%20art%20logo%20%282%29.png?auth_key=1791268795-d8f64ca02b6d4db397c7da0deff53a2d-0-ab1c221906f5e997a247bf82da051826"
-                alt="Logo">
+            <img width="150" src="https://www.getdemo.in/oro_veda/assets/images/logo.png" alt="Logo">
         </td>
     </tr>
 </table>
@@ -137,7 +135,7 @@
             <td style="text-align: center;">{{ $details->product_attribute_qty . ' (' . $details->name . ')' }}</td>
             <td style="text-align: center;">{{ $details->quantity }}</td>
             <td style="text-align: center;">{{ $details->rate }}</td>
-            <td style="text-align: right;">Rs. {{ $details->amount }}</td>
+            <td style="text-align: right;">{{ $details->currency }} {{ $details->amount }}</td>
         </tr>
         @php $iTotal += $details->amount; @endphp
     @endforeach
@@ -146,18 +144,18 @@
     <tr class="totals-row">
         <td colspan="5"></td>
         <td style="text-align: center;">Net Amount</td>
-        <td style="text-align: right;">Rs. {{ $iTotal }}</td>
+        <td style="text-align: right;">{{ $details->currency }} {{ $iTotal }}</td>
     </tr>
     <tr class="totals-row">
         <td colspan="5"></td>
         <td style="text-align: center;">Discount</td>
         <td style="text-align: right;">
-            {{ $data->discount ? 'Rs. ' . $data->discount : '-' }}
+            {{ $data->discount ? $details->currency . $data->discount : '-' }}
         </td>
     </tr>
     <tr class="totals-row">
         <td colspan="5"></td>
         <td style="text-align: center;">Net Payable</td>
-        <td style="text-align: right;">Rs. {{ $data->netAmount }}</td>
+        <td style="text-align: right;">{{ $details->currency }} {{ $data->netAmount }}</td>
     </tr>
 </table>

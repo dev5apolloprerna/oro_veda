@@ -71,6 +71,7 @@ class OrderController extends Controller
                 'countries.countryName',
                 'order.docketNo',
                 'order.isDispatched',
+                'order.currency',
 
             )
                 ->orderBy('order_id', 'desc')
@@ -258,6 +259,7 @@ class OrderController extends Controller
             'order.shiiping_state',
             'order.shipping_city',
             'order.shipping_pincode',
+            'order.currency',
             'order.amount as totalamount',
             'orderdetail.quantity',
             'orderdetail.rate',
@@ -314,6 +316,7 @@ class OrderController extends Controller
                 'order.docketNo',
                 'order.discount',
                 'order.netAmount',
+                'order.currency',
                 'order.amount as totalamount',
                 'orderdetail.orderID',
                 'orderdetail.quantity',

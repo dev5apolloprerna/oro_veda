@@ -173,39 +173,6 @@ class RazorpayController extends Controller
 
             $CountryName = Country::where("id", $Order->country)->first();
             $SendEmailDetails = DB::table('sendemaildetails')->where('id', 9)->first();
-            $root = $_SERVER['DOCUMENT_ROOT'];
-            if ($server === '127.0.0.1') {
-                $filePath = $root . '/mailers/checkoutmail.html';
-            } elseif ($server === 'http://getdemo.in/') {
-                $filePath = $root . '/mailers/checkoutmail.html';
-            } else {
-                $filePath = $root . '/mailers/contactemail.html';
-            }
-
-            if (!file_exists($filePath)) {
-                Log::error("Email template not found: $filePath");
-                abort(500, "Email template not found.");
-            }
-
-            $file = file_get_contents($filePath);
-            $address = $Order->shiiping_address1 . ',' . $Order->shiiping_address2;
-
-            $replacements = [
-                '#name' => $Order->shipping_cutomerName,
-                '#email' => $Order->shipping_email,
-                '#mobile' => $Order->shipping_mobile,
-                '#mobile1' => $Order->shipping_mobile1,
-                '#address' => $address,
-                '#state' => $StateName->stateName ?? 'N/A',
-                '#city' => $Order->shipping_city,
-                '#pincode' => $Order->shipping_pincode,
-                '#amount' => $Order->amount,
-                '#netAmount' => $Order->netAmount
-            ];
-
-            foreach ($replacements as $key => $value) {
-                $file = str_replace($key, $value, $file);
-            }
 
             $OrderDetail = OrderDetail::select(
                 'orderdetail.orderDetailId',
@@ -263,7 +230,6 @@ class RazorpayController extends Controller
                 </tr>';
             }
 
-            $file = str_replace('#tableProductTr', $html, $file);
             $setting = DB::table("setting")->select('email')->first();
 
             // Send mail to admin
@@ -317,7 +283,7 @@ class RazorpayController extends Controller
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
             ]);
-            return redirect()->route('checkout')->with('error', 'Something went wrong while processing your order.');
+            return redirect()->route('front.checkout')->with('error', 'Something went wrong while processing your order.');
         }
     }
 

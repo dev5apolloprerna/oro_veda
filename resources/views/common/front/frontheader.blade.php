@@ -1,4 +1,6 @@
 @php
+
+    use Illuminate\Http\Request;
     $session = Session::get('customer_id');
     $count = \Cart::getContent()->count();
     $cartItems = \Cart::getContent();
@@ -7,6 +9,16 @@
         'isDelete' => 0,
         'customerid' => $session,
     ])->count();
+
+    $ip = request()->ip();
+    $countryCode = getCountryCode($ip);
+
+    if ($countryCode === 'IN') {
+        $symbol = '₹';
+    } else {
+        $symbol = '$';
+    }
+
 @endphp
 
 <!-- Header with Top Bar and Navigation -->
@@ -107,7 +119,8 @@
                                     <div class="cart-item-details">
                                         <div class="cart-item-name">{{ $item->name }}</div>
                                         <div class="cart-item-price">
-                                            ₹{{ $item->price . ' (' . $item->attribute_text . ')' }} </div>
+                                            {{ $symbol }}{{ $item->price . ' (' . $item->attribute_text . ')' }}
+                                        </div>
                                         <div class="d-flex "><span class="cart-item-name"> Qty:
                                             </span> <span> {{ $item->quantity }}</span></div>
                                     </div>
@@ -116,7 +129,7 @@
 
                             <div class="cart-footer d-flex justify-content-between">
                                 <a href="{{ route('cart.list') }}" class="view-cart-btn">View Cart</a>
-                                <div class="cart-total">Total: ₹{{ \Cart::getSubTotal() }}</div>
+                                <div class="cart-total">Total: {{ $symbol }}{{ \Cart::getSubTotal() }}</div>
 
                             </div>
                         </div>
@@ -140,7 +153,8 @@
                                 <div class="cart-item-details">
                                     <div class="cart-item-name">{{ $item->name }}</div>
                                     <div class="cart-item-price">
-                                        ₹{{ $item->price . ' (' . $item->attribute_text . ')' }} </div>
+                                        {{ $symbol }}{{ $item->price . ' (' . $item->attribute_text . ')' }}
+                                    </div>
                                     <div class="d-flex "><span class="cart-item-name"> Qty:
                                         </span> <span> {{ $item->quantity }}</span></div>
                                 </div>

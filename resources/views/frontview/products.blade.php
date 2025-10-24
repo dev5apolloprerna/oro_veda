@@ -77,9 +77,11 @@
                     @php
                         if ($countryCode === 'IN') {
                             $price = $product->rate; // INR price
+                            $cut_price = $product->cut_price; // INR price
                             $symbol = '₹';
                         } else {
                             $price = $product->usd_rate; // USD price
+                            $cut_price = $product->usd_cut_price; // INR price
                             $symbol = '$';
                         }
                     @endphp
@@ -94,7 +96,7 @@
                                             @csrf
                                             <input type="hidden" value="{{ $product->id ?? 0 }}" name="productid">
                                             <input type="hidden" name="attribute_id" value="{{ $product->attribute_id }}">
-                                            <input type="hidden" name="price" value="{{ $product->rate }}">
+                                            <input type="hidden" name="price" value="{{ $price }}">
 
                                             <a href="#" class="icon-btn me-2" title="Add to Wishlist">
                                                 <button type="submit" class="btn">
@@ -113,8 +115,8 @@
                                     </h5>
                                     <p class="fw-bold mb-1 product-price">
                                         <span
-                                            class="text-decoration-line-through text-muted">{{ $symbol }}{{ $product->cut_price }}</span>
-                                        {{ $symbol }}{{ $product->product_attribute_price }}
+                                            class="text-decoration-line-through text-muted">{{ $symbol }}{{ $cut_price }}</span>
+                                        {{ $symbol }}{{ $price }}
                                     </p>
                                     <p class="card-text small text-muted">
                                         {{ \Illuminate\Support\Str::words(strip_tags($product->description), 16, '...') }}
@@ -129,8 +131,8 @@
                                         <input type="hidden" name="attribute_id" value="{{ $product->attribute_id }}">
                                         <input type="hidden" name="attribute_text"
                                             value="{{ $product->product_attribute_qty . ' ' . $product->attribute_name }}">
-                                        <input type="hidden" name="price"
-                                            value="{{ $product->product_attribute_price }}">
+                                        <input type="hidden" name="price" value="{{ $price }}">
+                                        <input type="hidden" name="symbol" value="{{ $symbol }}">
                                         <input type="hidden" name="quantity" value="1">
 
                                         <a href="#" class="btn-primary-2025 mt-2">

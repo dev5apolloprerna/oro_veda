@@ -37,17 +37,19 @@ class FrontController extends Controller
 {
     private function getCountryCode($ip)
     {
-        // Use ipapi.co for free location lookup
-        $response = @file_get_contents("https://ipapi.co/{$ip}/json/");
+        // $ip = '8.8.8.8';
+        $response = @file_get_contents("http://ip-api.com/json/{$ip}");
+
         if ($response) {
             $data = json_decode($response, true);
-            if (!empty($data['country'])) {
-                return $data['country']; // returns 'IN', 'US', etc.
+            if (!empty($data['countryCode'])) {
+                return $data['countryCode']; // e.g. 'IN'
             }
         }
-        // Default fallback
         return 'US';
     }
+
+
 
     public function index(Request $request)
     {
@@ -76,7 +78,9 @@ class FrontController extends Controller
                 'products.categoryId',
                 'products.productname',
                 'products.rate',
+                'products.usd_rate',
                 'products.cut_price',
+                'products.usd_cut_price',
                 'products.description',
                 'products.slugname',
                 // DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id ORDER BY products.id  LIMIT 1) as photo'),
@@ -114,6 +118,7 @@ class FrontController extends Controller
                 ->take(8)
                 ->where(['products.iStatus' => 1, 'products.isDelete' => 0])
                 ->get();
+            // dd($featuredProduct);
 
             return view('frontview.index', compact('Testimonial', 'blogs', 'featuredProduct', 'offers', 'countryCode'));
         } catch (\Throwable $th) {
@@ -186,6 +191,7 @@ class FrontController extends Controller
                 'products.rate',
                 'products.usd_rate',
                 'products.cut_price',
+                'products.usd_cut_price',
                 DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id ORDER BY products.id LIMIT 1) as photo'),
 
                 DB::raw('(SELECT categories.slugname FROM categories WHERE  categories.id=products.categoryId ORDER BY products.id  LIMIT 1) as category_slug'),
@@ -249,10 +255,16 @@ class FrontController extends Controller
     public function product_detail(Request $request, $category_id = null, $product_id = null)
     {
         try {
+            $ip = $request->ip();
+            $countryCode = $this->getCountryCode($ip);
+
             $ProductDetail = Product::select(
                 'products.id',
                 'products.productname',
                 'products.rate',
+                'products.usd_rate',
+                'products.cut_price',
+                'products.usd_cut_price',
                 'products.description',
                 'products.categoryId',
                 DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id  LIMIT 1) as photo'),
@@ -276,8 +288,6 @@ class FrontController extends Controller
                 ->where(['products.iStatus' => 1, 'products.isDelete' => 0, 'products.slugname' => $product_id])
                 ->first();
 
-            $Category = Category::where(['slugname' => $category_id])->first();
-
             $Photos = "";
             if ($ProductDetail) {
                 $Photos = Productphotos::where([
@@ -288,28 +298,6 @@ class FrontController extends Controller
                     ->get();
             }
 
-            $RelatedProduct = Product::select(
-                'products.id',
-                'products.productname',
-                'products.rate',
-                'products.cut_price',
-                'products.description',
-                'products.slugname',
-                'products.categoryId',
-                DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id ORDER BY products.id  LIMIT 1) as photo'),
-                DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id ORDER BY products.id LIMIT 1,1) as backphoto'),
-                DB::raw('(SELECT categories.id FROM categories inner join multiplecategory on categories.id=multiplecategory.categoryid where multiplecategory.productid=products.id ORDER BY products.id LIMIT 1) as categoryId')
-            )
-                ->orderBy('id', 'DESC')
-                ->take(4)
-                ->where([
-                    'products.iStatus' => 1,
-                    'products.isDelete' => 0,
-                    'products.categoryId' => $Category->id,
-                ])
-                ->where('products.slugname', '!=', $product_id)
-                ->get();
-
             $attributes = ProductAttributes::select(
                 'product_attributes.*',
                 'attributes.name as attribute_name'
@@ -319,7 +307,7 @@ class FrontController extends Controller
                 ->orderByRaw('CAST(product_attributes.product_attribute_qty AS UNSIGNED) desc')
                 ->get();
 
-            return view('frontview.productdetail', compact('ProductDetail', 'Photos',  'Category', 'category_id', 'product_id', 'RelatedProduct', 'attributes'));
+            return view('frontview.productdetail', compact('ProductDetail', 'Photos', 'category_id', 'product_id', 'attributes', 'countryCode'));
         } catch (\Throwable $th) {
             Log::error('Product Detail Page Error: ' . $th->getMessage(), [
                 'category_id' => $category_id,
@@ -516,11 +504,14 @@ class FrontController extends Controller
                 return redirect()->route('front.index')->with('error', 'Your cart is empty!');
             }
 
+            $ip = $request->ip();
+            $countryCode = $this->getCountryCode($ip);
+
             $Shipping = Shipping::orderBy('id', 'desc')->first();
             $State = State::orderBy('stateName', 'asc')->get();
             $countries = Country::orderBy('countryName', 'asc')->get();
 
-            return view('frontview.checkout', compact('Shipping', 'Coupon', 'State', 'countries'));
+            return view('frontview.checkout', compact('Shipping', 'Coupon', 'State', 'countries', 'countryCode'));
         } catch (\Throwable $th) {
             Log::error('Checkout View Error', [
                 'message' => $th->getMessage(),
@@ -555,7 +546,11 @@ class FrontController extends Controller
             'billPhone' => [
                 'required',
                 'digits:10',
-                Rule::unique('customer', 'customermobile')->where(fn($q) => $q->where('isDelete', 0)),
+                // Rule::unique('customer', 'customermobile')->where(fn($q) => $q->where('isDelete', 0)),
+                Rule::unique('customer', 'customermobile')->where(function ($q) use ($request) {
+                    return $q->where('isDelete', 0)
+                        ->where('country', $request->country);
+                }),
             ],
             'billEmail' => [
                 'nullable',
@@ -640,6 +635,15 @@ class FrontController extends Controller
             $customerid = $existingCustomer->customerid;
         }
 
+        $ip = $request->ip();
+        $countryCode = $this->getCountryCode($ip);
+
+        if ($countryCode === 'IN') {
+            $symbol = '₹';
+        } else {
+            $symbol = '$';
+        }
+
         $order = Order::create([
             'customerid' => $customerid ?? 0,
             'shipping_cutomerName' => $request->billFirstName . ' ' . $request->billLastName,
@@ -652,6 +656,7 @@ class FrontController extends Controller
             'shipping_pincode' => $request->pincode,
             'country' => $request->country,
             'amount' => $subtotal,
+            'currency' => $symbol,
             'discount' => $discount,
             'netAmount' => $amount,
             'created_at' => now(),
@@ -668,23 +673,29 @@ class FrontController extends Controller
                 'size' => $cartItem->id,
                 'rate' => $cartItem->price,
                 'amount' => $cartItem->price * $cartItem->quantity,
+                'currency' => $symbol,
                 'created_at' => now(),
                 "strIP" => $request->ip()
             ]);
         }
 
+        $ip = $request->ip();
+        $countryCode = $this->getCountryCode($ip);
+
         $api = new Api(config('app.razorpay_key'), config('app.razorpay_secret'));
+
+        $currency = $countryCode == 'IN' ? 'INR' : 'USD';
         $razorpayOrder = $api->order->create([
             'receipt' => $order->id . '-' . date('YmdHis'),
             'amount' => $amount * 100,
-            'currency' => 'INR',
+            'currency' => $currency,
         ]);
 
         Payment::create([
             'order_id' => $razorpayOrder['id'],
             'oid' => $order->id,
             'amount' => $amount,
-            'currency' => 'INR',
+            'currency' => $currency,
             'receipt' => $razorpayOrder['receipt'],
         ]);
 
@@ -694,6 +705,7 @@ class FrontController extends Controller
             'success' => true,
             'razorpay_order_id' => $razorpayOrder['id'],
             'amount' => $amount,
+            'currency' => $currency,
             'email' => $request->billEmail,
             'mobile' => $request->billPhone,
             'customer_name' => $request->billFirstName . ' ' . $request->billLastName,

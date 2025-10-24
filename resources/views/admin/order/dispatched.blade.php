@@ -105,7 +105,8 @@
                                                                             <td>{{ $dispatched->shipping_city }}</td>
                                                                             <td>{{ $dispatched->shiiping_state }}</td>
                                                                             <td>{{ $dispatched->shipping_pincode }}</td>
-                                                                            <td>{{ $dispatched->netAmount }}</td>
+                                                                            <td>{{ $dispatched->currency }}{{ $dispatched->netAmount }}
+                                                                            </td>
                                                                             <td>
                                                                                 @if ($dispatched->isPayment == 0)
                                                                                     Pending

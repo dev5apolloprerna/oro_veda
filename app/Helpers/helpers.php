@@ -75,3 +75,19 @@ if (! function_exists('product_cut_price')) {
         return ($v === null || $v === '') ? null : (float)$v;
     }
 }
+
+if (!function_exists('getCountryCode')) {
+    function getCountryCode($ip)
+    {
+        // $ip = '8.8.8.8';
+        $response = @file_get_contents("http://ip-api.com/json/{$ip}");
+
+        if ($response) {
+            $data = json_decode($response, true);
+            if (!empty($data['countryCode'])) {
+                return $data['countryCode']; // e.g. 'IN'
+            }
+        }
+        return 'US';
+    }
+}
