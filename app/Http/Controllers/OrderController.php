@@ -14,6 +14,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Spatie\Browsershot\Browsershot;
 
 class OrderController extends Controller
 {
@@ -129,7 +130,6 @@ class OrderController extends Controller
 
     public function statustodispatched(Request $request)
     {
-        // dd($request);
         $request->validate([
             'courier' => 'required|integer',
             'docketNo' => 'required|string|max:255',
@@ -287,7 +287,6 @@ class OrderController extends Controller
 
     public function DetailPDF(Request $request, $id)
     {
-        // dd($id);
         if (Auth::user()->id  == 1) {
 
             $Shipping = Shipping::select('rate as shippingcharge')->orderBy('id', 'desc')->first();
@@ -295,6 +294,7 @@ class OrderController extends Controller
             $data = Order::select(
                 'order.*',
                 'courier.id',
+                'courier.name as couriername',
                 'countries.countryName'
             )
                 ->orderBy('order_id', 'DESC')

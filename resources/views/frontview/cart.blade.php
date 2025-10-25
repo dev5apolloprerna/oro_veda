@@ -74,7 +74,8 @@
 
                                         </td>
                                         <td class="column-5" id="total_{{ $item->id }}">
-                                            {{ $symbol }}{{ $item->price * $item->quantity }}</td>
+                                            {{ $symbol }}{{ $item->price * $item->quantity }}
+                                        </td>
                                         <td class="column-6">
                                             <form action="{{ route('cart.remove') }}" method="post"
                                                 onsubmit="return confirm('Are you sure you want to remove this item?');">
@@ -119,7 +120,7 @@
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <div>
                                             <h6 class="mb-0">
-                                                Coupon <span class="badge badge-pill badge-success">
+                                                Coupon <span class="badge badge-pill badge-success btn-primary-2025">
                                                     {{ Session::get('applied_coupon_code') }}
                                                 </span>
                                             </h6>
@@ -215,18 +216,23 @@
 
                         let input = document.getElementById('quantity_' + itemId);
                         let price = parseFloat(input.getAttribute('data-price')) || 0;
+                        let symbol = input.getAttribute('data-symbol');
 
                         let total = price * quantity;
 
+                        // ✅ update row total with symbol
+                        document.getElementById('total_' + itemId).innerText = symbol + total.toFixed(2);
+
+                        // ✅ update quantity input value
                         input.value = quantity;
-                        document.getElementById('total_' + itemId).innerText = total.toFixed(2);
 
+                        // ✅ update subtotal and total in summary with symbol
                         if (data.cart_summary) {
-
-                            document.getElementById('subtotal').innerText = data.cart_summary.subtotal.toFixed(
+                            document.getElementById('subtotal').innerText = symbol + data.cart_summary.subtotal.toFixed(
                                 2);
-                            document.getElementById('total').innerText = data.cart_summary.total.toFixed(2);
+                            document.getElementById('total').innerText = symbol + data.cart_summary.total.toFixed(2);
                         }
+
 
                     }
                 });

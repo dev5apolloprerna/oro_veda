@@ -106,7 +106,7 @@
                                                                             <td>{{ $cancel->shipping_city }}</td>
                                                                             <td>{{ $cancel->shiiping_state }}</td>
                                                                             <td>{{ $cancel->shipping_pincode }}</td>
-                                                                            <td>{{ $cancel->currency }}{{ $cancel->netAmount }}
+                                                                            <td>{{ $cancel->currency }}{{ number_format($cancel->netAmount, 2) }}
                                                                             </td>
                                                                             <td>
                                                                                 @if ($cancel->isPayment == 0)

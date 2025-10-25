@@ -183,6 +183,7 @@ class RazorpayController extends Controller
                 'orderdetail.rate',
                 'orderdetail.amount',
                 'orderdetail.size',
+                'orderdetail.currency',
                 'products.productname',
                 DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id LIMIT 1) as photo'),
                 'product_attributes.product_attribute_qty',
@@ -198,38 +199,6 @@ class RazorpayController extends Controller
                 ->leftJoin('attributes', 'product_attributes.product_attribute_id', '=', 'attributes.id')
                 ->get();
 
-            $html = '';
-            $i = 1;
-
-            foreach ($OrderDetail as $cartItem) {
-
-                $Total = $cartItem['quantity'] * $cartItem['rate'];
-
-                $html .= '<tr>
-                    <td style="text-align: center">
-                        ' . $i++ . '
-                    </td>
-                    <td style="text-align: center">
-                        ' . $cartItem['productname'] . '
-                    </td>
-                    <td style="text-align: center">
-                        <img width="48" height="48" src="https://www.sparshcosmo-group.com/uploads/product/thumbnail/' . $cartItem->photo . '">
-                    </td>
-                    <td style="text-align: center">
-                        ' . $cartItem['product_attribute_qty'] . " (" . $cartItem->name . ")" . '
-                    </td>
-                    <td style="text-align: center">
-                        ' . $cartItem['quantity'] . '
-                    </td>
-                    <td style="text-align: center">
-                        ' . $cartItem['rate'] . '
-                    </td>
-                    <td style="text-align: center">
-                        ' . $Total . '
-                    </td>
-                </tr>';
-            }
-
             $setting = DB::table("setting")->select('email')->first();
 
             // Send mail to admin
@@ -239,14 +208,11 @@ class RazorpayController extends Controller
                     'Title' => $SendEmailDetails->strTitle,
                     'ToEmail' => $setting->email,
                     'Subject' => $SendEmailDetails->strSubject . "#$id"
-                    // 'Subject' => "Order Detail From The Wardrobe Fashion Order No #$id"
                 ];
 
                 Mail::send('emails.checkoutmail', [
                     'Order' => $Order,
                     'OrderDetail' => $OrderDetail,
-                    'htmlRows' => $html, // optional if rendering rows in controller
-                    'StateName' => $Order->shiiping_state,
                     'CountryName' => $CountryName->countryName,
                 ], function ($message) use ($adminMailData) {
                     $message->from($adminMailData['FromMail'], $adminMailData['Title']);
@@ -261,14 +227,11 @@ class RazorpayController extends Controller
                     'Title' => $SendEmailDetails->strTitle,
                     'ToEmail' => $Order->shipping_email,
                     'Subject' => $SendEmailDetails->strSubject . "#$id"
-                    // 'Subject' => "Order Detail From The Wardrobe Fashion Order No #$id"
                 ];
 
                 Mail::send('emails.checkoutmail', [
                     'Order' => $Order,
                     'OrderDetail' => $OrderDetail,
-                    'htmlRows' => $html, // optional if rendering rows in controller
-                    'StateName' => $Order->shiiping_state,
                     'CountryName' => $CountryName->countryName,
                 ], function ($message) use ($customerMailData) {
                     $message->from($customerMailData['FromMail'], $customerMailData['Title']);

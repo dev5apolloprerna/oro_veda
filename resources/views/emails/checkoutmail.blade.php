@@ -50,11 +50,11 @@
                 </tr>
                 <tr>
                     <td><strong>State:</strong></td>
-                    <td>{{ $StateName->stateName ?? 'N/A' }}</td>
+                    <td>{{ $Order->shiiping_state ?? 'N/A' }}</td>
                 </tr>
                 <tr>
                     <td><strong>Country:</strong></td>
-                    <td>{{ $CountryName->countryName ?? 'N/A' }}</td>
+                    <td>{{ $CountryName ?? 'N/A' }}</td>
                 </tr>
                 <tr>
                     <td><strong>Pincode:</strong></td>
@@ -104,8 +104,9 @@
                                 {{ $cartItem->product_attribute_qty . ' (' . $cartItem->name . ')' }}
                             </td>
                             <td style="padding: 10px; text-align: center;">{{ $cartItem->quantity }}</td>
-                            <td style="padding: 10px; text-align: center;">₹ {{ $cartItem->rate }}</td>
-                            <td style="padding: 10px; text-align: center;">₹
+                            <td style="padding: 10px; text-align: center;">{{ $cartItem->currency }}
+                                {{ $cartItem->rate }}</td>
+                            <td style="padding: 10px; text-align: center;">{{ $cartItem->currency }}
                                 {{ $cartItem->quantity * $cartItem->rate }}</td>
                         </tr>
                     @endforeach
@@ -113,17 +114,20 @@
                     <tr style="background-color: #c8e6c9; font-weight: bold; color: #000;">
                         <td colspan="5"></td>
                         <td style="padding: 10px 15px; text-align: right;">Total</td>
-                        <td style="padding: 10px 15px; text-align: right;">₹ {{ $Order->amount }}</td>
+                        <td style="padding: 10px 15px; text-align: right;">{{ $Order->currency }} {{ $Order->amount }}
+                        </td>
                     </tr>
                     <tr style="background-color: #aed581; font-weight: bold; color: #000;">
                         <td colspan="5"></td>
                         <td style="padding: 10px 15px; text-align: right;">Discount</td>
-                        <td style="padding: 10px 15px; text-align: right;">₹ {{ $Order->discount }}</td>
+                        <td style="padding: 10px 15px; text-align: right;">{{ $Order->currency }}
+                            {{ $Order->discount }}</td>
                     </tr>
                     <tr style="background: linear-gradient(135deg, #2a7d3e, #8bc34a); font-weight: bold; color: white;">
                         <td colspan="5"></td>
                         <td style="padding: 10px 15px; text-align: right;">Net Amount</td>
-                        <td style="padding: 10px 15px; text-align: right;">₹ {{ $Order->netAmount }}</td>
+                        <td style="padding: 10px 15px; text-align: right;">{{ $Order->currency }}
+                            {{ $Order->netAmount }}</td>
                     </tr>
                 </tbody>
             </table>

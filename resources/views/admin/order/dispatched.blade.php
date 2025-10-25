@@ -105,7 +105,7 @@
                                                                             <td>{{ $dispatched->shipping_city }}</td>
                                                                             <td>{{ $dispatched->shiiping_state }}</td>
                                                                             <td>{{ $dispatched->shipping_pincode }}</td>
-                                                                            <td>{{ $dispatched->currency }}{{ $dispatched->netAmount }}
+                                                                            <td>{{ $dispatched->currency }}{{ number_format($dispatched->netAmount, 2) }}
                                                                             </td>
                                                                             <td>
                                                                                 @if ($dispatched->isPayment == 0)
