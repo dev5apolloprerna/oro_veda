@@ -25,6 +25,7 @@ class Order extends Model
         'shipping_pincode',
         'country',
         'amount',
+        'currency',
         'discount',
         'shipping_Charges',
         'netAmount',

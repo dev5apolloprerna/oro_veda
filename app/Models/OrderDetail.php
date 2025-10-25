@@ -20,6 +20,7 @@ class OrderDetail extends Model
         'quantity',
         'rate',
         'amount',
+        'currency',
         'iStatus',
         'isDelete',
         'created_at',

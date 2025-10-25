@@ -95,6 +95,7 @@
 
                     </div>
                 </li>
+
                 <li class="nav-item"><a href="{{ route('front.about') }}" class="nav-link">About</a></li>
                 <li class="nav-item"><a href="{{ route('front.blog') }}" class="nav-link">Blog</a></li>
                 <li class="nav-item"><a href="{{ route('front.contact_us') }}" class="nav-link">Contact</a></li>

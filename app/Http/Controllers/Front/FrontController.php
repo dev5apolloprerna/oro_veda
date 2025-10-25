@@ -413,6 +413,7 @@ class FrontController extends Controller
     public function couponcodeapply(Request $request)
     {
         try {
+            $session = Session::get('customer_id');
 
             $couponInput = $request->coupon ?? '';
             $totalAmount = $request->totalAmount ?? 0;
@@ -447,7 +448,7 @@ class FrontController extends Controller
                 return redirect()->back()->with('error', 'Coupon is expired!');
             }
 
-            $discount = round(($totalAmount * $Offer->percentage) / 100);
+            $discount = number_format(($totalAmount * $Offer->percentage) / 100, 2);
 
             CustomerCouponApplyed::create([
                 'offerId' => $Offer->id ?? 0,

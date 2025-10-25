@@ -150,7 +150,8 @@
                                                                                 <td>{{ $pending->shiiping_state }}</td>
                                                                                 <td>{{ $pending->shipping_pincode }}</td>
 
-                                                                                <td>{{ $pending->netAmount }}</td>
+                                                                                <td>{{ $pending->currency }}{{ number_format($pending->netAmount, 2) }}
+                                                                                </td>
                                                                                 <td>
                                                                                     @if ($pending->isPayment == 0)
                                                                                         Pending
@@ -222,16 +223,16 @@
                                                                                     <td colspan="2"
                                                                                         class="price text-left"
                                                                                         data-title="Price">
-                                                                                        <span> {{ $item->currency }}
-                                                                                            {{ $item->rate }}
+                                                                                        <span>
+                                                                                            {{ $item->currency }}{{ number_format($item->rate, 2) }}
                                                                                         </span>
                                                                                     </td>
 
                                                                                     <td colspan="2"
                                                                                         class="total-amount text-right"
                                                                                         data-title="Total">
-                                                                                        <span> {{ $item->currency }}
-                                                                                            {{ $item->rate * $item->quantity }}</span>
+                                                                                        <span>
+                                                                                            {{ $item->currency }}{{ number_format($item->rate * $item->quantity, 2) }}</span>
                                                                                     </td>
 
 

@@ -14,10 +14,17 @@
     }
 
     th {
-        /* Gradient for table headers */
-        background: linear-gradient(135deg, #2a7d3e, #8bc34a) !important;
-        color: white;
-        text-align: center;
+        background-color: #2a7d3e !important;
+        /* Dark green */
+        color: #fff !important;
+    }
+
+    .highlight,
+    .totals-row {
+        background-color: #4caf50 !important;
+        /* Medium green */
+        color: white !important;
+        font-weight: bold;
     }
 
     td {
@@ -33,26 +40,10 @@
         border: none !important;
     }
 
-    .highlight {
-        /* Gradient for highlighted cells */
-        background: linear-gradient(135deg, #2a7d3e, #8bc34a) !important;
-        color: white;
-        font-weight: bold;
-        text-align: center;
-    }
-
     .totals {
-        background: #f0f9f0;
-        /* light soft background for totals */
+        background-color: #eaf6ea !important;
+        /* very light green */
         font-weight: 600;
-    }
-
-    .totals-row {
-        /* Gradient for totals row */
-        background: linear-gradient(135deg, #2a7d3e, #8bc34a) !important;
-        font-weight: bold;
-        color: white;
-        border-top: 2px solid #603813;
     }
 </style>
 
@@ -81,33 +72,48 @@
     </tr>
     <tr>
         <td>Kankaria, Ahmedabad</td>
-        <td>{{ $data->shiiping_address2 }}</td>
+        @if ($data->shiiping_address2)
+            <td>{{ $data->shiiping_address2 }}</td>
+        @else
+            <td>
+                {{ $data->shipping_city . ', ' . $data->countryName }}
+            </td>
+        @endif
     </tr>
     <tr>
         <td>Gujarat – 380028</td>
-        <td>{{ $data->shipping_city . ', ' . $data->shipping_pincode . ' - ' . $data->shiiping_state . ', ' . $data->countryName }}
-        </td>
+        @if ($data->shiiping_address2)
+            <td>
+                {{ $data->shipping_city . ', ' . $data->shipping_pincode . ' - ' . $data->shiiping_state . ', ' . $data->countryName }}
+            </td>
+        @else
+            <td>
+                {{ $data->shiiping_state . ' - ' . $data->shipping_pincode }}
+            </td>
+        @endif
     </tr>
 
     @if ($data->couriername || $data->docketNo)
         <tr>
-            <td></td>
+            <td style="font-weight: 600;">Courier & Tracking No.</td>
             <td>{{ $data->couriername . ' - ' . $data->docketNo }}</td>
         </tr>
     @endif
-    <tr>
-        <td></td>
-        <td>
-            @if ($data->shipping_mobile)
-                {{ $data->shipping_mobile }}
-            @elseif ($data->shipping_mobile1)
-                {{ $data->shipping_mobile1 }}
-            @else
-                {{ $data->shipping_mobile . ', ' . $data->shipping_mobile1 }}
-            @endif
-        </td>
-    </tr>
+
+    @if ($data->shipping_mobile || $data->shipping_mobile1)
+        <tr>
+            <td style="font-weight: 600;">Mobile No.</td>
+            <td>
+                @if ($data->shipping_mobile)
+                    {{ $data->shipping_mobile }}
+                @else
+                    -
+                @endif
+            </td>
+        </tr>
+    @endif
 </table>
+
 
 <!-- Product Table -->
 <table style="width: 100%; margin-top: 10px;">
@@ -115,7 +121,7 @@
         <th>Sr No</th>
         <th>Product Name</th>
         <th>Photo</th>
-        <td>Size</td>
+        <th>Size</th>
         <th>Qty</th>
         <th>Rate</th>
         <th>Amount</th>
@@ -134,8 +140,8 @@
             </td>
             <td style="text-align: center;">{{ $details->product_attribute_qty . ' (' . $details->name . ')' }}</td>
             <td style="text-align: center;">{{ $details->quantity }}</td>
-            <td style="text-align: center;">{{ $details->rate }}</td>
-            <td style="text-align: right;">{{ $details->currency }} {{ $details->amount }}</td>
+            <td style="text-align: center;">{{ $details->currency }}{{ number_format($details->rate, 2) }}</td>
+            <td style="text-align: right;">{{ $details->currency }} {{ number_format($details->amount, 2) }}</td>
         </tr>
         @php $iTotal += $details->amount; @endphp
     @endforeach
@@ -144,18 +150,18 @@
     <tr class="totals-row">
         <td colspan="5"></td>
         <td style="text-align: center;">Net Amount</td>
-        <td style="text-align: right;">{{ $details->currency }} {{ $iTotal }}</td>
+        <td style="text-align: right;">{{ $details->currency }} {{ number_format($iTotal, 2) }}</td>
     </tr>
     <tr class="totals-row">
         <td colspan="5"></td>
         <td style="text-align: center;">Discount</td>
         <td style="text-align: right;">
-            {{ $data->discount ? $details->currency . $data->discount : '-' }}
+            {{ $data->discount ? $details->currency . number_format($data->discount, 2) : '-' }}
         </td>
     </tr>
     <tr class="totals-row">
         <td colspan="5"></td>
         <td style="text-align: center;">Net Payable</td>
-        <td style="text-align: right;">{{ $details->currency }} {{ $data->netAmount }}</td>
+        <td style="text-align: right;">{{ $details->currency }} {{ number_format($data->netAmount, 2) }}</td>
     </tr>
 </table>

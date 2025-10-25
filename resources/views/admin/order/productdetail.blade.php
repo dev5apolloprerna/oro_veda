@@ -105,8 +105,9 @@
                                                 <td>{{ $details->product_attribute_qty . ' (' . $details->name . ')' }}
                                                 </td>
                                                 <td>{{ $details->quantity }}</td>
-                                                <td>{{ $details->rate }}</td>
-                                                <td class="text-center">{{ $details->currency }}{{ $details->amount }}
+                                                <td>{{ $details->currency }}{{ number_format($details->rate, 2) }}</td>
+                                                <td class="text-center">
+                                                    {{ $details->currency }}{{ number_format($details->amount, 2) }}
                                                 </td>
                                             </tr>
                                             <?php $i++; ?>
@@ -127,7 +128,8 @@
                                             <th></th>
                                             <th></th>
                                             <th class="text-center">Total:- &nbsp;</th>
-                                            <th class="text-center">{{ $details->currency }}{{ $total }}</th>
+                                            <th class="text-center">{{ $details->currency }}{{ number_format($total, 2) }}
+                                            </th>
                                         </tr>
                                         <tr>
                                             <th></th>
@@ -136,7 +138,8 @@
                                             <th></th>
                                             <th></th>
                                             <th class="text-center">Discount:- &nbsp;</th>
-                                            <th class="text-center">{{ $details->currency }}{{ $data->discount ?? 0 }}
+                                            <th class="text-center">
+                                                {{ $details->currency }}{{ number_format($data->discount ?? 0, 2) }}
                                             </th>
                                         </tr>
                                         <tr>
@@ -146,7 +149,8 @@
                                             <th></th>
                                             <th></th>
                                             <th class="text-center">Net Amount:- &nbsp;</th>
-                                            <th class="text-center">{{ $details->currency }}{{ $data->netAmount }}</th>
+                                            <th class="text-center">
+                                                {{ $details->currency }}{{ number_format($data->netAmount, 2) }}</th>
                                         </tr>
                                     </tbody>
 
