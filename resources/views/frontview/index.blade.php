@@ -142,7 +142,7 @@
     <section class="trust-section section-padding">
         <div class="container">
             <h2 class="section-title" data-aos="fade-up">Why Choose Oroveda</h2>
-            <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">We're committed to bringing you the
+            <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">We&apos;re committed to bringing you the
                 purest, most authentic organic ghee while supporting sustainable farming practices.</p>
             <div class="row align-items-center">
                 <div class="col-lg-7">
@@ -234,8 +234,8 @@
                                             <input type="hidden" name="price" value="{{ $price }}">
                                             <input type="hidden" name="attribute_id"
                                                 value="{{ $products->attribute_id }}">
-                                            <a href="#" class="icon-btn me-2">
-                                                <button type="submit" class="btn" title="Add to Wishlist">
+                                            <a href="#" class="icon-btn me-2 wishlist-btn">
+                                                <button type="submit" class="btn " title="Add to Wishlist">
                                                     <i class="bi bi-heart"></i>
                                                 </button>
                                             </a>

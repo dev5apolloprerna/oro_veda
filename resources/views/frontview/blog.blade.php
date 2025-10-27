@@ -24,7 +24,7 @@
             <div class="blog-grid">
 
                 @foreach ($blogs as $blog)
-                    <div class="blog-card-2025" data-aos="flip-left" data-aos-delay="200">
+                    <div class="blog-card-2025">
                         <a href="{{ route('front.blog_detail', $blog->strSlug) }}" class="blog-link-2025">
                             <div class="blog-image-2025">
                                 <img src="{{ asset('uploads/Blog/Thumbnail/' . $blog->strPhoto) }}"
