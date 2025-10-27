@@ -4,7 +4,6 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
@@ -41,15 +40,29 @@ class Handler extends ExceptionHandler
             //
         });
     }
-    
-    public function render($request, Throwable $exception)
+
+    public function render($request, Throwable $e)
     {
-        // dd($request);
-        if ($exception instanceof ModelNotFoundException) {
-            // You can handle specific model not found exceptions here
-            return response()->view('errors.404', [], 404);
+        if ($e instanceof NotFoundHttpException) {
+
+
+            // Separate error pages for Admin and Front
+            if ($request->is('admin/*')) {
+                return response()->view('errors.admin.404', [], 404);  // Admin 404 page
+            } else {
+                return response()->view('errors.front.404', [], 404);  // Front 404 page
+            }
         }
 
-        return parent::render($request, $exception);
+        if ($e->getCode() === 500) {
+            // Separate 500 pages
+            if ($request->is('admin/*')) {
+                return response()->view('errors.admin.500', [], 500);  // Admin 500 page
+            } else {
+                return response()->view('errors.front.500', [], 500);  // Front 500 page
+            }
+        }
+
+        return parent::render($request, $e);
     }
 }

@@ -173,7 +173,7 @@ class FrontController extends Controller
             $Category = Category::orderBy('id', 'desc')->where(['isDelete' => 0, 'slugname' => $categoryid])->first();
 
             if (!$Category) {
-                return redirect()->back()->with('error', 'Category not found.');
+                abort(404); // better than redirect back for wrong slugs
             }
 
             $limit = $request->input('limit',  16);
@@ -243,11 +243,16 @@ class FrontController extends Controller
 
             return view('frontview.products', compact('products', 'Category', 'categoryid', 'countryCode', 'filter'));
         } catch (\Throwable $th) {
+            if ($th instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+                abort(404);
+            }
+
             Log::error('Product List Page Error: ' . $th->getMessage(), [
-                'categoryid' => $categoryid,
+                'slug' => $categoryid,
                 'request' => $request->all(),
                 'exception' => $th
             ]);
+
             return redirect()->back()->withInput()->with('error', 'Something went wrong while loading the product list.');
         }
     }

@@ -146,8 +146,8 @@
                         </a>
                     @endif
 
-                    <div class="cart-dropdown" id="cartDropdown" style="width: 150px">
-                        @foreach ($cartItems as $item)
+                    <div class="cart-dropdown" id="cartDropdown">
+                        {{--  @foreach ($cartItems as $item)
                             <div class="cart-item">
                                 <img src="{{ asset('uploads/product') . '/' . $item->attributes->image }}"
                                     alt="{{ $item->name }}" class="cart-item-img">
@@ -160,7 +160,7 @@
                                         </span> <span> {{ $item->quantity }}</span></div>
                                 </div>
                             </div>
-                        @endforeach
+                        @endforeach  --}}
 
                         @if (isset($session))
                             <div class="cart-footer ">

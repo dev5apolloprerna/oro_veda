@@ -11,7 +11,7 @@
         <div class="container">
             <div class="row align-items-center g-5">
                 <div class="col-md-6" data-aos="fade-right">
-                    <img src="{{ asset('assets/front/images/about/founders.jpg') }}" class="img-fluid rounded shadow"
+                    <img src="{{ asset('assets/front/images/about.png') }}" class="img-fluid rounded shadow"
                         alt="Oroveda Founders">
                 </div>
                 <div class="col-md-6" data-aos="fade-left">
@@ -148,7 +148,7 @@
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
                     <div class="card border-0 shadow-sm h-100">
                         <div class="card-body">
-                            <div class="mb-3"><i class="bi bi-leaf-fill text-warning fs-1"></i></div>
+                            <div class="mb-3"><i class="bi bi-recycle text-warning fs-1"></i></div>
                             <h5 class="fw-semibold mb-2">Sustainability</h5>
                             <p class="text-muted small">
                                 From ethical dairy practices to eco-friendly packaging, Oroveda strives to create wellness
@@ -173,8 +173,8 @@
                 <!-- Step 1 -->
                 <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="100">
                     <div class="card border-0 h-100">
-                        <img src="{{ asset('assets/front/images/process/milking.jpg') }}"
-                            class="card-img-top rounded shadow-sm" alt="Milking Gir Cows">
+                        <img src="{{ asset('assets/front/images/gir-cow.jpg') }}" class="card-img-top rounded shadow-sm"
+                            alt="Milking Gir Cows">
                         <div class="card-body">
                             <h6 class="fw-semibold text-warning">Step 1</h6>
                             <p class="small text-muted">Fresh A2 milk is collected from happy, grass-fed Gir cows.</p>
@@ -184,7 +184,7 @@
                 <!-- Step 2 -->
                 <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="200">
                     <div class="card border-0 h-100">
-                        <img src="{{ asset('assets/front/images/process/curd.jpg') }}"
+                        <img src="{{ asset('assets/front/images/curd-formation.png') }}"
                             class="card-img-top rounded shadow-sm" alt="Curd Formation">
                         <div class="card-body">
                             <h6 class="fw-semibold text-warning">Step 2</h6>
@@ -196,7 +196,7 @@
                 <!-- Step 3 -->
                 <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="300">
                     <div class="card border-0 h-100">
-                        <img src="{{ asset('assets/front/images/process/churning.jpg') }}"
+                        <img src="{{ asset('assets/front/images/Bilona-Churning.png') }}"
                             class="card-img-top rounded shadow-sm" alt="Bilona Churning">
                         <div class="card-body">
                             <h6 class="fw-semibold text-warning">Step 3</h6>
@@ -209,7 +209,7 @@
                 <!-- Step 4 -->
                 <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="400">
                     <div class="card border-0 h-100">
-                        <img src="{{ asset('assets/front/images/process/simmering.jpg') }}"
+                        <img src="{{ asset('assets/front/images/Slow-Simmering.png') }}"
                             class="card-img-top rounded shadow-sm" alt="Slow Simmering">
                         <div class="card-body">
                             <h6 class="fw-semibold text-warning">Step 4</h6>

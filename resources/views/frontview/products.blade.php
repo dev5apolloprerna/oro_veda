@@ -98,7 +98,7 @@
                                             <input type="hidden" name="attribute_id" value="{{ $product->attribute_id }}">
                                             <input type="hidden" name="price" value="{{ $price }}">
 
-                                            <a href="#" class="icon-btn me-2" title="Add to Wishlist">
+                                            <a href="#" class="icon-btn wishlist-btn me-2" title="Add to Wishlist">
                                                 <button type="submit" class="btn">
                                                     <i class="bi bi-heart"></i>
                                                 </button>
