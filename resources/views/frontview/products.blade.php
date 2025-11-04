@@ -89,8 +89,8 @@
                         <div class="card h-100 shadow-sm border-0 product-card">
                             <a href="{{ route('front.product_detail', [$product->category_slug, $product->slugname]) }}">
                                 <div class="image-wrapper">
-                                    <img src="{{ asset('uploads/product/thumbnail/') . '/' . $product->photo }}"
-                                        class="card-img-top" alt="{{ $product->productname }}">
+                                    <img src="{{ asset('uploads/product/') . '/' . $product->photo }}" class="card-img-top"
+                                        alt="{{ $product->productname }}">
                                     <div class="hover-icons d-flex justify-content-center align-items-center">
                                         <form action="{{ route('wishlist.store') }}" method="POST">
                                             @csrf

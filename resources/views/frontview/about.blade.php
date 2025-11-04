@@ -46,65 +46,80 @@
     <section id="journey" class="py-5">
         <div class="container">
 
-            <h2 class="section-title aos-init aos-animate" data-aos="fade-up">The Journey of <span
-                    class="text-warning">Oroveda</span> </h2>
+            <h2 class="section-title aos-init aos-animate" data-aos="fade-up">Founder’s  <span
+                    class="text-warning">Note</span> </h2>
             <div class="timeline">
                 <!-- 2018 -->
                 <div class="timeline-item" data-aos="fade-right">
                     <div class="timeline-content">
-                        <h5 class="fw-semibold text-warning">2018 — The Beginning</h5>
+                        
                         <p class="text-muted small mb-0">
-                            Our founders began their journey in rural Gujarat, inspired by their ancestors’ traditional
-                            methods of making ghee using the <em>Bilona process </em>. Oroveda was born out of a passion to
-                            restore purity and authenticity to modern food.
+                            Oroveda Organics was founded with a heartfelt purpose — to bring purity, tradition, and affordability together in everyday wellness. As healthcare professionals, we have witnessed that true health is not just about treatment but about how consciously we live and what we choose to bring into our homes.
+
+
+
+
+
+
+
+
                         </p>
                     </div>
                 </div>
 
                 <!-- 2019 -->
-                <div class="timeline-item" data-aos="fade-left">
+              
                     <div class="timeline-content">
-                        <h5 class="fw-semibold text-warning">2019 — The First Batch</h5>
+                        
                         <p class="text-muted small mb-0">
-                            With just a handful of Gir cows and a small farm, the first jars of Oroveda Ghee were
-                            handcrafted and distributed locally. The overwhelming love from our customers fueled our
-                            mission.
+                            The name Oroveda, meaning Golden Wisdom, beautifully reflects our philosophy — merging the golden purity of nature (Oro) with the timeless knowledge of Ayurveda and Indian tradition (Veda). Our journey began with pure Bilona Cow Ghee, crafted using age-old methods, staying true to heritage while ensuring quality and trust.
+                        </p>
+                    </div>
+                     <div class="timeline-content">
+                        
+                        <p class="text-muted small mb-0">
+                            Our vision is to make genuine, organic, and traditional products accessible to every household while empowering farmers and preserving the cultural essence of India’s nutritional heritage.
+                        </p>
+                    </div>
+                     <div class="timeline-content">
+                        
+                        <p class="text-muted small mb-0">
+                            Our mission is to revive traditional food wisdom by delivering pure, handcrafted, and affordable products that nourish the body and mind, support sustainable rural livelihoods, and inspire a lifestyle rooted in simplicity and wellness.
+                        </p>
+                    </div>
+                    <div class="timeline-content">
+                        
+                        <p class="text-muted small mb-0">
+                            At Oroveda, our values are the soul of everything we do. We believe purity is not just a standard, but a promise — every product embodies authenticity and care. Affordability is equally important, as we strive to make organic living accessible to all. Our deep respect for sustainability guides us toward eco-friendly packaging and carbon-conscious practices, ensuring our growth is gentle on the planet. Above all, we remain committed to trust and tradition — honoring the legacy of our ancestors while adapting to the needs of modern wellness.
+                        </p>
+                    </div>
+                    <div class="timeline-content">
+                        
+                        <p class="text-muted small mb-0">
+                            At Oroveda Organics, we are not just building a brand, but nurturing a movement — one that celebrates mindful living, supports our farmers, and reconnects us to the roots of health and harmony. As we grow and introduce more natural products like makhana, oils, seeds, nuts, and spices, our promise remains unchanged — to bring pure, affordable, and authentic goodness from the farm to your home.
+                        </p>
+                    </div>
+                    <div class="timeline-content">
+                        
+                        <p class="text-muted small mb-0">
+                           Thank you for being part of this journey toward a purer, more conscious world.
                         </p>
                     </div>
                 </div>
 
                 <!-- 2020 -->
-                <div class="timeline-item" data-aos="fade-right">
+                
                     <div class="timeline-content">
-                        <h5 class="fw-semibold text-warning">2020 — Certified Organic</h5>
+                        <h5 class="fw-semibold text-warning">– Dr. HK Dulera & Dr. Jigisha Darji</h5>
                         <p class="text-muted small mb-0">
-                            Oroveda achieved <strong>organic certification</strong> for its ghee production and
-                            farming practices — ensuring chemical-free, cruelty-free, and environment-friendly standards.
+                           
+Founders, Oroveda Organics<br>
+Golden Purity. Ancient Wisdom. Modern Trust.
                         </p>
                     </div>
                 </div>
 
-                <!-- 2022 -->
-                <div class="timeline-item" data-aos="fade-left">
-                    <div class="timeline-content">
-                        <h5 class="fw-semibold text-warning">2022 — National Expansion</h5>
-                        <p class="text-muted small mb-0">
-                            Oroveda products reached stores and homes across India. The brand gained recognition for
-                            its commitment to <strong>authenticity, wellness, and sustainability</strong>.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- 2025 -->
-                <div class="timeline-item" data-aos="fade-right">
-                    <div class="timeline-content">
-                        <h5 class="fw-semibold text-warning">2025 — Global Presence</h5>
-                        <p class="text-muted small mb-0">
-                            Oroveda has expanded to international markets, representing India’s traditional purity on a
-                            global stage. Our mission continues — to deliver ghee that’s pure, ethical, and full of life.
-                        </p>
-                    </div>
-                </div>
+              
             </div>
         </div>
     </section>
@@ -112,56 +127,72 @@
     <!-- ================================
                  OROVEDA PHILOSOPHY
         ================================ -->
-    <section class="py-5" id="philosophy">
-        <div class="container text-center">
-            <h2 class="fw-bold mb-5" data-aos="fade-up">The Oroveda Philosophy</h2>
-            <div class="row g-4">
-                <!-- Purity -->
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body">
-                            <div class="mb-3"><i class="bi bi-droplet-half text-warning fs-1"></i></div>
-                            <h5 class="fw-semibold mb-2">Purity</h5>
-                            <p class="text-muted small">
-                                We source milk only from <strong>indigenous Gir cows</strong> and follow natural grazing
-                                methods.
-                                No preservatives, no shortcuts — only pure, golden ghee made from love and integrity.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Tradition -->
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body">
-                            <div class="mb-3"><i class="bi bi-mortarboard-fill text-warning fs-1"></i></div>
-                            <h5 class="fw-semibold mb-2">Tradition</h5>
-                            <p class="text-muted small">
-                                Our <em>Bilona process</em> is inspired by Ayurveda — churning curd with a wooden hand whisk
-                                to retain nutrients
-                                and energy, exactly as done for centuries in Indian households.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Sustainability -->
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body">
-                            <div class="mb-3"><i class="bi bi-recycle text-warning fs-1"></i></div>
-                            <h5 class="fw-semibold mb-2">Sustainability</h5>
-                            <p class="text-muted small">
-                                From ethical dairy practices to eco-friendly packaging, Oroveda strives to create wellness
-                                for
-                                both people and planet. We ensure <strong>zero waste and mindful sourcing</strong> every
-                                step of the way.
-                            </p>
-                        </div>
+   <section class="py-5" id="philosophy">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-5" data-aos="fade-up">The Oroveda Philosophy</h2>
+        <div class="row g-4">
+            <!-- Purity -->
+            <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="mb-3"><i class="bi bi-droplet-half text-warning fs-1"></i></div>
+                        <h5 class="fw-semibold mb-2">Purity</h5>
+                        <p class="text-muted small">
+                            We source milk only from <strong>indigenous Gir cows</strong> and follow natural grazing
+                            methods.
+                            No preservatives, no shortcuts — only pure, golden ghee made from love and integrity.
+                        </p>
                     </div>
                 </div>
             </div>
+
+            <!-- Tradition -->
+            <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="mb-3"><i class="bi bi-mortarboard-fill text-warning fs-1"></i></div>
+                        <h5 class="fw-semibold mb-2">Tradition</h5>
+                        <p class="text-muted small">
+                            Our <em>Bilona process</em> is inspired by Ayurveda — churning curd with a wooden hand whisk
+                            to retain nutrients
+                            and energy, exactly as done for centuries in Indian households.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sustainability -->
+            <div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="mb-3"><i class="bi bi-recycle text-warning fs-1"></i></div>
+                        <h5 class="fw-semibold mb-2">Sustainability</h5>
+                        <p class="text-muted small">
+                            From ethical dairy practices to eco-friendly packaging, Oroveda strives to create wellness
+                            for both people and planet. We ensure <strong>zero waste and mindful sourcing</strong> every
+                            step of the way.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Affordable -->
+            <div class="col-md-3" data-aos="fade-up" data-aos-delay="400">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="mb-3"><i class="bi bi-cash-stack text-warning fs-1"></i></div>
+                        <h5 class="fw-semibold mb-2">Affordable</h5>
+                        <p class="text-muted small">
+                            We believe purity should be a privilege for everyone, not a luxury for few. Oroveda is committed to making authentic, hand-churned ghee accessible to every household without compromising on quality or values.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </section>
+    </div>
+</section>
+
 
     <!-- ================================
                     PROCESS SNAPSHOTS
@@ -177,7 +208,7 @@
                             alt="Milking Gir Cows">
                         <div class="card-body">
                             <h6 class="fw-semibold text-warning">Step 1</h6>
-                            <p class="small text-muted">Fresh A2 milk is collected from happy, grass-fed Gir cows.</p>
+                            <p class="small text-muted">Fresh  milk is collected from happy,  Gir cows.</p>
                         </div>
                     </div>
                 </div>

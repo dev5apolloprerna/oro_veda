@@ -19,6 +19,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\MetaDataController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Front\FrontController;
 use App\Http\Controllers\RazorpayController;
@@ -284,6 +285,16 @@ Route::prefix('admin')->name('video.')->middleware('auth')->group(function () {
     Route::get('/video/index', [VideoController::class, 'index'])->name('index');
     Route::get('/video/edit/{id?}', [VideoController::class, 'edit'])->name('edit');
     Route::post('/video/update', [VideoController::class, 'update'])->name('update');
+});
+
+//Blog Category Master
+Route::prefix('admin')->name('blog_category.')->middleware('auth')->group(function () {
+    Route::any('/blog/category/index', [BlogCategoryController::class, 'index'])->name('index');
+    Route::get('/blog/category/create', [BlogCategoryController::class, 'createview'])->name('create');
+    Route::post('/blog/category/store', [BlogCategoryController::class, 'store'])->name('store');
+    Route::get('/blog/category/edit/{id?}', [BlogCategoryController::class, 'editview'])->name('edit');
+    Route::put('/blog/category/update/{id?}', [BlogCategoryController::class, 'update'])->name('update');
+    Route::delete('/blog/category/delete/{id?}', [BlogCategoryController::class, 'delete'])->name('delete');
 });
 
 //Blog Master

@@ -30,7 +30,7 @@
 
                             @foreach ($Photos as $index => $photo)
                                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                    <img src="{{ asset('uploads/product/thumbnail/' . $photo->strphoto) }}"
+                                    <img src="{{ asset('uploads/product/' . $photo->strphoto) }}"
                                         class="d-block w-100 rounded shadow-sm" alt="Product Image {{ $index + 1 }}">
                                 </div>
                             @endforeach
@@ -136,7 +136,7 @@
 
                     <!-- Short Highlights -->
                     <ul class="list-unstyled text-muted">
-                        <li>✔️ 100% Grass-Fed Cow Ghee</li>
+                        <li>✔️ 100% Gir Cow Ghee</li>
                         <li>✔️ Traditional Bilona Process</li>
                         <li>✔️ No Preservatives or Additives</li>
                         <li>✔️ Naturally Rich Aroma & Flavor</li>
