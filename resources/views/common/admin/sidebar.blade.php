@@ -26,6 +26,14 @@
                                 <ul class="nav nav-sm flex-column">
 
                                     <li class="nav-item">
+                                        <a class="nav-link menu-link @if (request()->routeIs('blog_category.index')) {{ 'active' }} @endif"
+                                            href="{{ route('blog_category.index') }}">
+                                            <i class="fa-solid fa-blog"></i>
+                                            <span data-key="t-dashboards">Blog Category</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
                                         <a class="nav-link menu-link @if (request()->routeIs('blog.index')) {{ 'active' }} @endif"
                                             href="{{ route('blog.index') }}">
                                             <i class="fa-solid fa-blog"></i>

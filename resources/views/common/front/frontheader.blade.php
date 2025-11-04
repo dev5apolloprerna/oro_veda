@@ -28,29 +28,29 @@
         <div class="top-bar">
             <div class="container d-flex justify-content-between align-items-center">
                 <div class="contact-info">
-                    <a href="tel:+919876543210">
-                        <i class="bi bi-telephone-fill"></i> +91 98765 43210
+                    <a href="tel:+917777924902">
+                        <i class="bi bi-telephone-fill"></i> +91 77779 24902
                     </a>
                     <span class="mx-3">|</span>
-                    <a href="mailto:info@oroveda.com">
-                        <i class="bi bi-envelope-fill"></i> info@oroveda.com
+                    <a href="mailto:connect@orovedaorganics.com">
+                        <i class="bi bi-envelope-fill"></i> connect@orovedaorganics.com
                     </a>
                 </div>
                 <!-- ===== NEW CURRENCY SWITCHER ===== -->
 
                 <div class="social-links">
-                    <a href="#" class="social-icon facebook" aria-label="Facebook">
+                    <a href="https://www.facebook.com/share/1F8re1C52v/" class="social-icon facebook" aria-label="Facebook" target="_blank">
                         <i class="bi bi-facebook"></i>
                     </a>
-                    <a href="#" class="social-icon instagram" aria-label="Instagram">
+                    <a href="https://www.instagram.com/oroveda_organics?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="social-icon instagram" aria-label="Instagram">
                         <i class="bi bi-instagram"></i>
                     </a>
-                    <a href="#" class="social-icon twitter" aria-label="Twitter">
-                        <i class="bi bi-twitter"></i>
+                    <a href="https://api.whatsapp.com/send?phone=917777924902" class="social-icon whatsapp" aria-label="Twitter" target="_blank">
+                        <i class="bi bi-whatsapp"></i>
                     </a>
-                    <a href="#" class="social-icon youtube" aria-label="YouTube">
-                        <i class="bi bi-youtube"></i>
-                    </a>
+                    <!--<a href="#" class="social-icon youtube" aria-label="YouTube">-->
+                    <!--    <i class="bi bi-youtube"></i>-->
+                    <!--</a>-->
                 </div>
             </div>
         </div>
@@ -97,6 +97,8 @@
                 </li>
 
                 <li class="nav-item"><a href="{{ route('front.about') }}" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Lab Reports</a></li>
+                
                 <li class="nav-item"><a href="{{ route('front.blog') }}" class="nav-link">Blog</a></li>
                 <li class="nav-item"><a href="{{ route('front.contact_us') }}" class="nav-link">Contact</a></li>
 
@@ -146,8 +148,8 @@
                         </a>
                     @endif
 
-                    <div class="cart-dropdown" id="cartDropdown">
-                        {{--  @foreach ($cartItems as $item)
+                    <div class="cart-dropdown" id="cartDropdown" style="width: 150px">
+                        @foreach ($cartItems as $item)
                             <div class="cart-item">
                                 <img src="{{ asset('uploads/product') . '/' . $item->attributes->image }}"
                                     alt="{{ $item->name }}" class="cart-item-img">
@@ -160,7 +162,7 @@
                                         </span> <span> {{ $item->quantity }}</span></div>
                                 </div>
                             </div>
-                        @endforeach  --}}
+                        @endforeach
 
                         @if (isset($session))
                             <div class="cart-footer ">

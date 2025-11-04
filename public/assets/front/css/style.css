@@ -722,7 +722,7 @@ body {
 }
 
 .usp-badge-2025 {
-    background: var(--bg-white);
+    background: #ffffffa6;
     border-radius: 20px;
     padding: 40px 30px 10px 30px;
     text-align: center;
@@ -730,7 +730,7 @@ body {
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
-    border: 1px solid #000;
+    border: 2px solid green;
 }
 
 /* .usp-badge-2025::before {
@@ -1359,7 +1359,7 @@ body {
 }
 
 .product-price {
-    font-size: 1.8rem;
+    font-size: 1.2rem;
     font-weight: 800;
     color: var(--text-highlight);
     margin-bottom: 15px;
@@ -2204,28 +2204,36 @@ body {
 
 /* --- Section & Overlay Styling --- */
 .art-bg {
-    background: #fff url(../images/art-2.png) no-repeat;
-    background-position: left bottom;
+    background:  url(../images/art.webp) no-repeat;
+    background-position: center;
     position: relative;
+    background-size:cover;
+    background-attachment: fixed;
 
 }
-
+.art-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.8); 
+  z-index: 0;
+}
 .art-bg .container {
     position: relative;
     z-index: 2;
 }
 
-.art-bg::after {
-    background: #fff;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.5;
-    content: "";
-    z-index: 1;
-}
+/*.art-bg::after {*/
+/*    background: #fff;*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    opacity: 0.5;*/
+/*    content: "";*/
+/*    z-index: 1;*/
+/*}*/
 
 .page-header {
     position: relative;
@@ -3171,10 +3179,13 @@ textarea.form-input {
     position: relative;
     overflow: hidden;
     border-radius: 16px 16px 0 0;
+    text-align:center;
 }
 
 .image-wrapper img {
     transition: transform 0.4s ease;
+    width:auto;
+    height:250px;
 }
 
 .product-card:hover .image-wrapper img {

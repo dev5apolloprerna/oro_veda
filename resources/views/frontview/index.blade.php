@@ -73,7 +73,7 @@
         <div class="container">
             <!-- Section Header -->
             <div class="text-center mb-5">
-                <h2 class="section-title" data-aos="fade-up">Why Our Ghee is Special</h2>
+                <h2 class="section-title bg-dark" data-aos="fade-up">Why Our Ghee is Special</h2>
                 <p class="section-subtitle text-black" data-aos="fade-up" data-aos-delay="100">
                     Our organic Bilona ghee is crafted with care following traditional methods to preserve its nutritional
                     value and authentic flavor.
@@ -225,7 +225,7 @@
                         <div class="card h-100 shadow-sm border-0 product-card">
                             <a href="{{ route('front.product_detail', [$products->category_slug, $products->slugname]) }}">
                                 <div class="image-wrapper">
-                                    <img src="{{ asset('uploads/product/thumbnail/' . $products->photo) }}"
+                                    <img src="{{ asset('uploads/product/' . $products->photo) }}"
                                         class="card-img-top" alt="{{ $products->productname }}">
                                     <div class="hover-icons d-flex justify-content-center align-items-center">
                                         <form action="{{ route('wishlist.store') }}" method="POST">
@@ -252,12 +252,14 @@
                                     <h5 class="card-title fw-semibold">
                                         {{ $products->productname . ' -' . $products->product_attribute_qty . ' ' . $products->attribute_name }}
                                     </h5>
+                                    <p style="background: burlywood;color: #a61f2e;font-weight: bold;">Launching Offer</p>
                                     <p class="fw-bold mb-1 product-price">
+                                        
                                         <span
                                             class="text-decoration-line-through text-muted">{{ $symbol }}{{ $cut_price }}</span>
                                         {{ $symbol }}{{ $price }}
                                     </p>
-                                    <p class="card-text small text-muted">
+                                    <p class="card-text small text-muted text-start">
                                         {{ \Illuminate\Support\Str::words(strip_tags($products->description), 20, '...') }}
                                     </p>
                                     {{--  <a href="#" class="btn-primary-2025 mt-2">Add to Cart</a>  --}}
@@ -283,13 +285,13 @@
                     natural goodness</p>
                 <div class="coming-soon-items">
                     <div class="coming-soon-item">
-                        <i class="bi bi-circle-fill me-2"></i> Organic Makhana
+                        <a href="#" class="text-white"><i class="bi bi-circle-fill me-2"></i> Makhana</a>
                     </div>
                     <div class="coming-soon-item">
-                        <i class="bi bi-circle-fill me-2"></i> Traditional Spices
+                        <a href="#" class="text-white"><i class="bi bi-circle-fill me-2"></i> Traditional Spices</a>
                     </div>
                     <div class="coming-soon-item">
-                        <i class="bi bi-circle-fill me-2"></i> Herbal Teas
+                        <a href="#" class="text-white"><i class="bi bi-circle-fill me-2"></i> Seeds, Nuts & Dry Fruits</a>
                     </div>
                 </div>
             </div>
@@ -297,7 +299,7 @@
     </section>
 
     <!-- Testimonials Carousel -->
-    <section class="trust-section bg-gradient-to-b from-amber-50 to-white py-20">
+    <section class="trust-section bg-gradient-to-b from-amber-50 to-white py-5">
         <div class="container mx-auto px-6 text-center">
             <h2 class="section-title aos-init aos-animate" data-aos="fade-up" data-aos-duration="800">
                 What Our Customers Say

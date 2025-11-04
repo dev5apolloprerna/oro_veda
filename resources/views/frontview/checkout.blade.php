@@ -46,7 +46,7 @@
     <section class="checkout-container container">
         <div class="row g-4">
             <!-- Billing Details -->
-            <form id="checkout-form">
+            <form id="checkout-form" class="d-flex">
 
                 <div class="col-lg-7">
                     <div class="billing-details">

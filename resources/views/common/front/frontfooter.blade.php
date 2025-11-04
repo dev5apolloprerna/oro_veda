@@ -8,10 +8,10 @@
                     purest organic ghee made using traditional methods. Our products support sustainable farming and
                     promote healthy living.</p>
                 <div class="social-icons">
-                    <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
-                    <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+                    <a href="https://www.facebook.com/share/1F8re1C52v/" class="social-icon" target="_blank"><i class="bi bi-facebook"></i></a>
+                    <a href="https://www.instagram.com/oroveda_organics?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="social-icon" target="_blank"><i class="bi bi-instagram"></i></a>
+                    <a href="https://api.whatsapp.com/send?phone=917777924902" class="social-icon" target="_blank"><i class="bi bi-whatsapp"></i></a>
+                    <!--<a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>-->
                 </div>
             </div>
             <div class="footer-column" data-aos="fade-up" data-aos-delay="100">
@@ -44,10 +44,10 @@
                     <i class="bi bi-patch-check-fill certification-icon"></i>
                     <span>FSSAI Approved</span>
                 </div>
-                <div class="certification-item">
-                    <i class="bi bi-patch-check-fill certification-icon"></i>
-                    <span>ISO 22000:2018</span>
-                </div>
+                <!--<div class="certification-item">-->
+                <!--    <i class="bi bi-patch-check-fill certification-icon"></i>-->
+                <!--    <span>ISO 22000:2018</span>-->
+                <!--</div>-->
                 <div class="certification-item">
                     <i class="bi bi-patch-check-fill certification-icon"></i>
                     <span>India Organic Certified</span>
