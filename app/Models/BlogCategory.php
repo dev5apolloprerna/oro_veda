@@ -19,4 +19,9 @@ class BlogCategory extends Model
         'updated_at',
         'strIP'
     ];
+
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class, 'category_id', 'id');
+    }
 }

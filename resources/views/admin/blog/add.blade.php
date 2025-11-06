@@ -41,6 +41,25 @@
                                         @csrf
                                         <div class="row gy-4">
 
+                                            <div class="col-lg-4 col-md-6">
+                                                <div>
+                                                    <span style="color:red;">*</span> Category
+                                                    <select class="form-control" id="category_id" name="category_id"
+                                                        required>
+                                                        <option value="">Select Category Name </option>
+                                                        @foreach ($categories as $category)
+                                                            <option value="{{ $category->id }}"
+                                                                {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                                                {{ $category->strCategoryName }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('category_id')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
                                             <div class="col-lg-8 col-md-6">
                                                 <div>
                                                     <span style="color:red;">*</span>Title

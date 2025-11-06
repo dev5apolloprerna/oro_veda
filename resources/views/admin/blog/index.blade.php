@@ -37,6 +37,7 @@
                                     <thead>
                                         <tr>
                                             <th width="1%">sr.no</th>
+                                            <th width="3%">Category</th>
                                             <th width="5%">Title</th>
                                             <th width="5%">Description</th>
                                             <th width="2%">Photo</th>
@@ -49,6 +50,7 @@
                                             <tr class="text-center">
                                                 <td>
                                                     {{ $i + $Blog->perPage() * ($Blog->currentPage() - 1) }}</td>
+                                                <td>{{ $blog->category->strCategoryName ?? '-' }}</td>
                                                 <td>{{ $blog->strTitle }}</td>
                                                 <td>
                                                     {{ strip_tags(Str::limit($blog->strDescription, 200, '.....')) }}
