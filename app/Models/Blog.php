@@ -11,6 +11,7 @@ class Blog extends Model
     public $table = 'blog';
     protected $fillable = [
         'blogId',
+        'category_id',
         'strTitle',
         'strSlug',
         'strDescription',
@@ -26,4 +27,9 @@ class Blog extends Model
         'updated_at',
         'strIP'
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(BlogCategory::class, 'category_id', 'id');
+    }
 }

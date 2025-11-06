@@ -14,6 +14,7 @@
             margin: 4px;
             font-weight: 600;
             transition: 0.3s;
+            display:inline-block;
         }
 
         .filter-btn:hover,
@@ -75,7 +76,8 @@
 
                 @foreach ($products as $product)
                     @php
-                        if ($countryCode === 'IN') {
+                  
+                        if ($countryCode == 'IN') {
                             $price = $product->rate; // INR price
                             $cut_price = $product->cut_price; // INR price
                             $symbol = '₹';
@@ -161,13 +163,13 @@
                     natural goodness</p>
                 <div class="coming-soon-items">
                     <div class="coming-soon-item">
-                        <i class="bi bi-circle-fill me-2"></i> Organic Makhana
+                        <i class="bi bi-circle-fill me-2"></i> Makhana
                     </div>
                     <div class="coming-soon-item">
                         <i class="bi bi-circle-fill me-2"></i> Traditional Spices
                     </div>
                     <div class="coming-soon-item">
-                        <i class="bi bi-circle-fill me-2"></i> Herbal Teas
+                        <i class="bi bi-circle-fill me-2"></i> Seeds, Nuts & Dry Fruits
                     </div>
                 </div>
             </div>

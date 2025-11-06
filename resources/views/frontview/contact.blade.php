@@ -31,14 +31,14 @@
                         <i class="fa-solid fa-phone"></i>
                         <div>
                             <strong>Phone:</strong>
-                            <p><a href="tel:+91 9876543210">+91 9876543210</a></p>
+                            <p><a href="tel:+917777924902">+91 77779 24902</a></p>
                         </div>
                     </li>
                     <li>
                         <i class="fa-solid fa-envelope"></i>
                         <div>
                             <strong>E-Mail:</strong>
-                            <p><a href="mailto:info@oroveda.com">info@oroveda.com</a></p>
+                            <p><a href="mailto:connect@orovedaorganics.com">connect@orovedaorganics.com</a></p>
                         </div>
                     </li>
                     <li>

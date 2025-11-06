@@ -19,6 +19,7 @@ use App\Models\State;
 use App\Models\Wishlist;
 use App\Models\OtherPages;
 use App\Models\Blog;
+use App\Models\BlogCategory;
 use App\Models\Country;
 use App\Models\Inquiry;
 use App\Models\MetaData;
@@ -144,11 +145,31 @@ class FrontController extends Controller
     public function blog(Request $request)
     {
         $seo = MetaData::where('id', '=', '2')->first();
-        $blogs = Blog::orderBy('blogId', 'asc')
-            ->where(['iStatus' => 1, 'isDelete' => 0])
-            ->paginate(12);
 
-        return view('frontview.blog', compact('seo', 'blogs'));
+        // Fetch active categories
+        $categories = BlogCategory::orderBy('strCategoryName', 'asc')
+            ->where(['iStatus' => 1, 'isDelete' => 0])
+            ->get();
+
+        // Base blog query
+        $query = Blog::orderBy('blogId', 'desc')
+            ->where(['iStatus' => 1, 'isDelete' => 0]);
+
+        // Filter by category slug (if present)
+        if ($request->has('category') && $request->category != 'all') {
+            $category = BlogCategory::where('strSlug', $request->category)
+                ->where(['iStatus' => 1, 'isDelete' => 0])
+                ->first();
+
+            if ($category) {
+                $query->where('category_id', $category->id);
+            }
+        }
+
+        // ✅ Keep category filter in pagination links
+        $blogs = $query->paginate(12)->appends(['category' => $request->category]);
+
+        return view('frontview.blog', compact('seo', 'blogs', 'categories'));
     }
 
     public function blog_detail(Request $request, $id)

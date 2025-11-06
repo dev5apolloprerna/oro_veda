@@ -19,18 +19,11 @@
                     </h2>
 
                     <p class="text-muted">
-                        Oroveda was born from a desire to bring back the <strong>ancient Indian wisdom</strong> of
-                        nourishment through pure ingredients.
-                        Our founders, inspired by their ancestral traditions, envisioned a world where <span
-                            class="text-warning fw-semibold">every home could enjoy ghee</span> crafted the way nature
-                        intended —
-                        slow, sacred, and sustainable.
+                        Oroveda Organics was founded with a heartfelt purpose — to bring purity, tradition, and affordability together in everyday wellness. As healthcare professionals, we have witnessed that true health is not just about treatment but about how consciously we live and what we choose to bring into our homes.
+                        
                     </p>
                     <p class="text-muted">
-                        What started as a small family venture has grown into a movement celebrating the <em>Gir cow</em> —
-                        an emblem of purity and health.
-                        At Oroveda, we blend time-honored techniques with ethical farming to create ghee that heals the body
-                        and uplifts the spirit.
+                         The name Oroveda, meaning Golden Wisdom, beautifully reflects our philosophy — merging the golden purity of nature (Oro) with the timeless knowledge of Ayurveda and Indian tradition (Veda). Our journey began with pure Bilona Cow Ghee, crafted using age-old methods, staying true to heritage while ensuring quality and trust.
                     </p>
                     <blockquote class="blockquote border-start border-warning ps-3 mt-4">
                         <p class="mb-0">“We don’t just make ghee — we preserve a legacy.”</p>
@@ -40,6 +33,39 @@
             </div>
         </div>
     </section>
+    <section class="py-5 vision-mission">
+    <div class="container">
+        <div class="section-title text-center mb-5">
+            <h2 class="fw-bold">Our Vision & Mission</h2>
+            <div class="title-line"></div>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+
+            <!-- Vision -->
+            <div class="col-lg-5">
+                <div class="vm-card vision">
+                    <h4 class="vm-title">Our Vision</h4>
+                    <p>
+                        To make genuine, organic, and traditional products accessible to every household while empowering farmers and preserving the cultural essence of India’s nutritional heritage.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Mission -->
+            <div class="col-lg-5">
+                <div class="vm-card mission">
+                    <h4 class="vm-title">Our Mission</h4>
+                    <p>
+                        To revive traditional food wisdom by delivering pure, handcrafted, and affordable products that nourish the body and mind, support sustainable rural livelihoods, and inspire a lifestyle rooted in simplicity and wellness.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
     <!-- ================================
                   JOURNEY OF OROVEDA
         ================================ -->
@@ -48,46 +74,12 @@
 
             <h2 class="section-title aos-init aos-animate" data-aos="fade-up">Founder’s  <span
                     class="text-warning">Note</span> </h2>
+                    
             <div class="timeline">
-                <!-- 2018 -->
-                <div class="timeline-item" data-aos="fade-right">
-                    <div class="timeline-content">
-                        
-                        <p class="text-muted small mb-0">
-                            Oroveda Organics was founded with a heartfelt purpose — to bring purity, tradition, and affordability together in everyday wellness. As healthcare professionals, we have witnessed that true health is not just about treatment but about how consciously we live and what we choose to bring into our homes.
-
-
-
-
-
-
-
-
-                        </p>
-                    </div>
-                </div>
-
-                <!-- 2019 -->
               
-                    <div class="timeline-content">
-                        
-                        <p class="text-muted small mb-0">
-                            The name Oroveda, meaning Golden Wisdom, beautifully reflects our philosophy — merging the golden purity of nature (Oro) with the timeless knowledge of Ayurveda and Indian tradition (Veda). Our journey began with pure Bilona Cow Ghee, crafted using age-old methods, staying true to heritage while ensuring quality and trust.
-                        </p>
-                    </div>
-                     <div class="timeline-content">
-                        
-                        <p class="text-muted small mb-0">
-                            Our vision is to make genuine, organic, and traditional products accessible to every household while empowering farmers and preserving the cultural essence of India’s nutritional heritage.
-                        </p>
-                    </div>
-                     <div class="timeline-content">
-                        
-                        <p class="text-muted small mb-0">
-                            Our mission is to revive traditional food wisdom by delivering pure, handcrafted, and affordable products that nourish the body and mind, support sustainable rural livelihoods, and inspire a lifestyle rooted in simplicity and wellness.
-                        </p>
-                    </div>
-                    <div class="timeline-content">
+
+                   
+                    <div class="timeline-content ">
                         
                         <p class="text-muted small mb-0">
                             At Oroveda, our values are the soul of everything we do. We believe purity is not just a standard, but a promise — every product embodies authenticity and care. Affordability is equally important, as we strive to make organic living accessible to all. Our deep respect for sustainability guides us toward eco-friendly packaging and carbon-conscious practices, ensuring our growth is gentle on the planet. Above all, we remain committed to trust and tradition — honoring the legacy of our ancestors while adapting to the needs of modern wellness.
@@ -99,13 +91,13 @@
                             At Oroveda Organics, we are not just building a brand, but nurturing a movement — one that celebrates mindful living, supports our farmers, and reconnects us to the roots of health and harmony. As we grow and introduce more natural products like makhana, oils, seeds, nuts, and spices, our promise remains unchanged — to bring pure, affordable, and authentic goodness from the farm to your home.
                         </p>
                     </div>
-                    <div class="timeline-content">
+                    <div class="timeline-content  mb-5">
                         
                         <p class="text-muted small mb-0">
                            Thank you for being part of this journey toward a purer, more conscious world.
                         </p>
                     </div>
-                </div>
+                
 
                 <!-- 2020 -->
                 
@@ -119,8 +111,7 @@ Golden Purity. Ancient Wisdom. Modern Trust.
                     </div>
                 </div>
 
-              
-            </div>
+             
         </div>
     </section>
 

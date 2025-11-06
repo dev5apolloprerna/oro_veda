@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Blog;
+use App\Models\BlogCategory;
 use App\Models\Product;
 use App\Models\BlogProducts;
 use Illuminate\Support\Facades\DB;
@@ -15,9 +16,11 @@ class BlogController extends Controller
     public function index(Request $request)
     {
         try {
-            $Blog = Blog::orderBy('blogId', 'desc')
+            $Blog = Blog::with('category')
+                ->orderBy('blogId', 'desc')
                 ->where(['iStatus' => 1, 'isDelete' => 0])
                 ->paginate(25);
+            // dd($Blog);
 
             return view('admin.blog.index', compact('Blog'));
         } catch (\Throwable $th) {
@@ -30,8 +33,11 @@ class BlogController extends Controller
     public function createview(Request $request)
     {
         try {
+            $categories = BlogCategory::orderBy('strCategoryName', 'asc')
+                ->where(['iStatus' => 1, 'isDelete' => 0])
+                ->get();
 
-            return view('admin.blog.add');
+            return view('admin.blog.add', compact('categories'));
         } catch (\Throwable $th) {
             // Rollback and return with Error
             DB::rollBack();
@@ -43,10 +49,12 @@ class BlogController extends Controller
     {
         try {
             $request->validate([
+                'category_id' => 'required',
                 'strTitle' => 'required',
                 'strDescription' => 'required',
                 'strPhoto' => 'required'
             ], [
+                'category_id.required' => 'The category field is required.',
                 'strTitle.required' => 'The title field is required.',
                 'strDescription.required' => 'The description field is required.',
                 'strPhoto.required' => 'The photo field is required.'
@@ -75,6 +83,7 @@ class BlogController extends Controller
             }
 
             $Data = array(
+                'category_id' => $request->category_id,
                 'strTitle' => $request->strTitle,
                 'strSlug' => Str::slug($request->strTitle),
                 'strDescription' => $request->strDescription,
@@ -101,8 +110,11 @@ class BlogController extends Controller
     {
         try {
             $data = Blog::where(['iStatus' => 1, 'isDelete' => 0, 'blogId' => $id])->first();
+            $categories = BlogCategory::orderBy('strCategoryName', 'asc')
+                ->where(['iStatus' => 1, 'isDelete' => 0])
+                ->get();
 
-            return view('admin.blog.edit', compact('data'));
+            return view('admin.blog.edit', compact('data', 'categories'));
         } catch (\Throwable $th) {
             // Rollback and return with Error
             DB::rollBack();
@@ -114,9 +126,11 @@ class BlogController extends Controller
     {
         try {
             $request->validate([
+                'category_id' => 'required',
                 'strTitle' => 'required',
                 'strDescription' => 'required'
             ], [
+                'category_id.required' => 'The category field is required.',
                 'strTitle.required' => 'The title field is required.',
                 'strDescription.required' => 'The description field is required.'
             ]);
@@ -166,6 +180,7 @@ class BlogController extends Controller
 
             Blog::where(['iStatus' => 1, 'isDelete' => 0, 'blogId' => $id])
                 ->update([
+                    'category_id' => $request->category_id,
                     'strTitle' => $request->strTitle,
                     'strSlug' => Str::slug($request->strTitle),
                     'strDescription' => $request->strDescription,
