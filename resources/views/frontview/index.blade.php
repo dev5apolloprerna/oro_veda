@@ -26,7 +26,7 @@
                         class="btn btn-warning btn-hero text-dark fw-semibold animate__animated animate__zoomIn animate__delay-2s">
                         Shop Now
                     </a>
-                    <a href="#about"
+                    <a href="{{ route('front.about') }}"
                         class="btn btn-outline-light btn-hero animate__animated animate__zoomIn animate__delay-2s">
                         Learn More
                     </a>
@@ -40,11 +40,11 @@
                     <p class="animate__animated animate__fadeInUp animate__delay-1s">
                         Experience the ancient tradition of health and vitality through A2 Gir Cow Ghee.
                     </p>
-                    <a href="#shop"
+                    <a href="{{ route('front.product_list', $category->slugname) }}"
                         class="btn btn-warning btn-hero text-dark fw-semibold animate__animated animate__zoomIn animate__delay-2s">
                         Shop Now
                     </a>
-                    <a href="#about"
+                    <a href="{{ route('front.about') }}"
                         class="btn btn-outline-light btn-hero animate__animated animate__zoomIn animate__delay-2s">
                         Learn More
                     </a>
@@ -225,8 +225,8 @@
                         <div class="card h-100 shadow-sm border-0 product-card">
                             <a href="{{ route('front.product_detail', [$products->category_slug, $products->slugname]) }}">
                                 <div class="image-wrapper">
-                                    <img src="{{ asset('uploads/product/' . $products->photo) }}"
-                                        class="card-img-top" alt="{{ $products->productname }}">
+                                    <img src="{{ asset('uploads/product/' . $products->photo) }}" class="card-img-top"
+                                        alt="{{ $products->productname }}">
                                     <div class="hover-icons d-flex justify-content-center align-items-center">
                                         <form action="{{ route('wishlist.store') }}" method="POST">
                                             @csrf
@@ -247,14 +247,15 @@
                                 </div>
                             </a>
 
-                            <a href="{{ route('front.product_detail', [$products->category_slug, $products->slugname]) }}">
+                            <a
+                                href="{{ route('front.product_detail', [$products->category_slug, $products->slugname]) }}">
                                 <div class="card-body text-center">
                                     <h5 class="card-title fw-semibold">
                                         {{ $products->productname . ' -' . $products->product_attribute_qty . ' ' . $products->attribute_name }}
                                     </h5>
                                     <p style="background: burlywood;color: #a61f2e;font-weight: bold;">Launching Offer</p>
                                     <p class="fw-bold mb-1 product-price">
-                                        
+
                                         <span
                                             class="text-decoration-line-through text-muted">{{ $symbol }}{{ $cut_price }}</span>
                                         {{ $symbol }}{{ $price }}
@@ -288,10 +289,12 @@
                         <a href="#" class="text-white"><i class="bi bi-circle-fill me-2"></i> Makhana</a>
                     </div>
                     <div class="coming-soon-item">
-                        <a href="#" class="text-white"><i class="bi bi-circle-fill me-2"></i> Traditional Spices</a>
+                        <a href="#" class="text-white"><i class="bi bi-circle-fill me-2"></i> Traditional
+                            Spices</a>
                     </div>
                     <div class="coming-soon-item">
-                        <a href="#" class="text-white"><i class="bi bi-circle-fill me-2"></i> Seeds, Nuts & Dry Fruits</a>
+                        <a href="#" class="text-white"><i class="bi bi-circle-fill me-2"></i> Seeds, Nuts & Dry
+                            Fruits</a>
                     </div>
                 </div>
             </div>
