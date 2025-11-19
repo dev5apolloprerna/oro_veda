@@ -218,8 +218,8 @@ class ProductController extends Controller
                 if (file_exists($thumbPath)) unlink($thumbPath);
             }
 
-            Productphotos::where(['isDelete' => 0, 'productId' => $productId])->delete();
-            Product::where(['isDelete' => 0, 'productId' => $productId])->delete();
+            Productphotos::where(['isDelete' => 0, 'productid' => $productId])->delete();
+            Product::where(['isDelete' => 0, 'id' => $productId])->delete();
 
             return redirect()->route('product.index')->with('success', 'Product Deleted Successfully!.');
         } catch (\Exception $e) {

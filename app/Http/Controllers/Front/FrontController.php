@@ -121,7 +121,11 @@ class FrontController extends Controller
                 ->get();
             // dd($featuredProduct);
 
-            return view('frontview.index', compact('Testimonial', 'blogs', 'featuredProduct', 'offers', 'countryCode'));
+            $category = Category::orderBy('id', 'desc')
+                ->where(['iStatus' => 1, 'isDelete' => 0, 'id' => 1])
+                ->first();
+
+            return view('frontview.index', compact('Testimonial', 'blogs', 'featuredProduct', 'offers', 'countryCode', 'category'));
         } catch (\Throwable $th) {
             Log::error('Home Page Error: ' . $th->getMessage(), [
                 'exception' => $th
