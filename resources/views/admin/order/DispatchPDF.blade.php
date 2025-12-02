@@ -57,7 +57,7 @@
             <td></td>
 
             <td colspan="2" rowspan="18" style="text-align: right;">
-                +91 81560 88203
+                +91 7777924902
             </td>
         </tr>
 

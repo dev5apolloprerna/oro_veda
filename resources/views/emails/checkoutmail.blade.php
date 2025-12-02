@@ -23,6 +23,7 @@
     </tr>
 
     <!-- Customer Info -->
+   
     <tr>
         <td style="padding: 25px;">
             <h3 style="margin: 0 0 15px; font-size: 20px; color: #2a7d3e; border-bottom: 2px solid #d4af37;">Customer
@@ -138,9 +139,10 @@
     <tr>
         <td style="padding: 20px; background-color: #f6f6f6; text-align: center; font-size: 13px; color: #555;">
             <p style="margin: 5px 0;"><strong>Note:</strong> Your order will be dispatched in 3 working days.</p>
-            <p style="margin: 5px 0;">Need help? Call <strong style="color: #2a7d3e;">+91 81560 88203</strong></p>
+            <p style="margin: 5px 0;">Need help? Call <strong style="color: #2a7d3e;">+91 77779 24902</strong></p>
             <p style="margin: 5px 0; color: #8bc34a;">&copy; {{ now()->year }} {{ config('app.name') }} | Crafted
                 with 💚 by OroVeda</p>
         </td>
     </tr>
 </table>
+
