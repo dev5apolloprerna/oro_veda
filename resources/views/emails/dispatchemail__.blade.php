@@ -24,7 +24,6 @@ $file = str_replace('#orderNo', $data['orderNo'], $file);
 $file = str_replace('#courierName', $data['courierName'], $file);
 $file = str_replace('#docketNo', $data['docketNo'], $file);
 $file = str_replace('#link', $data['link'], $file);
-$file = str_replace('#shippingmobile', $data['shippingmobile'], $file);
 
 // Output final content
 echo $file;

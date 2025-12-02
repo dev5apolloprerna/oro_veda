@@ -120,8 +120,8 @@ class FrontController extends Controller
                 ->where(['products.iStatus' => 1, 'products.isDelete' => 0])
                 ->get();
             // dd($featuredProduct);
-
-            $category = Category::orderBy('id', 'desc')
+            
+             $category = Category::orderBy('id', 'desc')
                 ->where(['iStatus' => 1, 'isDelete' => 0, 'id' => 1])
                 ->first();
 
@@ -365,7 +365,7 @@ class FrontController extends Controller
 
     public function contact_us_store(Request $request)
     {
-        // try {
+        try {
         $request->validate(
             [
                 'first_name' => 'required|string|max:255',
@@ -391,6 +391,7 @@ class FrontController extends Controller
         Inquiry::create($data);
 
         $SendEmailDetails = DB::table('sendemaildetails')->where(['id' => 4])->first();
+        //dd($SendEmailDetails);
 
         if ($SendEmailDetails) {
             $msg = [
@@ -401,23 +402,24 @@ class FrontController extends Controller
             ];
 
             // ✅ Send email
-            Mail::send('emails.contactemail', ['data' => $data], function ($message) use ($msg) {
+          $mail =   Mail::send('emails.contactemail', ['data' => $data], function ($message) use ($msg) {
                 $message->from($msg['FromMail'], $msg['Title']);
                 $message->to($msg['ToEmail'])->subject($msg['Subject']);
             });
+       
         }
 
         return redirect()->route('contactthankyou');
-        // } catch (\Throwable $th) {
-        //     Log::error('Contact Form Submission Error: ' . $th->getMessage(), [
-        //         'request_data' => $request->all(),
-        //         'exception' => $th
-        //     ]);
+        } catch (\Throwable $th) {
+            Log::error('Contact Form Submission Error: ' . $th->getMessage(), [
+                'request_data' => $request->all(),
+                'exception' => $th
+            ]);
 
-        //     return redirect()->back()
-        //         ->withInput()
-        //         ->with('error', 'Something went wrong while submitting the form. Please try again later.');
-        // }
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Something went wrong while submitting the form. Please try again later.');
+        }
     }
 
     public function contactthankyou()
@@ -578,25 +580,27 @@ class FrontController extends Controller
                 'required',
                 'digits:10',
                 // Rule::unique('customer', 'customermobile')->where(fn($q) => $q->where('isDelete', 0)),
-                Rule::unique('customer', 'customermobile')->where(function ($q) use ($request) {
-                    return $q->where('isDelete', 0)
-                        ->where('country', $request->country);
-                }),
+                // Rule::unique('customer', 'customermobile')->where(function ($q) use ($request) {
+                //     return $q->where('isDelete', 0)
+                //         ->where('country', $request->country);
+                // }),
             ],
             'billEmail' => [
                 'nullable',
                 'email',
-                Rule::unique('customer', 'customeremail')->where(fn($q) => $q->where('isDelete', 0)),
+                // Rule::unique('customer', 'customeremail')->where(fn($q) => $q->where('isDelete', 0)),
             ],
             'billStreetAddress1' => 'required|string|max:255',
             'state' => 'required|string|max:100',
             'city' => 'required|string|max:100',
             'pincode' => 'required|digits_between:5,10',
             'country' => 'required|string|max:100',
-        ], [
-            'billPhone.unique' => 'This phone number is already registered.',
-            'billEmail.unique' => 'This email address is already registered.',
-        ]);
+        ]
+        // [
+        //     'billPhone.unique' => 'This phone number is already registered.',
+        //     'billEmail.unique' => 'This email address is already registered.',
+        // ]
+        );
 
         if ($validator->fails()) {
             return response()->json([

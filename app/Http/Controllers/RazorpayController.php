@@ -200,7 +200,6 @@ class RazorpayController extends Controller
                 ->get();
 
             $setting = DB::table("setting")->select('email')->first();
-
             // Send mail to admin
             if (!empty($setting->email)) {
                 $adminMailData = [
@@ -209,8 +208,9 @@ class RazorpayController extends Controller
                     'ToEmail' => $setting->email,
                     'Subject' => $SendEmailDetails->strSubject . "#$id"
                 ];
+                
 
-                Mail::send('emails.checkoutmail', [
+               $mail =  Mail::send('emails.checkoutmail', [
                     'Order' => $Order,
                     'OrderDetail' => $OrderDetail,
                     'CountryName' => $CountryName->countryName,
@@ -218,6 +218,8 @@ class RazorpayController extends Controller
                     $message->from($adminMailData['FromMail'], $adminMailData['Title']);
                     $message->to($adminMailData['ToEmail'])->subject($adminMailData['Subject']);
                 });
+                
+               
             }
 
             // Send mail to customer

@@ -109,7 +109,7 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <img src="https://www.getdemo.in/oro_veda/assets/images/logo.png" alt="OroVeda Logo">
+            <img src="https://orovedaorganics.com/assets/front/images/logo.png" alt="OroVeda Logo">
             <h2> Login Verification </h2>
             <p>{{ config('app.name') ?? 'ORO Veda' }}</p>
         </div>

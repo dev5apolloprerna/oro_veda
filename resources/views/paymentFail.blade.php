@@ -21,8 +21,8 @@
                         This could be due to a network issue, cancelled transaction, or insufficient balance.
                     </p>
 
-                    <a href="{{ route('cart.list') }}" class="btn-primary-2025 mx-2">Back to Cart</a>
-                    <a href="{{ route('front.index') }}" class="btn-primary-2025 mx-2">Continue Shopping</a>
+                    <a href="{{ route('cart.list') }}" class="btn btn-outline-primary mx-2">Back to Cart</a>
+                    <a href="{{ route('front.index') }}" class="btn btn-primary mx-2">Continue Shopping</a>
 
                 </div>
             </div>

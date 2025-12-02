@@ -130,6 +130,7 @@ class OrderController extends Controller
 
     public function statustodispatched(Request $request)
     {
+        // dd($request);
         $request->validate([
             'courier' => 'required|integer',
             'docketNo' => 'required|string|max:255',
@@ -165,13 +166,14 @@ class OrderController extends Controller
                     return back()->with('error', 'Order or courier not found.');
                 }
 
-                $urlToClient = $Courier->url . $request->docketNo;
+                $urlToClient = $Courier->url;
 
                 $SendEmailDetails = DB::table('sendemaildetails')->where(['id' => 10])->first();
 
                 if ($SendEmailDetails && !empty($Order->shipping_email)) {
                     $emailData = [
                         'orderNo' => $request->order_id,
+                        'shippingmobile' => $Order->shipping_mobile,
                         'courierName' => $Courier->name,
                         'docketNo' => $request->docketNo,
                         'link' => $urlToClient
@@ -191,21 +193,21 @@ class OrderController extends Controller
                     });
                 }
 
-                $Customer = Customer::where(["customerid" => $Order->customerid])->first();
-                $Setting = Setting::where(["id" => 1])->first();
+                // $Customer = Customer::where(["customerid" => $Order->customerid])->first();
+                // $Setting = Setting::where(["id" => 1])->first();
 
-                if ($Customer && $Setting && $Order->shipping_mobile) {
-                    $MobileNumber = $Order->shipping_mobile;
-                    $key = $Setting->api_key;
+                // if ($Customer && $Setting && $Order->shipping_mobile) {
+                //     $MobileNumber = $Order->shipping_mobile;
+                //     $key = $Setting->api_key;
 
-                    $whatsappmsg = "*Dear Customer*,\n\nClick on the below link to track your order:\n$urlToClient\n\nRegards,\nTeam The Wardrobe Fashion.";
+                //     $whatsappmsg = "*Dear Customer*,\n\nClick on the below link to track your order:\n$urlToClient\n\nRegards,\nTeam The Wardrobe Fashion.";
 
-                    $customer = new Customer();
+                //     $customer = new Customer();
 
-                    // Optional: Call your WhatsApp API method here
-                    // If implemented in Customer model
-                    // $status = $customer->WhatsappMessage($MobileNumber, $whatsappmsg);
-                }
+                //     // Optional: Call your WhatsApp API method here
+                //     // If implemented in Customer model
+                //     // $status = $customer->WhatsappMessage($MobileNumber, $whatsappmsg);
+                // }
 
                 return redirect()->route('order.dispatched')->with('success', 'Status updated and customer notified successfully.');
             } else {
