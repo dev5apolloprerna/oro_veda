@@ -31,7 +31,11 @@ class Product extends Model
         'meta_keyword',
         'meta_description',
         'head',
-        'body'
+        'body',
+        'height',
+        'length',
+        'breadth',
+        'weight'
     ];
     protected $casts = [
         'rate' => 'decimal:2',
