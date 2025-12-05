@@ -78,6 +78,10 @@ class ProductController extends Controller
                 'isNewArrival' => $isNewArrival ?? 0,
                 'isGiftBoxes' => $isGiftBoxes ?? 0,
                 'isComboPacks' => $isComboPacks ?? 0,
+                'height' => $request->height,
+                'width' => $request->width,
+                'breath' => $request->breath,
+                'weight' => $request->weight,
                 'meta_title' => $request->meta_title,
                 'meta_keyword' => $request->meta_keyword,
                 'meta_description' => $request->meta_description,
@@ -141,7 +145,6 @@ class ProductController extends Controller
             'categoryId' => 'required',
             'productname' => 'required|unique:products,productname,' . $id . ',id',
         ]);
-
         $isBestSeller = $request->isBestSeller == "on" ? 1 : 0;
         $isNewArrival = $request->isNewArrival == "on" ? 1 : 0;
         $isGiftBoxes = $request->isGiftBoxes == "on" ? 1 : 0;
@@ -161,6 +164,10 @@ class ProductController extends Controller
                 'isNewArrival' => $isNewArrival ?? 0,
                 'isGiftBoxes' => $isGiftBoxes ?? 0,
                 'isComboPacks' => $isComboPacks ?? 0,
+                'height' => $request->height,
+                'width' => $request->width,
+                'breath' => $request->breath,
+                'weight' => $request->weight,
                 'meta_title' => $request->meta_title,
                 'meta_keyword' => $request->meta_keyword,
                 'meta_description' => $request->meta_description,

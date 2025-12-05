@@ -41,5 +41,10 @@ class Order extends Model
         'isDispatched',
         'isDispatchedBy',
         'dispatchCourierId',
+        'shiprocket_order_id',
+        'shiprocket_shipment_id',
+        'shiprocket_status',
+        'shiprocket_status_code',
+        'shiprocket_response',
     ];
 }
