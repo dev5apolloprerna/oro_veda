@@ -13,6 +13,11 @@ class OtherPages extends Model
         'id',
         'pagename',
         'slugname',
-        'description'
+        'description',
+        'meta_title',
+        'meta_description',
+        'meta_keyword',
+        'head',
+        'body'
     ];
 }
