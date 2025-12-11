@@ -91,11 +91,43 @@
                                         <textarea class="form-control ckeditor" name="description" id="Editdescription" rows="6" required></textarea>
                                     </div>
 
+                                    <div class="mb-3">
+                                        <span style="color:red;">*</span>Meta Title
+                                        <input type="text" class="form-control" name="meta_title" id="Editmeta_title"
+                                            placeholder="Enter Meta Title" autocomplete="off" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <span style="color:red;">*</span>Meta Description
+                                        <input type="text" class="form-control" name="meta_description"
+                                            id="Editmeta_description" placeholder="Enter Meta Description"
+                                            autocomplete="off" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <span style="color:red;">*</span>Meta Keyword
+                                        <input type="text" class="form-control" name="meta_keyword" id="Editmeta_keyword"
+                                            placeholder="Enter Meta Description" autocomplete="off" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <span style="color:red;">*</span>Head
+                                        <input type="text" class="form-control" name="head" id="Edithead"
+                                            placeholder="Enter Head" autocomplete="off" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <span style="color:red;">*</span>body
+                                        <input type="text" class="form-control" name="body" id="Editbody"
+                                            placeholder="Enter body" autocomplete="off" required>
+                                    </div>
+
 
                                 </div>
                                 <div class="modal-footer">
                                     <div class="hstack gap-2 justify-content-end">
-                                        <button type="submit" class="btn btn-primary mx-2" id="add-btn">Update</button>
+                                        <button type="submit" class="btn btn-primary mx-2"
+                                            id="add-btn">Update</button>
                                         <button type="button" class="btn btn-primary mx-2"
                                             data-bs-dismiss="modal">Cancel</button>
                                     </div>
@@ -119,22 +151,22 @@
                             </div>
                             <div class="model-body">
                                 <div class="row">
-                                  <div class="col-lg-12">
-                                      <table width="100%">
-                                    <tbody>
-                                        <tr>
-                                            <td class="text-center" style="width: 20%;">Description</td>
-                                            <td id="showdescription"
-                                                style="padding: 9px;
-                                            
+                                    <div class="col-lg-12">
+                                        <table width="100%">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-center" style="width: 20%;">Description</td>
+                                                    <td id="showdescription"
+                                                        style="padding: 9px;
+
                                             text-align: justify;">
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                  </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>    
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -164,6 +196,11 @@
                         //console.log(data);
                         var obj = JSON.parse(data);
                         $("#Editpagename").val(obj.pagename);
+                        $("#Editmeta_title").val(obj.meta_title);
+                        $("#Editmeta_description").val(obj.meta_description);
+                        $("#Editmeta_keyword").val(obj.meta_keyword);
+                        $("#Edithead").val(obj.head);
+                        $("#Editbody").val(obj.body);
                         CKEDITOR.instances['Editdescription'].setData(obj.description);
                         $('#settingid').val(id);
                     }

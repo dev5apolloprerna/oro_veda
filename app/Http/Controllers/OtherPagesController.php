@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
-
 class OtherPagesController extends Controller
 {
     public function index(Request $request)
@@ -33,6 +32,11 @@ class OtherPagesController extends Controller
             ->update([
                 'pagename' => $request->pagename,
                 'slugname' => Str::slug($request->pagename),
+                'meta_title' => $request->meta_title,
+                'meta_description' => $request->meta_description,
+                'meta_keyword' => $request->meta_keyword,
+                'head' => $request->head,
+                'body' => $request->body,
                 'description' => $request->description,
                 'updated_at' => now(),
                 'strIP' => $request->ip(),
