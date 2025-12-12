@@ -86,13 +86,13 @@
                                         </a>
                                     </li>
 
-                                    <!--<li class="nav-item">-->
-                                    <!--    <a class="nav-link menu-link @if (request()->routeIs('metaData.index')) {{ 'active' }} @endif"-->
-                                    <!--        href="{{ route('metaData.index') }}">-->
-                                    <!--        <i class="fa-solid fa-magnifying-glass"></i>-->
-                                    <!--        <span data-key="t-dashboards">Seo</span>-->
-                                    <!--    </a>-->
-                                    <!--</li>-->
+                                    <li class="nav-item">
+                                        <a class="nav-link menu-link @if (request()->routeIs('metaData.index')) {{ 'active' }} @endif"
+                                            href="{{ route('metaData.index') }}">
+                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                            <span data-key="t-dashboards">Seo</span>
+                                        </a>
+                                    </li>
 
                                 </ul>
                             </div>

@@ -120,8 +120,8 @@ class FrontController extends Controller
                 ->where(['products.iStatus' => 1, 'products.isDelete' => 0])
                 ->get();
             // dd($featuredProduct);
-            
-             $category = Category::orderBy('id', 'desc')
+
+            $category = Category::orderBy('id', 'desc')
                 ->where(['iStatus' => 1, 'isDelete' => 0, 'id' => 1])
                 ->first();
 
@@ -351,7 +351,8 @@ class FrontController extends Controller
     public function contactus(Request $request)
     {
         try {
-            return view('frontview.contact');
+            $meta = MetaData::get();
+            return view('frontview.contact', compact('meta'));
         } catch (\Throwable $th) {
             Log::error('Contact Page Load Error: ' . $th->getMessage(), [
                 'exception' => $th
@@ -366,50 +367,49 @@ class FrontController extends Controller
     public function contact_us_store(Request $request)
     {
         try {
-        $request->validate(
-            [
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
-                'email' => 'required|email',
-                'subject' => 'required|string|max:255',
-                'message' => 'required|string',
-                'captcha' => 'required|captcha'
-            ],
-            [
-                'captcha.captcha' => 'Invalid captcha code.'
-            ]
-        );
+            $request->validate(
+                [
+                    'first_name' => 'required|string|max:255',
+                    'last_name' => 'required|string|max:255',
+                    'email' => 'required|email',
+                    'subject' => 'required|string|max:255',
+                    'message' => 'required|string',
+                    'captcha' => 'required|captcha'
+                ],
+                [
+                    'captcha.captcha' => 'Invalid captcha code.'
+                ]
+            );
 
-        $data = array(
-            'name' => $request->first_name . ' ' . $request->last_name,
-            'email' => $request->email,
-            'subject' => $request->subject,
-            'message' => $request->message,
-            "strIp" => $request->ip(),
-            "created_at" => now()
-        );
-        Inquiry::create($data);
+            $data = array(
+                'name' => $request->first_name . ' ' . $request->last_name,
+                'email' => $request->email,
+                'subject' => $request->subject,
+                'message' => $request->message,
+                "strIp" => $request->ip(),
+                "created_at" => now()
+            );
+            Inquiry::create($data);
 
-        $SendEmailDetails = DB::table('sendemaildetails')->where(['id' => 4])->first();
-        //dd($SendEmailDetails);
+            $SendEmailDetails = DB::table('sendemaildetails')->where(['id' => 4])->first();
+            //dd($SendEmailDetails);
 
-        if ($SendEmailDetails) {
-            $msg = [
-                'FromMail' => $SendEmailDetails->strFromMail,
-                'Title' => $SendEmailDetails->strTitle,
-                'ToEmail' => $SendEmailDetails->ToMail,
-                'Subject' => $SendEmailDetails->strSubject
-            ];
+            if ($SendEmailDetails) {
+                $msg = [
+                    'FromMail' => $SendEmailDetails->strFromMail,
+                    'Title' => $SendEmailDetails->strTitle,
+                    'ToEmail' => $SendEmailDetails->ToMail,
+                    'Subject' => $SendEmailDetails->strSubject
+                ];
 
-            // ✅ Send email
-          $mail =   Mail::send('emails.contactemail', ['data' => $data], function ($message) use ($msg) {
-                $message->from($msg['FromMail'], $msg['Title']);
-                $message->to($msg['ToEmail'])->subject($msg['Subject']);
-            });
-       
-        }
+                // ✅ Send email
+                $mail =   Mail::send('emails.contactemail', ['data' => $data], function ($message) use ($msg) {
+                    $message->from($msg['FromMail'], $msg['Title']);
+                    $message->to($msg['ToEmail'])->subject($msg['Subject']);
+                });
+            }
 
-        return redirect()->route('contactthankyou');
+            return redirect()->route('contactthankyou');
         } catch (\Throwable $th) {
             Log::error('Contact Form Submission Error: ' . $th->getMessage(), [
                 'request_data' => $request->all(),
@@ -573,33 +573,35 @@ class FrontController extends Controller
 
     public function checkoutstore(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'billFirstName' => 'required|string|max:255',
-            'billLastName' => 'required|string|max:255',
-            'billPhone' => [
-                'required',
-                'digits:10',
-                // Rule::unique('customer', 'customermobile')->where(fn($q) => $q->where('isDelete', 0)),
-                // Rule::unique('customer', 'customermobile')->where(function ($q) use ($request) {
-                //     return $q->where('isDelete', 0)
-                //         ->where('country', $request->country);
-                // }),
-            ],
-            'billEmail' => [
-                'nullable',
-                'email',
-                // Rule::unique('customer', 'customeremail')->where(fn($q) => $q->where('isDelete', 0)),
-            ],
-            'billStreetAddress1' => 'required|string|max:255',
-            'state' => 'required|string|max:100',
-            'city' => 'required|string|max:100',
-            'pincode' => 'required|digits_between:5,10',
-            'country' => 'required|string|max:100',
-        ]
-        // [
-        //     'billPhone.unique' => 'This phone number is already registered.',
-        //     'billEmail.unique' => 'This email address is already registered.',
-        // ]
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'billFirstName' => 'required|string|max:255',
+                'billLastName' => 'required|string|max:255',
+                'billPhone' => [
+                    'required',
+                    'digits:10',
+                    // Rule::unique('customer', 'customermobile')->where(fn($q) => $q->where('isDelete', 0)),
+                    // Rule::unique('customer', 'customermobile')->where(function ($q) use ($request) {
+                    //     return $q->where('isDelete', 0)
+                    //         ->where('country', $request->country);
+                    // }),
+                ],
+                'billEmail' => [
+                    'nullable',
+                    'email',
+                    // Rule::unique('customer', 'customeremail')->where(fn($q) => $q->where('isDelete', 0)),
+                ],
+                'billStreetAddress1' => 'required|string|max:255',
+                'state' => 'required|string|max:100',
+                'city' => 'required|string|max:100',
+                'pincode' => 'required|digits_between:5,10',
+                'country' => 'required|string|max:100',
+            ]
+            // [
+            //     'billPhone.unique' => 'This phone number is already registered.',
+            //     'billEmail.unique' => 'This email address is already registered.',
+            // ]
         );
 
         if ($validator->fails()) {

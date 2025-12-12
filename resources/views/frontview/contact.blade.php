@@ -1,5 +1,24 @@
 @extends('layouts.front')
 @section('title', 'Contact')
+@section('opTag')
+    {{-- Meta tags --}}
+    <meta name="description" content="{{ $meta->metaDescription ?? '' }}">
+    <meta name="keywords" content="{{ $meta->metaKeyword ?? '' }}">
+    <meta name="title" content="{{ $meta->metaTitle ?? '' }}">
+@endsection
+
+
+@section('head')
+    {!! $meta->head ?? '' !!}
+@endsection
+
+@section('body')
+    @if (!empty($meta->body))
+        <script type="text/javascript">
+            {!! $meta->body !!}
+        </script>
+    @endif
+@endsection
 @section('content')
 
     @include('common.contactalert')
