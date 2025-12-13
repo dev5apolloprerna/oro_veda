@@ -9,7 +9,7 @@
     <!-- 🌟 HERO SLIDER START -->
 
     <!-- Hero Slider -->
-    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="15000">
 
 
         <div class="carousel-inner">
@@ -22,7 +22,7 @@
                     <p class="animate__animated animate__fadeInUp animate__delay-1s">
                         Crafted from the milk of sacred Gir cows, bringing you purity and golden nourishment.
                     </p>
-                    <a href="#shop"
+                    <a href="{{ route('front.product_list', $category->slugname) }}"
                         class="btn btn-warning btn-hero text-dark fw-semibold animate__animated animate__zoomIn animate__delay-2s">
                         Shop Now
                     </a>
@@ -32,8 +32,27 @@
                     </a>
                 </div>
             </div>
+            
+              <!-- Slide 2 -->
+            <div class="carousel-item "
+                style="background-image: url('{{ asset('assets/front/images/slider-1.jpeg') }}');">
+                <!--<div class="carousel-caption text-start">-->
+                <!--    <h1 class="animate__animated animate__fadeInDown">Oroveda – Pure Gir Cow Ghee</h1>-->
+                <!--    <p class="animate__animated animate__fadeInUp animate__delay-1s">-->
+                <!--        Crafted from the milk of sacred Gir cows, bringing you purity and golden nourishment.-->
+                <!--    </p>-->
+                <!--    <a href="{{ route('front.product_list', $category->slugname) }}"-->
+                <!--        class="btn btn-warning btn-hero text-dark fw-semibold animate__animated animate__zoomIn animate__delay-2s">-->
+                <!--        Shop Now-->
+                <!--    </a>-->
+                <!--    <a href="{{ route('front.about') }}"-->
+                <!--        class="btn btn-outline-light btn-hero animate__animated animate__zoomIn animate__delay-2s">-->
+                <!--        Learn More-->
+                <!--    </a>-->
+                <!--</div>-->
+            </div>
 
-            <!-- Slide 2 -->
+             <!--Slide 3 -->
             <div class="carousel-item" style="background-image: url('{{ asset('assets/front/images/slide-2.png') }}');">
                 <div class="carousel-caption">
                     <h1 class="animate__animated animate__fadeInDown">Ayurvedic Goodness in Every Spoon</h1>
