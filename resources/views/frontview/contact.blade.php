@@ -1,5 +1,6 @@
 @extends('layouts.front')
 @section('title', 'Contact')
+  {{-- Meta tags --}}
 @section('opTag')
     {{-- Meta tags --}}
     <meta name="description" content="{{ $meta->metaDescription ?? '' }}">
@@ -12,11 +13,12 @@
     {!! $meta->head ?? '' !!}
 @endsection
 
+
 @section('body')
-    @if (!empty($meta->body))
-        <script type="text/javascript">
+    @if(!empty($meta->body))
+<script type="text/javascript">
             {!! $meta->body !!}
-        </script>
+</script>
     @endif
 @endsection
 @section('content')

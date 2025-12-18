@@ -1,7 +1,25 @@
 @extends('layouts.front')
 
 @section('title', 'Product Listing')
+@section('opTag')
+    {{-- Meta tags --}}
+    <meta name="description" content="{{ $meta->metaDescription ?? '' }}">
+    <meta name="keywords" content="{{ $meta->metaKeyword ?? '' }}">
+    <meta name="title" content="{{ $meta->metaTitle ?? '' }}">
+@endsection
 
+@section('head')
+    {!! $meta->head ?? '' !!}
+@endsection
+
+
+@section('body')
+    @if (!empty($meta->body))
+        <script type="text/javascript">
+            {!! $meta->body !!}
+        </script>
+    @endif
+@endsection
 @section('content')
 
     <style>
@@ -14,7 +32,7 @@
             margin: 4px;
             font-weight: 600;
             transition: 0.3s;
-            display:inline-block;
+            display: inline-block;
         }
 
         .filter-btn:hover,
@@ -76,7 +94,7 @@
 
                 @foreach ($products as $product)
                     @php
-                  
+
                         if ($countryCode == 'IN') {
                             $price = $product->rate; // INR price
                             $cut_price = $product->cut_price; // INR price
