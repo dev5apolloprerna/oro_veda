@@ -57,8 +57,6 @@ class FrontController extends Controller
         $currency = session('currency', 'USD');
 
         try {
-            $meta = MetaData::where('id', '=', '1')->first();
-
             $Testimonial = Testimonial::orderBy('id', 'desc')
                 ->where(['iStatus' => 1, 'isDelete' => 0])
                 ->get();
@@ -127,7 +125,7 @@ class FrontController extends Controller
                 ->where(['iStatus' => 1, 'isDelete' => 0, 'id' => 1])
                 ->first();
 
-            return view('frontview.index', compact('meta', 'Testimonial', 'blogs', 'featuredProduct', 'offers', 'countryCode', 'category'));
+            return view('frontview.index', compact('Testimonial', 'blogs', 'featuredProduct', 'offers', 'countryCode', 'category'));
         } catch (\Throwable $th) {
             Log::error('Home Page Error: ' . $th->getMessage(), [
                 'exception' => $th
@@ -139,9 +137,7 @@ class FrontController extends Controller
     public function about(Request $request)
     {
         try {
-            $meta = MetaData::where('id', '=', '2')->first();
-
-            return view('frontview.about', compact('meta'));
+            return view('frontview.about');
         } catch (\Throwable $th) {
             Log::error('About Page Error: ' . $th->getMessage(), [
                 'exception' => $th
@@ -152,7 +148,7 @@ class FrontController extends Controller
 
     public function blog(Request $request)
     {
-        $meta = MetaData::where('id', '=', '4')->first();
+        $seo = MetaData::where('id', '=', '2')->first();
 
         // Fetch active categories
         $categories = BlogCategory::orderBy('strCategoryName', 'asc')
@@ -177,7 +173,7 @@ class FrontController extends Controller
         // ✅ Keep category filter in pagination links
         $blogs = $query->paginate(12)->appends(['category' => $request->category]);
 
-        return view('frontview.blog', compact('meta', 'blogs', 'categories'));
+        return view('frontview.blog', compact('seo', 'blogs', 'categories'));
     }
 
     public function blog_detail(Request $request, $id)
@@ -199,8 +195,6 @@ class FrontController extends Controller
     {
 
         try {
-            $meta = MetaData::where('id', '=', '5')->first();
-
             $Category = Category::orderBy('id', 'desc')->where(['isDelete' => 0, 'slugname' => $categoryid])->first();
 
             if (!$Category) {
@@ -272,7 +266,7 @@ class FrontController extends Controller
             $products = $products->paginate($limit)->appends($request->all());
             // dd($products);
 
-            return view('frontview.products', compact('meta', 'products', 'Category', 'categoryid', 'countryCode', 'filter'));
+            return view('frontview.products', compact('products', 'Category', 'categoryid', 'countryCode', 'filter'));
         } catch (\Throwable $th) {
             if ($th instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
                 abort(404);
@@ -357,8 +351,7 @@ class FrontController extends Controller
     public function contactus(Request $request)
     {
         try {
-            $meta = MetaData::where('id', '3')->first();
-
+            $meta = MetaData::get();
             return view('frontview.contact', compact('meta'));
         } catch (\Throwable $th) {
             Log::error('Contact Page Load Error: ' . $th->getMessage(), [

@@ -1,5 +1,24 @@
 @extends('layouts.front')
 @section('title', 'Home')
+@section('opTag')
+    {{-- Meta tags --}}
+    <meta name="description" content="{{ $meta->metaDescription ?? '' }}">
+    <meta name="keywords" content="{{ $meta->metaKeyword ?? '' }}">
+    <meta name="title" content="{{ $meta->metaTitle ?? '' }}">
+@endsection
+
+@section('head')
+    {!! $meta->head ?? '' !!}
+@endsection
+
+
+@section('body')
+    @if (!empty($meta->body))
+        <script type="text/javascript">
+            {!! $meta->body !!}
+        </script>
+    @endif
+@endsection
 @section('content')
 
     @include('common.frontmodalalert')
@@ -32,10 +51,9 @@
                     </a>
                 </div>
             </div>
-            
-              <!-- Slide 2 -->
-            <div class="carousel-item "
-                style="background-image: url('{{ asset('assets/front/images/slider-1.jpeg') }}');">
+
+            <!-- Slide 2 -->
+            <div class="carousel-item " style="background-image: url('{{ asset('assets/front/images/slider-1.jpeg') }}');">
                 <!--<div class="carousel-caption text-start">-->
                 <!--    <h1 class="animate__animated animate__fadeInDown">Oroveda – Pure Gir Cow Ghee</h1>-->
                 <!--    <p class="animate__animated animate__fadeInUp animate__delay-1s">-->
@@ -52,7 +70,7 @@
                 <!--</div>-->
             </div>
 
-             <!--Slide 3 -->
+            <!--Slide 3 -->
             <div class="carousel-item" style="background-image: url('{{ asset('assets/front/images/slide-2.png') }}');">
                 <div class="carousel-caption">
                     <h1 class="animate__animated animate__fadeInDown">Ayurvedic Goodness in Every Spoon</h1>
@@ -242,7 +260,8 @@
                     <div class="col-md-6 col-lg-3" data-aos="zoom-in" data-aos-delay="200">
 
                         <div class="card h-100 shadow-sm border-0 product-card">
-                            <a href="{{ route('front.product_detail', [$products->category_slug, $products->slugname]) }}">
+                            <a
+                                href="{{ route('front.product_detail', [$products->category_slug, $products->slugname]) }}">
                                 <div class="image-wrapper">
                                     <img src="{{ asset('uploads/product/' . $products->photo) }}" class="card-img-top"
                                         alt="{{ $products->productname }}">

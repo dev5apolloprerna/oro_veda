@@ -8,9 +8,12 @@
                     purest organic ghee made using traditional methods. Our products support sustainable farming and
                     promote healthy living.</p>
                 <div class="social-icons">
-                    <a href="https://www.facebook.com/share/1F8re1C52v/" class="social-icon" target="_blank"><i class="bi bi-facebook"></i></a>
-                    <a href="https://www.instagram.com/oroveda_organics?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="social-icon" target="_blank"><i class="bi bi-instagram"></i></a>
-                    <a href="https://api.whatsapp.com/send?phone=917777924902" class="social-icon" target="_blank"><i class="bi bi-whatsapp"></i></a>
+                    <a href="https://www.facebook.com/share/1F8re1C52v/" class="social-icon" target="_blank"><i
+                            class="bi bi-facebook"></i></a>
+                    <a href="https://www.instagram.com/oroveda_organics?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                        class="social-icon" target="_blank"><i class="bi bi-instagram"></i></a>
+                    <a href="https://api.whatsapp.com/send?phone=917777924902" class="social-icon" target="_blank"><i
+                            class="bi bi-whatsapp"></i></a>
                     <!--<a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>-->
                 </div>
             </div>
@@ -59,3 +62,4 @@
         </div>
     </div>
 </footer>
+@yield('body')

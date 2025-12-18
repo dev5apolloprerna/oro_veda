@@ -11,6 +11,7 @@ class MetaData extends Model
     public $table = 'meta_data';
 
     protected $fillable = [
+        'pagename',
         'metaTitle',
         'metaKeyword',
         'metaDescription',
