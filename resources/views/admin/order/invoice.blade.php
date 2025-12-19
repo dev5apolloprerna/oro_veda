@@ -112,6 +112,18 @@
             </td>
         </tr>
     @endif
+    @if ($data->created_at)
+        <tr>
+            <td style="font-weight: 600;">Order Date</td>
+            <td>
+                @if ($data->created_at)
+                    {{ date('d-m-Y', strtotime($data->created_at)) }}
+                @else
+                    -
+                @endif
+            </td>
+        </tr>
+    @endif
 </table>
 
 
