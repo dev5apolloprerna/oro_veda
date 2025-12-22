@@ -173,6 +173,57 @@
                                                 </div>
                                             </div>
 
+                                            <div class="col-lg-3 col-md-6">
+                                                <div>
+                                                    <span style="color:red;">*</span> Height
+                                                    <input type="text" class="form-control" placeholder="Enter Height"
+                                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                                        maxlength="5" name="height" autocomplete="off"
+                                                        value="{{ $product->height }}" required>
+                                                    @error('height')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-6">
+                                                <div>
+                                                    <span style="color:red;">*</span> Width
+                                                    <input type="text" class="form-control" placeholder="Enter Width"
+                                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                                        maxlength="5" name="width" autocomplete="off"
+                                                        value="{{ $product->length }}" required>
+                                                    @error('length')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-6">
+                                                <div>
+                                                    <span style="color:red;">*</span> Breath
+                                                    <input type="text" class="form-control" placeholder="Enter Breath"
+                                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                                        maxlength="5" name="breath" autocomplete="off"
+                                                        value="{{ $product->breadth }}" required>
+                                                    @error('breadth')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-6">
+                                                <div>
+                                                    <span style="color:red;">*</span> Weight
+                                                    <input type="text" class="form-control" placeholder="Enter Weight"
+                                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                                        maxlength="5" name="weight" autocomplete="off"
+                                                        value="{{ intval($product->weight) }}" required>
+                                                    @error('weight')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
 
                                             <div class="col-lg-3 col-md-6">
                                                 <div class="mt-4">

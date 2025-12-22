@@ -152,7 +152,7 @@ class FrontController extends Controller
 
     public function blog(Request $request)
     {
-        $meta = MetaData::where('id', '=', '4')->first();
+        //$meta = MetaData::where('id', '=', '4')->first();
 
         // Fetch active categories
         $categories = BlogCategory::orderBy('strCategoryName', 'asc')
@@ -176,12 +176,16 @@ class FrontController extends Controller
 
         // ✅ Keep category filter in pagination links
         $blogs = $query->paginate(12)->appends(['category' => $request->category]);
+        $meta = BlogCategory::where('strSlug', $request->category)
+            ->where(['iStatus' => 1, 'isDelete' => 0])
+            ->first();
 
         return view('frontview.blog', compact('meta', 'blogs', 'categories'));
     }
 
     public function blog_detail(Request $request, $id)
     {
+
         $Blog = Blog::orderBy('blogId', 'asc')
             ->where(['iStatus' => 1, 'isDelete' => 0, 'strSlug' => $id])
             ->first();
