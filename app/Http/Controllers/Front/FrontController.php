@@ -57,7 +57,7 @@ class FrontController extends Controller
         $currency = session('currency', 'USD');
 
         try {
-            $meta = MetaData::where('id', '=', '1')->first();
+            $meta = MetaData::where('id', '=', '3')->first();
 
             $Testimonial = Testimonial::orderBy('id', 'desc')
                 ->where(['iStatus' => 1, 'isDelete' => 0])
@@ -152,7 +152,8 @@ class FrontController extends Controller
 
     public function blog(Request $request)
     {
-        //$meta = MetaData::where('id', '=', '4')->first();
+        $meta = MetaData::where('id', '=', '4')->first();
+        
 
         // Fetch active categories
         $categories = BlogCategory::orderBy('strCategoryName', 'asc')
@@ -168,6 +169,10 @@ class FrontController extends Controller
             $category = BlogCategory::where('strSlug', $request->category)
                 ->where(['iStatus' => 1, 'isDelete' => 0])
                 ->first();
+                
+             $meta = BlogCategory::where('strSlug', $request->category)
+            ->where(['iStatus' => 1, 'isDelete' => 0])
+            ->first();
 
             if ($category) {
                 $query->where('category_id', $category->id);
@@ -176,16 +181,12 @@ class FrontController extends Controller
 
         // ✅ Keep category filter in pagination links
         $blogs = $query->paginate(12)->appends(['category' => $request->category]);
-        $meta = BlogCategory::where('strSlug', $request->category)
-            ->where(['iStatus' => 1, 'isDelete' => 0])
-            ->first();
-
+      
         return view('frontview.blog', compact('meta', 'blogs', 'categories'));
     }
 
     public function blog_detail(Request $request, $id)
     {
-
         $Blog = Blog::orderBy('blogId', 'asc')
             ->where(['iStatus' => 1, 'isDelete' => 0, 'strSlug' => $id])
             ->first();
@@ -307,6 +308,11 @@ class FrontController extends Controller
                 'products.usd_cut_price',
                 'products.description',
                 'products.categoryId',
+                'products.meta_title',
+                'products.meta_keyword',
+                'products.meta_description',
+                'products.head',
+                'products.body',
                 DB::raw('(SELECT strphoto FROM productphotos WHERE  productphotos.productid=products.id  LIMIT 1) as photo'),
 
                 DB::raw('(
@@ -361,7 +367,7 @@ class FrontController extends Controller
     public function contactus(Request $request)
     {
         try {
-            $meta = MetaData::where('id', '3')->first();
+            $meta = MetaData::where('id', '1')->first();
 
             return view('frontview.contact', compact('meta'));
         } catch (\Throwable $th) {
