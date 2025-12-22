@@ -2,6 +2,26 @@
 
 @section('title', 'Product Detail')
 
+@section('opTag')
+    {{-- Meta tags --}}
+    <meta name="description" content="{{ $ProductDetail->meta_description ?? '' }}">
+    <meta name="keywords" content="{{ $ProductDetail->meta_keyword ?? '' }}">
+    <meta name="title" content="{{ $ProductDetail->meta_title ?? '' }}">
+@endsection
+
+@section('head')
+    {!! $ProductDetail->head ?? '' !!}
+@endsection
+
+
+@section('body')
+    @if (!empty($ProductDetail->body))
+        <script type="text/javascript">
+            {!! $ProductDetail->body !!}
+        </script>
+    @endif
+@endsection
+
 @section('content')
 
     @include('common.frontmodalalert')

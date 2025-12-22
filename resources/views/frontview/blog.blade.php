@@ -1,24 +1,48 @@
 @extends('layouts.front')
 @section('title', 'About Us')
-@section('opTag')
-    {{-- Meta tags --}}
-    <meta name="description" content="{{ $meta->meta_Description ?? '' }}">
-    <meta name="keywords" content="{{ $meta->meta_keyword ?? '' }}">
-    <meta name="title" content="{{ $meta->meta_title ?? '' }}">
-@endsection
+@if($meta->id == '4')
+    @section('opTag')
+        {{-- Meta tags --}}
+        <meta name="description" content="{{ $meta->metaDescription ?? '' }}">
+        <meta name="keywords" content="{{ $meta->metaKeyword ?? '' }}">
+        <meta name="title" content="{{ $meta->metaTitle ?? '' }}">
+    @endsection
+    
+    @section('head')
+        {!! $meta->head ?? '' !!}
+    @endsection
+    
+    
+    @section('body')
+        @if (!empty($meta->body))
+            <script type="text/javascript">
+                {!! $meta->body !!}
+            </script>
+        @endif
+    @endsection
+@else
 
-@section('head')
-    {!! $meta->head ?? '' !!}
-@endsection
+ @section('opTag')
+        {{-- Meta tags --}}
+        <meta name="description" content="{{ $meta->meta_Description ?? '' }}">
+        <meta name="keywords" content="{{ $meta->meta_keyword ?? '' }}">
+        <meta name="title" content="{{ $meta->meta_title ?? '' }}">
+    @endsection
+    
+    @section('head')
+        {!! $meta->head ?? '' !!}
+    @endsection
+    
+    
+    @section('body')
+        @if (!empty($meta->body))
+            <script type="text/javascript">
+                {!! $meta->body !!}
+            </script>
+        @endif
+    @endsection
 
-
-@section('body')
-    @if (!empty($meta->body))
-        <script type="text/javascript">
-            {!! $meta->body !!}
-        </script>
-    @endif
-@endsection
+@endif
 @section('content')
 
     @include('common.alert')
