@@ -28,6 +28,31 @@
                                         <input type="text" class="form-control" id="strCategoryName"
                                             name="strCategoryName" maxlength="50" required autofocus autocomplete="off">
                                     </div>
+                                    <div class="mb-3">
+                                        <span style="color:red;"></span>Meta Title</label>
+                                        <textarea class="form-control" name="meta_title" id="meta_title" rows="3"></textarea>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <span style="color:red;"></span>Meta Keyword</label>
+                                        <textarea class="form-control" name="meta_keyword" id="meta_keyword" rows="3"></textarea>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <span style="color:red;"></span>Meta Description</label>
+                                        <textarea class="form-control" name="meta_Description" id="meta_description" rows="3"></textarea>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <span style="color:red;"></span>Head</label>
+                                        <textarea class="form-control" name="head" id="head" rows="3"></textarea>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <span style="color:red;"></span>Body</label>
+                                        <textarea class="form-control" name="body" id="body" rows="3"></textarea>
+                                    </div>
+
 
                                     <div class="d-flex ">
                                         <button type="submit" class="btn btn-success mx-2">Submit</button>
@@ -65,7 +90,7 @@
                                                 <td>
                                                     {{-- Edit Icon --}}
                                                     <a class="mx-1" href="#" title="Edit"
-                                                        onclick="editCategory('{{ $category->id }}', '{{ $category->strCategoryName }}', '{{ $category->strSlug }}')">
+                                                        onclick="editCategory('{{ $category->id }}', '{{ $category->strCategoryName }}', '{{ $category->strSlug }}','{{ $category->meta_title }}','{{ $category->meta_keyword }}','{{ $category->meta_Description }}','{{ $category->head }}','{{ $category->body }}')">
                                                         <i class="far fa-edit"></i>
                                                     </a>
 
@@ -128,6 +153,31 @@
                                 maxlength="50" required>
                         </div>
 
+                        <div class="mb-3">
+                            <span style="color:red;"></span>Meta Title</label>
+                            <textarea class="form-control" name="meta_title" id="edit_meta_title" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <span style="color:red;"></span>Meta Keyword</label>
+                            <textarea class="form-control" name="meta_keyword" id="edit_meta_keyword" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <span style="color:red;"></span>Meta Description</label>
+                            <textarea class="form-control" name="meta_Description" id="edit_meta_description" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <span style="color:red;"></span>Head</label>
+                            <textarea class="form-control" name="head" id="edit_head" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <span style="color:red;"></span>Body</label>
+                            <textarea class="form-control" name="body" id="edit_body" rows="3"></textarea>
+                        </div>
+
                     </div>
                     <div class="modal-footer d-flex">
                         <button type="submit" class="btn btn-success">Update</button>
@@ -144,9 +194,14 @@
 
     <script>
         // Open edit modal dynamically
-        function editCategory(id, name, slug) {
+        function editCategory(id, name, slug, meta_title, meta_keyword, meta_Description, head, body) {
             $('#editCategoryId').val(id);
             $('#editStrCategoryName').val(name);
+            $('#edit_meta_title').val(meta_title);
+            $('#edit_meta_keyword').val(meta_keyword);
+            $('#edit_meta_description').val(meta_Description);
+            $('#edit_head').val(head);
+            $('#edit_body').val(body);
             $('#editCategoryForm').attr('action', `{{ url('admin/blog/category/update') }}/${id}`);
             $('#editCategoryModal').modal('show');
         }

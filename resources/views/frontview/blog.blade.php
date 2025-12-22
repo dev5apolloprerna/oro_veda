@@ -2,9 +2,9 @@
 @section('title', 'About Us')
 @section('opTag')
     {{-- Meta tags --}}
-    <meta name="description" content="{{ $meta->metaDescription ?? '' }}">
-    <meta name="keywords" content="{{ $meta->metaKeyword ?? '' }}">
-    <meta name="title" content="{{ $meta->metaTitle ?? '' }}">
+    <meta name="description" content="{{ $meta->meta_Description ?? '' }}">
+    <meta name="keywords" content="{{ $meta->meta_keyword ?? '' }}">
+    <meta name="title" content="{{ $meta->meta_title ?? '' }}">
 @endsection
 
 @section('head')

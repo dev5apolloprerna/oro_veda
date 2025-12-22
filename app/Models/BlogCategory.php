@@ -11,6 +11,11 @@ class BlogCategory extends Model
     protected $fillable = [
         'strCategoryName',
         'strSlug',
+        'meta_title',
+        'meta_keyword',
+        'meta_Description',
+        'head',
+        'body',
         'iStatus',
         'isDelete',
         'created_at',

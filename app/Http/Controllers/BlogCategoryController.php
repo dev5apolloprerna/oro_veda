@@ -16,7 +16,12 @@ class BlogCategoryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'strCategoryName' => 'required|string|max:50|unique:blog_categories,strCategoryName'
+            'strCategoryName' => 'required|string|max:50|unique:blog_categories,strCategoryName',
+            'meta_title' => 'nullable',
+            'meta_keyword' => 'nullable',
+            'meta_Description' => 'nullable',
+            'head' => 'nullable',
+            'body' => 'nullable'
         ]);
 
         $validated['strSlug'] = \Str::slug($request->strCategoryName);
@@ -40,10 +45,16 @@ class BlogCategoryController extends Controller
     {
         $category = BlogCategory::findOrFail($id);
 
-        $validated = $request->validate([
-            'strCategoryName' => 'required|string|max:50|unique:blog_categories,strCategoryName,' . $id . ',id'
-        ]);
 
+        $validated = $request->validate([
+            'strCategoryName' => 'required|string|max:50|unique:blog_categories,strCategoryName,' . $id . ',id',
+            'meta_title' => 'nullable',
+            'meta_keyword' => 'nullable',
+            'meta_Description' => 'nullable',
+            'head' => 'nullable',
+            'body' => 'nullable',
+
+        ]);
         $validated['strSlug'] = \Str::slug($request->strCategoryName);
         $validated['strIP'] = $request->ip();
 
