@@ -89,6 +89,43 @@
 
                                             <div class="col-lg-3 col-md-6">
                                                 <div>
+                                                    <span style="color:red;">*</span>Discount Type
+                                                    <select class="form-control" name="discount_type" id="discount_type"
+                                                        required>
+                                                        <option value="percentage"
+                                                            {{ $getData['discount_type'] == 'percentage' ? 'selected' : '' }}>
+                                                            Percentage
+                                                        </option>
+                                                        <option value="flat"
+                                                            {{ $getData['discount_type'] == 'flat' ? 'selected' : '' }}>
+                                                            Flat
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                @error('discount_type')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-6">
+                                                <div>
+                                                    <span style="color:red;">*</span>
+                                                    <span id="discount_label">
+                                                        {{ $getData['discount_type'] == 'flat' ? 'Flat Discount Amount' : 'Percentage (%) Off' }}
+                                                    </span>
+
+                                                    <input type="text" class="form-control"
+                                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                                        placeholder="Enter Discount Value" name="percentage" id="percentage"
+                                                        autocomplete="off" value="{{ $getData['percentage'] }}" required>
+                                                </div>
+                                                @error('percentage')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+
+                                            {{-- <div class="col-lg-3 col-md-6">
+                                                <div>
                                                     <span style="color:red;">*</span>Percentage (%) off
                                                     <input type="text" class="form-control"
                                                         oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');"
@@ -99,7 +136,7 @@
                                                 @error('percentage')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
-                                            </div>
+                                            </div> --}}
 
                                             <div class="col-lg-3 col-md-6">
                                                 <div>
@@ -129,9 +166,9 @@
                                             <div class="col-lg-3 col-md-6">
                                                 <div>
                                                     <span style="color:red;">*</span>To Date
-                                                    <input type="text" class="form-control" placeholder="Enter To Date"
-                                                        name="todate" id="enddatepicker" autocomplete="off"
-                                                        value="{{ $getData['enddate'] }}" required>
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Enter To Date" name="todate" id="enddatepicker"
+                                                        autocomplete="off" value="{{ $getData['enddate'] }}" required>
                                                 </div>
                                                 @error('todate')
                                                     <span class="text-danger">{{ $message }}</span>
@@ -164,6 +201,29 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
+    <script>
+        $(document).ready(function() {
+
+            function updateLabel() {
+                let type = $('#discount_type').val();
+
+                if (type === 'percentage') {
+                    $('#discount_label').text('Percentage (%) Off');
+                } else if (type === 'flat') {
+                    $('#discount_label').text('Flat Discount Amount');
+                }
+            }
+
+            // page load par label set karega
+            updateLabel();
+
+            // dropdown change par label change karega
+            $('#discount_type').change(function() {
+                updateLabel();
+            });
+
+        });
+    </script>
 
     <script>
         function validateFile() {
