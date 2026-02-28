@@ -153,7 +153,7 @@ class FrontController extends Controller
     public function blog(Request $request)
     {
         $meta = MetaData::where('id', '=', '4')->first();
-        
+
 
         // Fetch active categories
         $categories = BlogCategory::orderBy('strCategoryName', 'asc')
@@ -169,10 +169,10 @@ class FrontController extends Controller
             $category = BlogCategory::where('strSlug', $request->category)
                 ->where(['iStatus' => 1, 'isDelete' => 0])
                 ->first();
-                
-             $meta = BlogCategory::where('strSlug', $request->category)
-            ->where(['iStatus' => 1, 'isDelete' => 0])
-            ->first();
+
+            $meta = BlogCategory::where('strSlug', $request->category)
+                ->where(['iStatus' => 1, 'isDelete' => 0])
+                ->first();
 
             if ($category) {
                 $query->where('category_id', $category->id);
@@ -181,7 +181,7 @@ class FrontController extends Controller
 
         // ✅ Keep category filter in pagination links
         $blogs = $query->paginate(12)->appends(['category' => $request->category]);
-      
+
         return view('frontview.blog', compact('meta', 'blogs', 'categories'));
     }
 
@@ -462,6 +462,7 @@ class FrontController extends Controller
     public function couponcodeapply(Request $request)
     {
         try {
+
             $session = Session::get('customer_id');
 
             $couponInput = $request->coupon ?? '';
@@ -477,6 +478,7 @@ class FrontController extends Controller
                 'isDelete' => 0,
                 'offercode' => $request->coupon
             ])->first();
+
 
             if (!$Offer) {
                 Log::warning("Invalid or inactive coupon: $couponInput");
@@ -497,7 +499,21 @@ class FrontController extends Controller
                 return redirect()->back()->with('error', 'Coupon is expired!');
             }
 
-            $discount = number_format(($totalAmount * $Offer->percentage) / 100, 2);
+            // $discount = number_format(($totalAmount * $Offer->percentage) / 100, 2);
+
+            if ($Offer->discount_type == 'percentage') {
+
+                $discount = ($totalAmount * $Offer->percentage) / 100;
+            } else {
+
+                $discount = $Offer->percentage;
+
+                // if ($discount > $totalAmount) {
+                //     $discount = $totalAmount;
+                // }
+            }
+
+            $discount = number_format($discount, 2);
 
             CustomerCouponApplyed::create([
                 'offerId' => $Offer->id ?? 0,
@@ -546,30 +562,31 @@ class FrontController extends Controller
 
     public function checkout(Request $request)
     {
-        try {
-            $Coupon = $request->session()->get('data');
-            $cartItems = \Cart::getContent();
+        // try {
 
-            if ($cartItems->isEmpty()) {
-                return redirect()->route('front.index')->with('error', 'Your cart is empty!');
-            }
+        $Coupon = $request->session()->get('data');
+        $cartItems = \Cart::getContent();
 
-            $ip = $request->ip();
-            $countryCode = $this->getCountryCode($ip);
-
-            $Shipping = Shipping::orderBy('id', 'desc')->first();
-            $State = State::orderBy('stateName', 'asc')->get();
-            $countries = Country::orderBy('countryName', 'asc')->get();
-
-            return view('frontview.checkout', compact('Shipping', 'Coupon', 'State', 'countries', 'countryCode'));
-        } catch (\Throwable $th) {
-            Log::error('Checkout View Error', [
-                'message' => $th->getMessage(),
-                'line' => $th->getLine(),
-                'file' => $th->getFile(),
-            ]);
-            return redirect()->back()->with('error', 'Failed to load checkout page. Please try again.');
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('front.index')->with('error', 'Your cart is empty!');
         }
+
+        $ip = $request->ip();
+        $countryCode = $this->getCountryCode($ip);
+
+        $Shipping = Shipping::orderBy('id', 'desc')->first();
+        $State = State::orderBy('stateName', 'asc')->get();
+        $countries = Country::orderBy('countryName', 'asc')->get();
+
+        return view('frontview.checkout', compact('Shipping', 'Coupon', 'State', 'countries', 'countryCode'));
+        // } catch (\Throwable $th) {
+        //     Log::error('Checkout View Error', [
+        //         'message' => $th->getMessage(),
+        //         'line' => $th->getLine(),
+        //         'file' => $th->getFile(),
+        //     ]);
+        //     return redirect()->back()->with('error', 'Failed to load checkout page. Please try again.');
+        // }
     }
 
     public function get_userdata(Request $request)
@@ -620,6 +637,7 @@ class FrontController extends Controller
             //     'billEmail.unique' => 'This email address is already registered.',
             // ]
         );
+
 
         if ($validator->fails()) {
             return response()->json([
@@ -734,11 +752,10 @@ class FrontController extends Controller
         }
 
         $ip = $request->ip();
-        $countryCode = $this->getCountryCode($ip);
 
         $api = new Api(config('app.razorpay_key'), config('app.razorpay_secret'));
 
-        $currency = $countryCode == 'IN' ? 'INR' : 'USD';
+        $currency = $countryCode == 'IN';
         $razorpayOrder = $api->order->create([
             'receipt' => $order->id . '-' . date('YmdHis'),
             'amount' => $amount * 100,

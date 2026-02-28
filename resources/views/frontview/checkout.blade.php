@@ -289,9 +289,9 @@
         }
 
         $('#checkout-form').submit(function(e) {
+
             e.preventDefault();
             showLoader();
-
             // Clear old errors
             $('.invalid-feedback').remove();
             $('.is-invalid').removeClass('is-invalid');
@@ -393,7 +393,7 @@
                             }
                         });
                     } else {
-                        toastr.error('An unexpected error occurred.');
+                        //toastr.error('An unexpected error occurred.');
                     }
                 }
             });

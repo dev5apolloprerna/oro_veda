@@ -41,7 +41,7 @@
                                         <tr>
                                             <th scope="col">No</th>
                                             <th scope="col"> Text</th>
-                                            <th scope="col"> Percentage (%) off</th>
+                                            <th scope="col"> Percentage (%) off / Flat</th>
                                             <th scope="col"> Photo </th>
                                             <th scope="col"> Offer Code</th>
                                             <th scope="col"> Min Value</th>

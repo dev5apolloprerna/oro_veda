@@ -76,12 +76,45 @@
 
                                             <div class="col-lg-3 col-md-6">
                                                 <div>
+                                                    <span style="color:red;">*</span>Discount Type
+                                                    <select class="form-control" name="discount_type" id="discount_type"
+                                                        required>
+                                                        <option value="">Select Type</option>
+                                                        <option value="percentage"
+                                                            {{ old('discount_type') == 'percentage' ? 'selected' : '' }}>
+                                                            Percentage</option>
+                                                        <option value="flat"
+                                                            {{ old('discount_type') == 'flat' ? 'selected' : '' }}>Flat
+                                                        </option>
+                                                    </select>
+                                                    @error('discount_type')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                            {{-- <div class="col-lg-3 col-md-6">
+                                                <div>
                                                     <span style="color:red;">*</span>Percentage (%) off
                                                     <input type="text" class="form-control"
                                                         oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');"
                                                         placeholder="Enter Percentage (%) off" name="percentage"
                                                         id="percentage" autocomplete="off" value="{{ old('percentage') }}"
                                                         required>
+                                                    @error('percentage')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div> --}}
+
+                                            <div class="col-lg-3 col-md-6">
+                                                <div>
+                                                    <span style="color:red;">*</span>
+                                                    <span id="discount_label">Discount Value</span>
+                                                    <input type="text" class="form-control"
+                                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                                        placeholder="Enter Discount Value" name="percentage" id="percentage"
+                                                        autocomplete="off" value="{{ old('percentage') }}" required>
                                                     @error('percentage')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -148,6 +181,19 @@
 @endsection
 
 @section('scripts')
+
+    <script>
+        $('#discount_type').change(function() {
+            let type = $(this).val();
+            if (type === 'percentage') {
+                $('#discount_label').text('Percentage (%) Off');
+            } else if (type === 'flat') {
+                $('#discount_label').text('Flat Discount Amount');
+            } else {
+                $('#discount_label').text('Discount Value');
+            }
+        });
+    </script>
 
     <script>
         function validateFile() {

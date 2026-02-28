@@ -11,6 +11,7 @@ class Offer extends Model
     public $table = 'offer';
     protected $fillable = [
         'text',
+        'discount_type',
         'percentage',
         'offercode',
         'minvalue',

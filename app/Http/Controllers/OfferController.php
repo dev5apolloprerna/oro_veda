@@ -45,11 +45,13 @@ class OfferController extends Controller
                 $img = $imageName;
             }
 
+
             $Data = array(
                 'text' => $request->text,
                 'percentage' => $request->percentage,
                 'offercode' => $request->offercode,
                 'minvalue' => $request->minvalue,
+                'discount_type' => $request->discount_type,
                 'startdate' => date('Y-m-d', strtotime($request->fromdate)),
                 'enddate' => date('Y-m-d', strtotime($request->todate)),
                 'photo' => $img ?? null,
@@ -77,6 +79,7 @@ class OfferController extends Controller
                 'percentage' => $data->percentage,
                 'offercode' => $data->offercode,
                 'minvalue' => $data->minvalue,
+                'discount_type' => $data->discount_type,
                 'startdate' => date('d-m-Y', strtotime($data->startdate)),
                 'enddate' => date('d-m-Y', strtotime($data->enddate))
             );
@@ -122,6 +125,7 @@ class OfferController extends Controller
                 'percentage' => $request->percentage,
                 'offercode' => $request->offercode,
                 'minvalue' => $request->minvalue,
+                'discount_type' => $request->discount_type,
                 'startdate' => date('Y-m-d', strtotime($request->fromdate)),
                 'enddate' => date('Y-m-d', strtotime($request->todate)),
                 'photo' => $img ?? null,
